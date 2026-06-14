@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="报告日期：2026-05-27目标：调研市面上可做粉末 XRD 物相匹配的软件、开源库与 Web App，并为 Python 实现一个类似 Jade 9 的 PDF 卡片匹配功能提供系统性设计参考。  1. 背景与目标本项目目标是设计一个 Python 系统，用于实现类似 MDI JADE &#x2F; Jade 9 中基于 PDF 卡片 的粉末 XRD 物相匹配功能。 这里的 PDF 指 Pow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="粉末 XRD 物相匹配软件调研与 Python 实现设计参考">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/%E7%B2%89%E6%9C%ABXRD%E7%89%A9%E7%9B%B8%E5%8C%B9%E9%85%8D%E8%BD%AF%E4%BB%B6%E8%B0%83%E7%A0%94%E4%B8%8EPython%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E5%8F%82%E8%80%83/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="报告日期：2026-05-27目标：调研市面上可做粉末 XRD 物相匹配的软件、开源库与 Web App，并为 Python 实现一个类似 Jade 9 的 PDF 卡片匹配功能提供系统性设计参考。  1. 背景与目标本项目目标是设计一个 Python 系统，用于实现类似 MDI JADE &#x2F; Jade 9 中基于 PDF 卡片 的粉末 XRD 物相匹配功能。 这里的 PDF 指 Pow">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-14T09:26:54.173Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="PXRD">
+<meta property="article:tag" content="科研">
+<meta property="article:tag" content="凝聚态物理">
+<meta property="article:tag" content="晶体结构">
+<meta property="article:tag" content="GSAS-II">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>粉末 XRD 物相匹配软件调研与 Python 实现设计参考 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="粉末 XRD 物相匹配软件调研与 Python 实现设计参考"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 15:00" pubdate>
+          2026年6月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">粉末 XRD 物相匹配软件调研与 Python 实现设计参考</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>报告日期：2026-05-27</strong><br><strong>目标：调研市面上可做粉末 XRD 物相匹配的软件、开源库与 Web App，并为 Python 实现一个类似 Jade 9 的 PDF 卡片匹配功能提供系统性设计参考。</strong></p>
+<hr>
+<h2 id="1-背景与目标"><a href="#1-背景与目标" class="headerlink" title="1. 背景与目标"></a>1. 背景与目标</h2><p>本项目目标是设计一个 Python 系统，用于实现类似 <strong>MDI JADE &#x2F; Jade 9</strong> 中基于 <strong>PDF 卡片</strong> 的粉末 XRD 物相匹配功能。</p>
+<p>这里的 <strong>PDF</strong> 指 <strong>Powder Diffraction File</strong>，即粉末衍射数据库条目，而不是 PDF 文档。典型流程是：</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mathematica">导入实验 <span class="hljs-variable">XRD</span> 谱图<br>→ 预处理：平滑、背景扣除、<span class="hljs-built_in">K</span>α<span class="hljs-number">2</span> 扣除、零点校正<br>→ 寻峰<br>→ 与数据库卡片峰表或理论谱图匹配<br>→ 输出候选物相卡片<br>→ 用户选择<span class="hljs-operator">/</span>排除物相<br>→ 多相组合匹配或 <span class="hljs-variable">Rietveld</span> 精修验证<br></code></pre></td></tr></table></figure>
+
+<p>商业软件如 JADE、HighScore、Match!、DIFFRAC.EVA 等已经形成成熟的 Search-Match 工作流；开源生态中则可以借助 COD、pymatgen、GSAS-II、Profex&#x2F;BGMN、QualX2.0 等搭建自己的开放式原型。</p>
+<hr>
+<h2 id="2-典型产品与系统分类"><a href="#2-典型产品与系统分类" class="headerlink" title="2. 典型产品与系统分类"></a>2. 典型产品与系统分类</h2><h3 id="2-1-商业-XRD-分析软件"><a href="#2-1-商业-XRD-分析软件" class="headerlink" title="2.1 商业 XRD 分析软件"></a>2.1 商业 XRD 分析软件</h3><table>
+<thead>
+<tr>
+<th>产品</th>
+<th>厂商&#x2F;组织</th>
+<th>类型</th>
+<th>核心能力</th>
+<th>对本项目的参考价值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MDI JADE &#x2F; JADE Pro</strong></td>
+<td>ICDD &#x2F; MDI</td>
+<td>商业桌面软件</td>
+<td>XRD pattern processing、whole pattern fitting、Rietveld、minor phase identification 等</td>
+<td>最接近 Jade 9 目标形态，应重点参考其”实验谱图 + 候选卡片 + 棒图叠加 + 接受&#x2F;排除相”的交互模式。<a target="_blank" rel="noopener" href="https://www.icdd.com/mdi-jade/">ICDD</a></td>
+</tr>
+<tr>
+<td><strong>ICDD SIeve &#x2F; SIeve+</strong></td>
+<td>ICDD</td>
+<td>商业 Search-Match 工具</td>
+<td>支持 Hanawalt、Fink、Long8 等传统峰表检索算法，并以 Goodness of Match 排序</td>
+<td>适合参考传统 d-I 峰表匹配算法和 GOM 评分体系。<a target="_blank" rel="noopener" href="https://www.icdd.com/pdf-support-software/">ICDD</a></td>
+</tr>
+<tr>
+<td><strong>HighScore &#x2F; HighScore Plus</strong></td>
+<td>Malvern Panalytical</td>
+<td>商业桌面软件</td>
+<td>支持同时使用多个参考数据库，覆盖 ICDD、CSD、COD-derived 等数据库</td>
+<td>适合参考多数据库管理、数据库过滤、用户自建库管理。<a target="_blank" rel="noopener" href="https://www.malvernpanalytical.com/en/products/category/software/x-ray-diffraction-software/highscore">Malvern Panalytical</a></td>
+</tr>
+<tr>
+<td><strong>Match!</strong></td>
+<td>Crystal Impact</td>
+<td>商业桌面软件</td>
+<td>面向 powder diffraction phase analysis</td>
+<td>适合参考轻量级物相识别产品形态，尤其是”快速导入、快速匹配、候选排序”。<a target="_blank" rel="noopener" href="https://www.crystalimpact.com/match/">Crystal Impact</a></td>
+</tr>
+<tr>
+<td><strong>DIFFRAC.EVA</strong></td>
+<td>Bruker</td>
+<td>商业桌面软件</td>
+<td>用于 1D&#x2F;2D XRD 数据分析，覆盖 visualization、data reduction、phase identification、quantification</td>
+<td>适合参考从原始谱图处理到物相识别、定量分析的一体化流程。<a target="_blank" rel="noopener" href="https://www.bruker.com/en/products-and-solutions/diffractometers-and-x-ray-microscopes/x-ray-diffractometers/diffrac-suite-software/diffrac-eva.html">Bruker</a></td>
+</tr>
+<tr>
+<td><strong>DIFFRAC.TOPAS</strong></td>
+<td>Bruker</td>
+<td>商业精修软件</td>
+<td>基于 profile fitting，用于 quantitative phase analysis、whole powder pattern fitting、Rietveld 等</td>
+<td>适合参考高级模块：全谱拟合、Rietveld 精修、定量相分析。<a target="_blank" rel="noopener" href="https://www.bruker.com/en/products-and-solutions/diffractometers-and-x-ray-microscopes/x-ray-diffractometers/diffrac-suite-software/diffrac-topas.html">Bruker</a></td>
+</tr>
+<tr>
+<td><strong>SmartLab Studio II</strong></td>
+<td>Rigaku</td>
+<td>商业仪器软件</td>
+<td>集成测量、分析、可视化和报告；其 AI 插件支持 phase identification</td>
+<td>适合参考实时分析、AI 辅助识别、仪器工作流集成。<a target="_blank" rel="noopener" href="https://rigaku.com/products/x-ray-diffraction-and-scattering/xrd/smartlab-studio-ii/ai">Rigaku</a></td>
+</tr>
+</tbody></table>
+<h3 id="2-2-开源软件、免费软件与-Python-库"><a href="#2-2-开源软件、免费软件与-Python-库" class="headerlink" title="2.2 开源软件、免费软件与 Python 库"></a>2.2 开源软件、免费软件与 Python 库</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>核心能力</th>
+<th>对 Python 实现的参考价值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>QualX2.0</strong></td>
+<td>免费软件</td>
+<td>用于 powder diffraction qualitative phase analysis；可查询 PDF-2 商业库，也可使用基于 COD 的 POW_COD</td>
+<td>非常适合作为传统 Search-Match 流程参考。<a target="_blank" rel="noopener" href="https://www.ba.ic.cnr.it/softwareic/qualxweb/">CNR</a></td>
+</tr>
+<tr>
+<td><strong>Profex + BGMN</strong></td>
+<td>开源 GUI + 精修内核</td>
+<td>用于 Rietveld refinement、phase identification、phase quantification</td>
+<td>可作为后续 Rietveld 验证和定量分析参考。<a target="_blank" rel="noopener" href="https://www.profex-xrd.org/">Profex</a></td>
+</tr>
+<tr>
+<td><strong>GSAS-II</strong></td>
+<td>开源 Python 项目</td>
+<td>面向晶体结构解析和 diffraction-based characterization</td>
+<td>Python 生态中最重要的重型衍射分析后端之一。<a target="_blank" rel="noopener" href="https://advancedphotonsource.github.io/GSAS-II-tutorials/">GSAS-II Tutorials</a></td>
+</tr>
+<tr>
+<td><strong>pymatgen XRDCalculator</strong></td>
+<td>Python 库</td>
+<td>可根据晶体结构计算粉末 XRD pattern</td>
+<td>最适合用来从 CIF &#x2F; COD &#x2F; Materials Project 结构生成”开放式 PDF 卡片”。<a target="_blank" rel="noopener" href="https://pymatgen.org/pymatgen.analysis.diffraction.html">pymatgen</a></td>
+</tr>
+<tr>
+<td><strong>COD &#x2F; POW_COD</strong></td>
+<td>开放晶体结构数据库 &#x2F; 计算谱库</td>
+<td>COD 官方新闻称其在 2023 年达到 500,000 records</td>
+<td>最适合作为 MVP 阶段的开放数据源。<a target="_blank" rel="noopener" href="https://qiserver.ugr.es/cod/new.html">COD</a></td>
+</tr>
+<tr>
+<td><strong>Crystal Toolkit</strong></td>
+<td>Python Web 框架</td>
+<td>Materials Project 生态中的材料科学 Web App 框架</td>
+<td>可参考其材料结构可视化、Web 交互和 pymatgen 集成方式。<a target="_blank" rel="noopener" href="https://docs.crystaltoolkit.org/">Crystal Toolkit</a></td>
+</tr>
+<tr>
+<td><strong>CSD Python API</strong></td>
+<td>商业数据库 API</td>
+<td>用于程序化访问 CSD 结构化学数据</td>
+<td>若目标领域包括药物晶型、有机晶体，可作为商业数据库&#x2F;API 参考。<a target="_blank" rel="noopener" href="https://www.ccdc.cam.ac.uk/solutions/software/csd-python/">CCDC</a></td>
+</tr>
+<tr>
+<td><strong>Momentum Transfer Search Match</strong></td>
+<td>Web App</td>
+<td>免费粉末衍射 phase identification 工具，支持上传 pattern，并在 COD 500,000+ structures 中匹配</td>
+<td>非常适合作为 Web 产品形态参考。<a target="_blank" rel="noopener" href="https://momentum-transfer.com/tools/search-match">Momentum Transfer</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-产品能力对比矩阵"><a href="#3-产品能力对比矩阵" class="headerlink" title="3. 产品能力对比矩阵"></a>3. 产品能力对比矩阵</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>JADE &#x2F; SIeve+</th>
+<th>HighScore</th>
+<th>Match!</th>
+<th>DIFFRAC.EVA &#x2F; TOPAS</th>
+<th>QualX2.0</th>
+<th>Python 自研建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>峰表匹配</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>第一阶段必须实现</td>
+</tr>
+<tr>
+<td>全谱匹配</td>
+<td>强</td>
+<td>强</td>
+<td>中-强</td>
+<td>强</td>
+<td>中</td>
+<td>第二阶段实现</td>
+</tr>
+<tr>
+<td>多相识别</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>中</td>
+<td>MVP 后重点实现</td>
+</tr>
+<tr>
+<td>Rietveld 精修</td>
+<td>JADE Pro 支持</td>
+<td>HighScore Plus 支持</td>
+<td>可结合 FullProf</td>
+<td>TOPAS 强</td>
+<td>弱&#x2F;非核心</td>
+<td>可接 GSAS-II &#x2F; BGMN</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>ICDD PDF 为主</td>
+<td>ICDD &#x2F; CSD &#x2F; COD 等</td>
+<td>COD &#x2F; ICDD 等</td>
+<td>ICDD &#x2F; 用户库等</td>
+<td>PDF-2 &#x2F; POW_COD</td>
+<td>COD + CIF + 用户库</td>
+</tr>
+<tr>
+<td>API &#x2F; 可编程性</td>
+<td>有限</td>
+<td>有限</td>
+<td>有限</td>
+<td>有限</td>
+<td>有限</td>
+<td>Python 原生优势</td>
+</tr>
+<tr>
+<td>Web 化</td>
+<td>弱</td>
+<td>弱</td>
+<td>弱</td>
+<td>弱</td>
+<td>弱</td>
+<td>推荐做成 Web App</td>
+</tr>
+<tr>
+<td>授权成本</td>
+<td>高</td>
+<td>高</td>
+<td>中-高</td>
+<td>高</td>
+<td>免费</td>
+<td>取决于数据库来源</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-关键设计启发"><a href="#4-关键设计启发" class="headerlink" title="4. 关键设计启发"></a>4. 关键设计启发</h2><h3 id="4-1-数据库不是简单峰表，而是”物相卡片系统”"><a href="#4-1-数据库不是简单峰表，而是”物相卡片系统”" class="headerlink" title="4.1 数据库不是简单峰表，而是”物相卡片系统”"></a>4.1 数据库不是简单峰表，而是”物相卡片系统”</h3><p>Jade 这类软件的核心体验不是单纯返回一个相名，而是返回一组 <strong>候选物相卡片</strong>。每张卡片应包含：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">phase_id:</span> <span class="hljs-string">&quot;COD-xxxxxxx&quot;</span><br><span class="hljs-attr">source:</span> <span class="hljs-string">&quot;COD / ICDD / MP / User&quot;</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">&quot;Quartz&quot;</span><br><span class="hljs-attr">formula:</span> <span class="hljs-string">&quot;SiO2&quot;</span><br><span class="hljs-attr">elements:</span> [<span class="hljs-string">&quot;Si&quot;</span>, <span class="hljs-string">&quot;O&quot;</span>]<br><span class="hljs-attr">space_group:</span> <span class="hljs-string">&quot;P3121&quot;</span><br><span class="hljs-attr">cell:</span><br>  <span class="hljs-attr">a:</span> <span class="hljs-string">...</span><br>  <span class="hljs-attr">b:</span> <span class="hljs-string">...</span><br>  <span class="hljs-attr">c:</span> <span class="hljs-string">...</span><br>  <span class="hljs-attr">alpha:</span> <span class="hljs-string">...</span><br>  <span class="hljs-attr">beta:</span> <span class="hljs-string">...</span><br>  <span class="hljs-attr">gamma:</span> <span class="hljs-string">...</span><br><span class="hljs-attr">reference:</span> <span class="hljs-string">&quot;...&quot;</span><br><span class="hljs-attr">quality_flag:</span> <span class="hljs-string">&quot;experimental / calculated / user-imported&quot;</span><br><span class="hljs-attr">peaks:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">two_theta:</span> <span class="hljs-number">26.64</span><br>    <span class="hljs-attr">d_spacing:</span> <span class="hljs-number">3.34</span><br>    <span class="hljs-attr">rel_intensity:</span> <span class="hljs-number">100</span><br>    <span class="hljs-attr">hkl:</span> [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]<br>  <span class="hljs-bullet">-</span> <span class="hljs-string">...</span><br><span class="hljs-attr">pattern_grid:</span><br>  <span class="hljs-attr">two_theta:</span> [<span class="hljs-string">...</span>]<br>  <span class="hljs-attr">intensity:</span> [<span class="hljs-string">...</span>]<br><span class="hljs-attr">cif_path:</span> <span class="hljs-string">&quot;...&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>Malvern Panalytical 对参考数据库的说明中特别区分了 <strong>measured reference patterns</strong> 和 <strong>calculated reference patterns</strong>：实测参考谱通常更适合 phase identification，而计算谱依赖结构数据，适合和 Rietveld&#x2F;结构分析结合。</p>
+<p>因此，自研系统中应区分：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">1.</span> 实测参考卡片：更接近商业 PDF 数据库体验<br><span class="hljs-bullet">2.</span> 理论计算卡片：由 CIF 通过 pymatgen / Dans<span class="hljs-emphasis">_Diffraction 等生成</span><br><span class="hljs-emphasis">3. 用户自建卡片：实验室内部材料、标准样、历史样品</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-传统-Search-Match-仍然是-MVP-的核心"><a href="#4-2-传统-Search-Match-仍然是-MVP-的核心" class="headerlink" title="4.2 传统 Search-Match 仍然是 MVP 的核心"></a>4.2 传统 Search-Match 仍然是 MVP 的核心</h3><p>SIeve+ 明确支持 Hanawalt、Fink、Long8 等传统检索方法，并通过 Goodness of Match 排序。</p>
+<p>对 Python MVP 来说，不需要一开始做复杂深度学习或全自动 Rietveld。更合理的路线是：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">实验谱图 → 寻峰 → d/<span class="hljs-selector-tag">I</span> 峰表 → 数据库候选筛选 → 打分排序 → 卡片展示<br></code></pre></td></tr></table></figure>
+
+<p>可优先实现如下评分项：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">position_score     峰位匹配程度<br><span class="hljs-built_in">int</span>ensity_score    相对强度相似度<br>coverage_score     实验强峰被解释比例<br>missing_penalty    候选卡片强峰缺失惩罚<br>chemistry_score    元素/化学约束匹配<br>background_score   弱峰可信度修正<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-3-全谱匹配是提高鲁棒性的关键"><a href="#4-3-全谱匹配是提高鲁棒性的关键" class="headerlink" title="4.3 全谱匹配是提高鲁棒性的关键"></a>4.3 全谱匹配是提高鲁棒性的关键</h3><p>传统峰表匹配容易受以下因素影响：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs">弱峰漏检<br>峰重叠<br>择优取向<br>仪器零点偏移<br>样品晶粒尺寸/应变导致峰宽变化<br>背景扣除误差<br></code></pre></td></tr></table></figure>
+
+<p>因此第二阶段应增加 <strong>full-pattern similarity</strong>：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs coq">候选 stick <span class="hljs-built_in">pattern</span><br>→ 卷积为 pseudo-Voigt / Gaussian / Lorentzian profile<br>→ 与实验谱图做全谱相似度比较<br>→ 输出 <span class="hljs-built_in">pattern</span> similarity score<br></code></pre></td></tr></table></figure>
+
+<p>Bruker TOPAS、JADE Pro、HighScore Plus 等商业工具的高级能力都强调 whole-pattern fitting 或 profile fitting。</p>
+<h3 id="4-4-多相匹配不能只做-Top-1-搜索"><a href="#4-4-多相匹配不能只做-Top-1-搜索" class="headerlink" title="4.4 多相匹配不能只做 Top-1 搜索"></a>4.4 多相匹配不能只做 Top-1 搜索</h3><p>真实样品通常是多相体系。推荐采用分层搜索：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Step</span> <span class="hljs-number">1</span>: 单相 Top-N 候选<br><span class="hljs-keyword">Step</span> <span class="hljs-number">2</span>: 选择一个候选相，解释部分实验峰<br><span class="hljs-keyword">Step</span> <span class="hljs-number">3</span>: 对 residual peaks / residual <span class="hljs-built_in">pattern</span> 再次搜索<br><span class="hljs-keyword">Step</span> <span class="hljs-number">4</span>: 生成二相、三相组合<br><span class="hljs-keyword">Step</span> <span class="hljs-number">5</span>: 用 NNLS / least squares 拟合相比例<br><span class="hljs-keyword">Step</span> <span class="hljs-number">6</span>: 按整体残差和物理合理性排序<br></code></pre></td></tr></table></figure>
+
+<p>可以使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">scipy.optimize.nnls<br>sklearn.metrics.pairwise.cosine_similarity<br>scipy.signal.find_peaks<br>scipy.optimize.least_squares<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-推荐系统架构"><a href="#5-推荐系统架构" class="headerlink" title="5. 推荐系统架构"></a>5. 推荐系统架构</h2><h3 id="5-1-总体架构"><a href="#5-1-总体架构" class="headerlink" title="5.1 总体架构"></a>5.1 总体架构</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs nix">┌────────────────────────────┐<br>│        Web <span class="hljs-symbol">/</span> Desktop UI     │<br>│  谱图显示、卡片、棒图叠加   │<br>└─────────────┬──────────────┘<br>              │<br>┌─────────────▼──────────────┐<br>│        API Service          │<br>│ FastAPI <span class="hljs-symbol">/</span> Flask <span class="hljs-symbol">/</span> Streamlit │<br>└─────────────┬──────────────┘<br>              │<br>┌─────────────▼──────────────┐<br>│      XRD Processing Core    │<br>│ 背景扣除、平滑、寻峰、校正  │<br>└─────────────┬──────────────┘<br>              │<br>┌─────────────▼──────────────┐<br>│      Search-Match Engine    │<br>│ 峰表匹配、全谱匹配、多相搜索│<br>└─────────────┬──────────────┘<br>              │<br>┌─────────────▼──────────────┐<br>│       Phase Card DB         │<br>│ COD <span class="hljs-symbol">/</span> CIF <span class="hljs-symbol">/</span> User <span class="hljs-symbol">/</span> Licensed │<br>└─────────────┬──────────────┘<br>              │<br>┌─────────────▼──────────────┐<br>│   Optional Refinement Core  │<br>│ GSAS-II <span class="hljs-symbol">/</span> BGMN <span class="hljs-symbol">/</span> 自研拟合   │<br>└────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-模块划分"><a href="#5-2-模块划分" class="headerlink" title="5.2 模块划分"></a>5.2 模块划分</h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+<th>推荐技术</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件导入</td>
+<td>读取 <code>.xy</code>、<code>.csv</code>、<code>.txt</code>、<code>.xrdml</code>、<code>.ras</code> 等</td>
+<td>pandas、自写 parser、后续接 xylib</td>
+</tr>
+<tr>
+<td>谱图预处理</td>
+<td>平滑、背景扣除、归一化、Kα2 扣除、零点校正</td>
+<td>scipy、pybaselines</td>
+</tr>
+<tr>
+<td>寻峰</td>
+<td>峰位、峰高、峰宽、峰面积提取</td>
+<td>scipy.signal.find_peaks</td>
+</tr>
+<tr>
+<td>晶体结构解析</td>
+<td>读取 CIF、提取结构信息</td>
+<td>pymatgen、spglib</td>
+</tr>
+<tr>
+<td>理论谱生成</td>
+<td>从结构计算 XRD pattern</td>
+<td>pymatgen XRDCalculator</td>
+</tr>
+<tr>
+<td>卡片数据库</td>
+<td>存储峰表、结构、元数据、索引</td>
+<td>SQLite、DuckDB、Parquet</td>
+</tr>
+<tr>
+<td>匹配引擎</td>
+<td>峰表匹配、全谱相似度、多相搜索</td>
+<td>numpy、scipy、sklearn</td>
+</tr>
+<tr>
+<td>可视化</td>
+<td>实验谱、候选棒图、残差图</td>
+<td>Plotly、ECharts、matplotlib</td>
+</tr>
+<tr>
+<td>Web&#x2F;API</td>
+<td>上传、搜索、结果展示</td>
+<td>FastAPI + React &#x2F; Dash &#x2F; Streamlit</td>
+</tr>
+<tr>
+<td>精修扩展</td>
+<td>Rietveld、定量相分析</td>
+<td>GSAS-II、Profex&#x2F;BGMN</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-MVP-功能建议"><a href="#6-MVP-功能建议" class="headerlink" title="6. MVP 功能建议"></a>6. MVP 功能建议</h2><p>第一版不建议直接追求商业软件完整能力，而应实现一个”可用的 Jade-like Search-Match 原型”。</p>
+<h3 id="6-1-MVP-用户流程"><a href="#6-1-MVP-用户流程" class="headerlink" title="6.1 MVP 用户流程"></a>6.1 MVP 用户流程</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">1.</span> 用户上传 XRD 谱图<br><span class="hljs-bullet">2.</span> 系统自动识别 2θ / intensity 数据<br><span class="hljs-bullet">3.</span> 自动背景扣除、平滑和归一化<br><span class="hljs-bullet">4.</span> 自动寻峰<br><span class="hljs-bullet">5.</span> 用户可输入元素约束：<br><span class="hljs-bullet">   -</span> 必须包含元素<br><span class="hljs-bullet">   -</span> 排除元素<br><span class="hljs-bullet">   -</span> 样品类型：氧化物 / 金属 / 矿物 / 有机物<br><span class="hljs-bullet">6.</span> 系统从数据库搜索 Top-N 候选物相<br><span class="hljs-bullet">7.</span> 以 PDF 卡片形式展示候选结果<br><span class="hljs-bullet">8.</span> 用户点击卡片，叠加理论棒图<br><span class="hljs-bullet">9.</span> 用户勾选已确认物相<br><span class="hljs-bullet">10.</span> 系统计算 residual peaks，并推荐下一相<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-2-MVP-输出卡片设计"><a href="#6-2-MVP-输出卡片设计" class="headerlink" title="6.2 MVP 输出卡片设计"></a>6.2 MVP 输出卡片设计</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs routeros">┌─────────────────────────────────────────────┐<br>│ Quartz / SiO2                               │<br>│ Source: COD                                 │<br>│ Space group: P3121                          │<br>│ Match Score: 86.4                           │<br>│ Coverage: 8 / 10 strong peaks               │<br>│ Main peaks:                                 │<br>│   26.64°  <span class="hljs-attribute">d</span>=3.34 Å  <span class="hljs-attribute">I</span>=100                   │<br>│   20.86°  <span class="hljs-attribute">d</span>=4.26 Å  <span class="hljs-attribute">I</span>=35                    │<br>│   50.13°  <span class="hljs-attribute">d</span>=1.82 Å  <span class="hljs-attribute">I</span>=22                    │<br>│ Actions: [Overlay] [Accept] [Reject] [CIF]  │<br>└─────────────────────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<p>卡片应支持：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>候选物相名称<br><span class="hljs-bullet">- </span>化学式<br><span class="hljs-bullet">- </span>数据库来源<br><span class="hljs-bullet">- </span>空间群<br><span class="hljs-bullet">- </span>晶胞参数<br><span class="hljs-bullet">- </span>主峰列表<br><span class="hljs-bullet">- </span>匹配分数<br><span class="hljs-bullet">- </span>被解释峰数量<br><span class="hljs-bullet">- </span>缺失强峰提示<br><span class="hljs-bullet">- </span>棒图叠加<br><span class="hljs-bullet">- </span>CIF 查看/下载<br><span class="hljs-bullet">- </span>Accept / Reject / Lock<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-匹配算法设计"><a href="#7-匹配算法设计" class="headerlink" title="7. 匹配算法设计"></a>7. 匹配算法设计</h2><h3 id="7-1-峰位匹配"><a href="#7-1-峰位匹配" class="headerlink" title="7.1 峰位匹配"></a>7.1 峰位匹配</h3><p>实验峰与卡片峰之间允许一定容差：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nix">Δ<span class="hljs-number">2</span>θ <span class="hljs-params">tolerance:</span> <span class="hljs-number">0.05</span>° ~ <span class="hljs-number">0.20</span>°<br>或<br>Δd <span class="hljs-symbol">/</span> d <span class="hljs-params">tolerance:</span> <span class="hljs-number">0.1</span>% ~ <span class="hljs-number">0.5</span>%<br></code></pre></td></tr></table></figure>
+
+<p>推荐优先使用 <code>d-spacing</code> 做匹配，因为 d 值比 2θ 更接近晶体学本质；但 UI 中仍显示 2θ。</p>
+<p>示例评分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">position_score = exp(-((delta_two_theta / tolerance) ** <span class="hljs-number">2</span>))<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-2-强度匹配"><a href="#7-2-强度匹配" class="headerlink" title="7.2 强度匹配"></a>7.2 强度匹配</h3><p>相对强度受择优取向、吸收、晶粒尺寸影响较大，因此强度不应作为硬约束，而应作为软评分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">intensity_score = cosine_similarity(exp_intensity_vector, ref_intensity_vector)<br></code></pre></td></tr></table></figure>
+
+<p>建议权重：</p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">峰位匹配：<span class="hljs-number">50</span><span class="hljs-comment">%</span><br>强峰覆盖：<span class="hljs-number">25</span><span class="hljs-comment">%</span><br>强度相似：<span class="hljs-number">15</span><span class="hljs-comment">%</span><br>化学约束：<span class="hljs-number">10</span><span class="hljs-comment">%</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-3-缺失峰惩罚"><a href="#7-3-缺失峰惩罚" class="headerlink" title="7.3 缺失峰惩罚"></a>7.3 缺失峰惩罚</h3><p>如果候选相的最强峰在实验谱中完全不存在，应显著扣分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">missing_penalty = <span class="hljs-built_in">sum</span>(weight_i <span class="hljs-keyword">for</span> each strong reference peak <span class="hljs-keyword">not</span> found)<br></code></pre></td></tr></table></figure>
+
+<p>但要考虑：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>多相重叠<br><span class="hljs-bullet">- </span>背景噪声<br><span class="hljs-bullet">- </span>实验扫描范围不足<br><span class="hljs-bullet">- </span>弱峰低于检测限<br><span class="hljs-bullet">- </span>择优取向导致部分峰异常<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-4-多相组合搜索"><a href="#7-4-多相组合搜索" class="headerlink" title="7.4 多相组合搜索"></a>7.4 多相组合搜索</h3><p>推荐使用 beam search：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gams">初始化：Top <span class="hljs-number">50</span> 单相候选<br>beam width = <span class="hljs-number">10</span><br><span class="hljs-built_in">max</span> phases = <span class="hljs-number">3</span> 或 <span class="hljs-number">4</span><br><br><span class="hljs-function"><span class="hljs-title">for</span></span> depth in <span class="hljs-number">1.</span>.max_phases:<br>    对每个候选组合：<br>        生成组合理论谱<br>        用 NNLS 拟合各相比例<br>        计算 residual score<br>        保留 top beam_width 组合<br></code></pre></td></tr></table></figure>
+
+<p>组合评分：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown">combo<span class="hljs-emphasis">_score =</span><br><span class="hljs-emphasis">    pattern_</span>similarity<br><span class="hljs-bullet">  +</span> explained<span class="hljs-emphasis">_peak_</span>ratio<br><span class="hljs-bullet">  -</span> residual<span class="hljs-emphasis">_peak_</span>penalty<br><span class="hljs-bullet">  -</span> too<span class="hljs-emphasis">_many_</span>phases<span class="hljs-emphasis">_penalty</span><br><span class="hljs-emphasis">  - missing_</span>strong<span class="hljs-emphasis">_peak_</span>penalty<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-数据库方案"><a href="#8-数据库方案" class="headerlink" title="8. 数据库方案"></a>8. 数据库方案</h2><h3 id="8-1-推荐数据源优先级"><a href="#8-1-推荐数据源优先级" class="headerlink" title="8.1 推荐数据源优先级"></a>8.1 推荐数据源优先级</h3><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>数据源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0</td>
+<td>用户上传 CIF &#x2F; 标准样</td>
+<td>最容易控制授权，适合实验室内部使用</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>COD</td>
+<td>开放结构数据库，适合生成理论卡片</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>POW_COD</td>
+<td>QualX2.0 使用的 COD-derived 粉末库思路值得参考</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Materials Project</td>
+<td>适合补充无机材料结构和计算数据</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>RRUFF &#x2F; AMCSD</td>
+<td>适合矿物方向</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>ICDD PDF</td>
+<td>商业授权数据库，不建议直接内置，除非用户持有合法授权</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>CSD</td>
+<td>有机晶体、药物晶型方向可考虑商业 API</td>
+</tr>
+</tbody></table>
+<h3 id="8-2-推荐数据库表结构"><a href="#8-2-推荐数据库表结构" class="headerlink" title="8.2 推荐数据库表结构"></a>8.2 推荐数据库表结构</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> phases (<br>    phase_id TEXT <span class="hljs-keyword">PRIMARY KEY</span>,<br>    source TEXT,<br>    name TEXT,<br>    formula TEXT,<br>    elements TEXT,<br>    space_group TEXT,<br>    crystal_system TEXT,<br>    a <span class="hljs-type">REAL</span>,<br>    b <span class="hljs-type">REAL</span>,<br>    c <span class="hljs-type">REAL</span>,<br>    alpha <span class="hljs-type">REAL</span>,<br>    beta <span class="hljs-type">REAL</span>,<br>    gamma <span class="hljs-type">REAL</span>,<br>    reference TEXT,<br>    quality_flag TEXT,<br>    cif_path TEXT<br>);<br><br><span class="hljs-keyword">CREATE TABLE</span> peaks (<br>    id <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">PRIMARY KEY</span> AUTOINCREMENT,<br>    phase_id TEXT,<br>    two_theta <span class="hljs-type">REAL</span>,<br>    d_spacing <span class="hljs-type">REAL</span>,<br>    rel_intensity <span class="hljs-type">REAL</span>,<br>    h <span class="hljs-type">INTEGER</span>,<br>    k <span class="hljs-type">INTEGER</span>,<br>    l <span class="hljs-type">INTEGER</span>,<br>    <span class="hljs-keyword">FOREIGN KEY</span> (phase_id) <span class="hljs-keyword">REFERENCES</span> phases(phase_id)<br>);<br><br><span class="hljs-keyword">CREATE</span> INDEX idx_peaks_d <span class="hljs-keyword">ON</span> peaks(d_spacing);<br><span class="hljs-keyword">CREATE</span> INDEX idx_peaks_two_theta <span class="hljs-keyword">ON</span> peaks(two_theta);<br><span class="hljs-keyword">CREATE</span> INDEX idx_phases_formula <span class="hljs-keyword">ON</span> phases(formula);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-Python-技术选型建议"><a href="#9-Python-技术选型建议" class="headerlink" title="9. Python 技术选型建议"></a>9. Python 技术选型建议</h2><h3 id="9-1-核心依赖"><a href="#9-1-核心依赖" class="headerlink" title="9.1 核心依赖"></a>9.1 核心依赖</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">numpy</span><br>scipy<br>pandas<br>scikit-learn<br>pymatgen<br>spglib<br>pybaselines<br>plotly<br>fastapi<br>sqlite / duckdb<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-2-可选增强"><a href="#9-2-可选增强" class="headerlink" title="9.2 可选增强"></a>9.2 可选增强</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nix">GSAS-II           Rietveld refinement <span class="hljs-symbol">/</span> 结构分析<br>Profex <span class="hljs-symbol">/</span> BGMN     定量相分析参考<br>Dans_Diffraction  理论谱生成备选<br>pyFAI             <span class="hljs-number">2</span>D detector 数据积分<br>fabio             衍射图像格式读取<br>xylib             多厂商谱图格式读取<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="10-产品路线图"><a href="#10-产品路线图" class="headerlink" title="10. 产品路线图"></a>10. 产品路线图</h2><h3 id="Phase-0：调研与数据准备"><a href="#Phase-0：调研与数据准备" class="headerlink" title="Phase 0：调研与数据准备"></a>Phase 0：调研与数据准备</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>确定支持的输入格式：xy、csv、txt<br><span class="hljs-bullet">- </span>下载或导入 COD/CIF 数据<br><span class="hljs-bullet">- </span>使用 pymatgen 批量生成理论 XRD 卡片<br><span class="hljs-bullet">- </span>建立 SQLite / DuckDB 卡片数据库<br></code></pre></td></tr></table></figure>
+
+<h3 id="Phase-1：单相-Search-Match-MVP"><a href="#Phase-1：单相-Search-Match-MVP" class="headerlink" title="Phase 1：单相 Search-Match MVP"></a>Phase 1：单相 Search-Match MVP</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>谱图导入<br><span class="hljs-bullet">- </span>背景扣除<br><span class="hljs-bullet">- </span>寻峰<br><span class="hljs-bullet">- </span>d/I 峰表匹配<br><span class="hljs-bullet">- </span>Top-N 候选物相卡片展示<br><span class="hljs-bullet">- </span>实验谱 + 候选棒图叠加<br></code></pre></td></tr></table></figure>
+
+<h3 id="Phase-2：多相识别"><a href="#Phase-2：多相识别" class="headerlink" title="Phase 2：多相识别"></a>Phase 2：多相识别</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>residual peaks 分析<br><span class="hljs-bullet">- </span>二相 / 三相组合搜索<br><span class="hljs-bullet">- </span>NNLS 相比例估计<br><span class="hljs-bullet">- </span>组合候选排序<br></code></pre></td></tr></table></figure>
+
+<h3 id="Phase-3：全谱拟合"><a href="#Phase-3：全谱拟合" class="headerlink" title="Phase 3：全谱拟合"></a>Phase 3：全谱拟合</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>理论棒图卷积成连续谱<br><span class="hljs-bullet">- </span>Gaussian / Lorentzian / pseudo-Voigt 峰型<br><span class="hljs-bullet">- </span>零点偏移修正<br><span class="hljs-bullet">- </span>峰宽参数拟合<br><span class="hljs-bullet">- </span>全谱 similarity / residual score<br></code></pre></td></tr></table></figure>
+
+<h3 id="Phase-4：精修与定量"><a href="#Phase-4：精修与定量" class="headerlink" title="Phase 4：精修与定量"></a>Phase 4：精修与定量</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>接入 GSAS-II 或 BGMN<br><span class="hljs-bullet">- </span>Rietveld refinement<br><span class="hljs-bullet">- </span>晶胞参数微调<br><span class="hljs-bullet">- </span>定量相分析<br><span class="hljs-bullet">- </span>报告导出<br></code></pre></td></tr></table></figure>
+
+<h3 id="Phase-5：AI-辅助"><a href="#Phase-5：AI-辅助" class="headerlink" title="Phase 5：AI 辅助"></a>Phase 5：AI 辅助</h3><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>用模拟 XRD 数据训练候选排序模型<br><span class="hljs-bullet">- </span>用历史样品训练实验室专用分类器<br><span class="hljs-bullet">- </span>minor phase detection<br><span class="hljs-bullet">- </span>pattern decomposition<br></code></pre></td></tr></table></figure>
+
+<p>Rigaku 的 AI phase identification 插件使用神经网络和模拟 XRD 数据训练，用于识别主相和微量相，这说明 AI 可作为后期增强模块，但不建议作为 MVP 核心。</p>
+<hr>
+<h2 id="11-推荐参考对象优先级"><a href="#11-推荐参考对象优先级" class="headerlink" title="11. 推荐参考对象优先级"></a>11. 推荐参考对象优先级</h2><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>参考对象</th>
+<th>参考原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>JADE &#x2F; JADE Pro</strong></td>
+<td>最接近目标产品形态，尤其是卡片式候选展示和 Search-Match 工作流。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>SIeve+</strong></td>
+<td>传统 Hanawalt &#x2F; Fink &#x2F; Long8 算法和 GOM 评分值得复刻。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>QualX2.0</strong></td>
+<td>免费软件中最接近传统物相 Search-Match，且使用 PDF-2 &#x2F; POW_COD 思路。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>pymatgen + COD</strong></td>
+<td>最适合 Python 自研开放卡片库。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>HighScore &#x2F; Match!</strong></td>
+<td>适合参考数据库管理、用户库、半定量分析和交互体验。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>GSAS-II &#x2F; Profex-BGMN</strong></td>
+<td>适合后续精修和定量验证。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Momentum Transfer Search Match</strong></td>
+<td>适合参考 Web App 形态和上传即匹配体验。</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Rigaku AI Phase Identification</strong></td>
+<td>适合作为 AI 后处理或候选排序模块参考。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="12-总结"><a href="#12-总结" class="headerlink" title="12. 总结"></a>12. 总结</h2><p>若目标是用 Python 实现一个类似 Jade 9 的 PDF 卡片物相匹配系统，建议采用以下路线：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nix">第一步：<br>COD <span class="hljs-symbol">/</span> 用户 CIF → pymatgen 生成理论 XRD 卡片库<br><br>第二步：<br>实验谱图 → 背景扣除 → 寻峰 → d<span class="hljs-symbol">/I</span> 峰表匹配<br><br>第三步：<br>输出候选物相卡片 → 棒图叠加 → 用户交互确认<br><br>第四步：<br>Residual peaks → 多相组合搜索 → NNLS 半定量<br><br>第五步：<br>接入 GSAS-II <span class="hljs-symbol">/</span> BGMN 做 Rietveld 精修和定量验证<br></code></pre></td></tr></table></figure>
+
+<p>最终系统的核心竞争力不只是”能匹配相”，而是：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-bullet">- </span>数据库卡片质量<br><span class="hljs-bullet">- </span>峰表匹配算法鲁棒性<br><span class="hljs-bullet">- </span>多相组合搜索能力<br><span class="hljs-bullet">- </span>谱图可视化交互体验<br><span class="hljs-bullet">- </span>用户确认/排除物相的工作流<br><span class="hljs-bullet">- </span>后续 Rietveld 验证和报告输出能力<br></code></pre></td></tr></table></figure>
+
+<p>因此，推荐先做 <strong>开放数据库 + 传统 Search-Match + 卡片式 UI</strong> 的 MVP，再逐步扩展到 <strong>全谱拟合、多相搜索、Rietveld 精修和 AI 辅助识别</strong>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">凝聚态物理与人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+        <a href="/tags/PXRD/" class="print-no-link">#PXRD</a>
+      
+        <a href="/tags/%E7%A7%91%E7%A0%94/" class="print-no-link">#科研</a>
+      
+        <a href="/tags/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86/" class="print-no-link">#凝聚态物理</a>
+      
+        <a href="/tags/%E6%99%B6%E4%BD%93%E7%BB%93%E6%9E%84/" class="print-no-link">#晶体结构</a>
+      
+        <a href="/tags/GSAS-II/" class="print-no-link">#GSAS-II</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>粉末 XRD 物相匹配软件调研与 Python 实现设计参考</div>
+      <div>http://baikelwang.github.io/2026/06/14/粉末XRD物相匹配软件调研与Python实现设计参考/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/14/AI%E7%9B%91%E7%9D%A3%E5%91%98%E7%9A%84%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/" title="AI 监督员的工程思维">
+                        <span class="hidden-mobile">AI 监督员的工程思维</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
