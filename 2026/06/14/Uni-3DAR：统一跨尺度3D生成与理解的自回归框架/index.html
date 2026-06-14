@@ -1,0 +1,1183 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="论文标题: Uni-3DAR: Unified 3D Generation and Understanding via Autoregression on Compressed Spatial Tokens论文链接: arXiv:2503.16278代码仓库: github.com&#x2F;dptech-corp&#x2F;Uni-3DAR（本地：Uni-3DAR-study&#x2F;code&#x2F;Uni">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/Uni-3DAR%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B7%A8%E5%B0%BA%E5%BA%A63D%E7%94%9F%E6%88%90%E4%B8%8E%E7%90%86%E8%A7%A3%E7%9A%84%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="论文标题: Uni-3DAR: Unified 3D Generation and Understanding via Autoregression on Compressed Spatial Tokens论文链接: arXiv:2503.16278代码仓库: github.com&#x2F;dptech-corp&#x2F;Uni-3DAR（本地：Uni-3DAR-study&#x2F;code&#x2F;Uni">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T11:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-14T09:08:12.869Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="DeepLearning">
+<meta property="article:tag" content="科研">
+<meta property="article:tag" content="凝聚态物理">
+<meta property="article:tag" content="Uni-3DAR">
+<meta property="article:tag" content="MP">
+<meta property="article:tag" content="PXRD">
+<meta property="article:tag" content="CSP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 11:00" pubdate>
+          2026年6月14日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>论文标题</strong>: Uni-3DAR: Unified 3D Generation and Understanding via Autoregression on Compressed Spatial Tokens<br><strong>论文链接</strong>: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.16278">arXiv:2503.16278</a><br><strong>代码仓库</strong>: <a target="_blank" rel="noopener" href="https://github.com/dptech-corp/Uni-3DAR">github.com&#x2F;dptech-corp&#x2F;Uni-3DAR</a>（本地：<code>Uni-3DAR-study/code/Uni-3DAR/</code>）<br><strong>作者</strong>: Shuqi Lu, Haowei Lin, Lin Yao, Zhifeng Gao, Xiaohong Ji, Yitao Liang, Weinan E, Linfeng Zhang, Guolin Ke<br><strong>机构</strong>: 深势科技（DP Technology）&#x2F; 北京科学智能研究院（AISI）&#x2F; 北京大学<br><strong>开源协议</strong>: MIT License</p>
+</blockquote>
+<hr>
+<h2 id="📋-目录"><a href="#📋-目录" class="headerlink" title="📋 目录"></a>📋 目录</h2><ol>
+<li><a href="#1-%E8%83%8C%E6%99%AF%E4%B8%8E%E5%8A%A8%E6%9C%BA">背景与动机</a></li>
+<li><a href="#2-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B33d-%E5%8D%B3-1d-%E5%BA%8F%E5%88%97">核心思想：3D 即 1D 序列</a></li>
+<li><a href="#3-%E6%96%B9%E6%B3%95%E6%9E%B6%E6%9E%84">方法架构</a></li>
+<li><a href="#4-%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82">关键技术细节</a></li>
+<li><a href="#5-%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA%E6%AF%8F%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84-io-%E8%A7%84%E6%A0%BC">输入与输出：每个任务的 I&#x2F;O 规格</a></li>
+<li><a href="#6-%E6%94%AF%E6%8C%81%E7%9A%84%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">支持的任务与数据类型</a></li>
+<li><a href="#7-%E6%80%A7%E8%83%BD%E8%A1%A8%E7%8E%B0">性能表现</a></li>
+<li><a href="#8-%E4%BB%A3%E7%A0%81%E4%B8%8E%E5%A4%8D%E7%8E%B0%E6%8C%87%E5%8D%97%E5%90%AB%E5%8F%AF%E8%BF%90%E8%A1%8C%E7%A4%BA%E4%BE%8B">代码与复现指南（含可运行示例）</a></li>
+<li><a href="#9-%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%BA%BF%E6%BA%90%E7%A0%81%E8%B5%B0%E8%AF%BB">数据管线源码走读</a></li>
+<li><a href="#10-%E4%B8%8E%E6%99%B6%E4%BD%93%E6%80%A7%E8%B4%A8%E9%A2%84%E6%B5%8B%E7%A0%94%E7%A9%B6%E6%96%B9%E5%90%91%E7%9A%84%E7%9B%B8%E5%85%B3%E6%80%A7">与晶体性质预测研究方向的相关性</a></li>
+<li><a href="#11-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98faq">常见问题（FAQ）</a></li>
+<li><a href="#12-%E5%BC%95%E7%94%A8">引用</a></li>
+</ol>
+<hr>
+<h2 id="1-背景与动机"><a href="#1-背景与动机" class="headerlink" title="1. 背景与动机"></a>1. 背景与动机</h2><h3 id="1-1-当前-3D-结构建模的困境"><a href="#1-1-当前-3D-结构建模的困境" class="headerlink" title="1.1 当前 3D 结构建模的困境"></a>1.1 当前 3D 结构建模的困境</h3><p>3D 结构建模在多个科学尺度上都至关重要——从小分子药物设计、蛋白质折叠、聚合物模拟，到晶体结构预测和宏观 3D 物体重建。尽管不同尺度的 3D 结构都共享<strong>空间稀疏性</strong>和<strong>层级几何模式</strong>，现有方法却高度碎片化：</p>
+<ul>
+<li><strong>领域专用</strong>：模型针对小分子&#x2F;蛋白质&#x2F;晶体单独设计，权重和表征不能复用；</li>
+<li><strong>任务隔离</strong>：生成（de novo 设计）和理解（性质回归、结合预测）通常用不同架构；</li>
+<li><strong>跨尺度泛化弱</strong>：同一模型很难同时处理 Å 级原子结构与 m 级宏观物体。</li>
+</ul>
+<p>更具体的工程痛点在于<strong>表示</strong>：</p>
+<ul>
+<li>直接用稠密体素（voxel grid），即便仅 32³ 也要 ~3 万 token，序列开销巨大；</li>
+<li>直接用全连接图&#x2F;点云，对自回归建模不友好，也很难做”由粗到细”的分层条件；</li>
+<li>扩散模型虽强，但每步 denoise 都要前向整张图，<strong>推理慢</strong>。</li>
+</ul>
+<h3 id="1-2-Uni-3DAR-的目标"><a href="#1-2-Uni-3DAR-的目标" class="headerlink" title="1.2 Uni-3DAR 的目标"></a>1.2 Uni-3DAR 的目标</h3><p>Uni-3DAR 提出一个<strong>统一的、跨尺度的自回归框架</strong>，用单一 Transformer 同时支持多种 3D 数据和多类任务，核心理念是：</p>
+<blockquote>
+<p><strong>将 3D 结构压缩为短的离散 token 序列，再用因果自回归 Transformer 建模。</strong></p>
+</blockquote>
+<hr>
+<h2 id="2-核心思想：3D-即-1D-序列"><a href="#2-核心思想：3D-即-1D-序列" class="headerlink" title="2. 核心思想：3D 即 1D 序列"></a>2. 核心思想：3D 即 1D 序列</h2><blockquote>
+<p><strong>“将多样的 3D 结构通过八叉树（Octree）数据结构，先做粗到细的层次压缩，再用两级子树压缩进一步降到 8× 短，最终用自回归方式建模。”</strong></p>
+</blockquote>
+<p>这一范式带来三大优势：</p>
+<ol>
+<li><strong>统一表示</strong>：分子、蛋白、晶体、宏观物体都可写成同一种 token 序列；</li>
+<li><strong>统一学习目标</strong>：因果 Transformer 既能”采样下一 token”做生成，也能在 <code>[EoS]</code> 或叶级 token 上接预测头做理解；</li>
+<li><strong>高效压缩</strong>：仅需<strong>数百个 token</strong>即可表征完整 3D 空间，对比稠密体素（数万 token）和扩散模型（多步迭代），推理可达 <strong>~21.8×</strong> 加速。</li>
+</ol>
+<hr>
+<h2 id="3-方法架构"><a href="#3-方法架构" class="headerlink" title="3. 方法架构"></a>3. 方法架构</h2><h3 id="3-1-整体框架"><a href="#3-1-整体框架" class="headerlink" title="3.1 整体框架"></a>3.1 整体框架</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs gradle">  <span class="hljs-number">3</span>D 结构（分子 <span class="hljs-regexp">/ 蛋白 /</span> 晶体 / 宏观物体）<br>                │<br>                ▼<br> ┌──────────────────────────────────────┐<br> │ ① Coarse-to-Fine 八叉树 Tokenizer    │<br> │   （只对非空格细分，剪枝空区域）      │<br> └──────────────────────────────────────┘<br>                │<br>                ▼<br> ┌──────────────────────────────────────┐<br> │ ② 两级子树压缩（最高 <span class="hljs-number">8</span>× 压缩）        │<br> │   把<span class="hljs-string">&quot;父节点 + 8 子格占据&quot;</span>合并为一个   │<br> │   <span class="hljs-number">256</span> 类（<span class="hljs-number">2</span>^<span class="hljs-number">8</span>）单 token              │<br> └──────────────────────────────────────┘<br>                │<br>                ▼<br> ┌──────────────────────────────────────┐<br> │ ③ 叶级<span class="hljs-string">&quot;3D Patch&quot;</span> 细粒度 token        │<br> │   原子任务: (atom_type, Δxyz)         │<br> │   宏观形状: VQ-VAE patch code         │<br> └──────────────────────────────────────┘<br>                │<br>                ▼<br> ┌──────────────────────────────────────┐<br> │ ④ Masked <span class="hljs-keyword">Next</span>-Token Prediction       │<br> │   (位置已知 + 内容预测) 的因果 Transformer │<br> └──────────────────────────────────────┘<br>                │<br>       ┌────────┴─────────┐<br>       ▼                  ▼<br>  生成任务            理解任务<br>(de-novo<span class="hljs-regexp">/CSP/</span>PXRD) (HOMO<span class="hljs-regexp">/LUMO/</span>binding…)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-核心组件详解"><a href="#3-2-核心组件详解" class="headerlink" title="3.2 核心组件详解"></a>3.2 核心组件详解</h3><h4 id="①-Coarse-to-Fine-八叉树-Tokenizer"><a href="#①-Coarse-to-Fine-八叉树-Tokenizer" class="headerlink" title="① Coarse-to-Fine 八叉树 Tokenizer"></a>① Coarse-to-Fine 八叉树 Tokenizer</h4><ul>
+<li>把整个结构装入一个根立方体；如果某个立方体内部”非空”，就一分为 8 递归细分，深度至 L 层；</li>
+<li><strong>空分支直接剪枝</strong>，所以序列只编码”有几何信息”的部分；</li>
+<li>每个 token 同时携带<strong>层级 ℓ</strong>、<strong>体素中心坐标</strong>等位置元数据，下层位置可由上一层已生成的占据状态推断。</li>
+</ul>
+<p>代码侧入口：<code>uni3dar/data/grid_dataset.py</code> 的 <code>GridDataset</code> 把单个样本转成 octree token；任务级开关：</p>
+<table>
+<thead>
+<tr>
+<th>CLI 参数</th>
+<th>含义</th>
+<th>典型值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--grid-len</code></td>
+<td>最细级体素的物理边长（Å 或一般长度单位）</td>
+<td>QM9: <code>0.24</code>，蛋白 binding: <code>0.48</code></td>
+</tr>
+<tr>
+<td><code>--xyz-resolution</code></td>
+<td>叶级原子坐标量化精度</td>
+<td><code>0.01</code></td>
+</tr>
+<tr>
+<td><code>--merge-level</code></td>
+<td>子树合并&#x2F;压缩深度（影响序列长度与模型大小）</td>
+<td>QM9: <code>6</code>，MP20-PXRD: <code>8</code>，binding: <code>10</code></td>
+</tr>
+<tr>
+<td><code>--recycle</code></td>
+<td>序列循环展开次数</td>
+<td>QM9: <code>1</code>，MP20: <code>2</code></td>
+</tr>
+</tbody></table>
+<h4 id="②-两级子树压缩（Two-Level-Subtree-Compression）"><a href="#②-两级子树压缩（Two-Level-Subtree-Compression）" class="headerlink" title="② 两级子树压缩（Two-Level Subtree Compression）"></a>② 两级子树压缩（Two-Level Subtree Compression）</h4><p><strong>这是 Uni-3DAR 的关键工程创新之一。</strong></p>
+<ul>
+<li>原始 octree 每细分一次需要 8 个二元 token（每个子格”空&#x2F;非空”）。</li>
+<li>Uni-3DAR 把这 8 个二元位<strong>合并为一个 8-bit 整数</strong>，即一次预测 2⁸ &#x3D; 256 类。</li>
+<li>序列长度因此<strong>降为原来的约 1&#x2F;8</strong>；位置仍然由父节点中心 + 层级隐式给出。</li>
+</ul>
+<p>直觉地：原本”读 8 个 0&#x2F;1 才知道一格内部哪几块非空”，现在<strong>一个 256 类 token 一次性给出</strong>。这与 BPE&#x2F;字节合并的思想异曲同工。</p>
+<h4 id="③-叶级-3D-Patch-细粒度-token"><a href="#③-叶级-3D-Patch-细粒度-token" class="headerlink" title="③ 叶级 3D Patch 细粒度 token"></a>③ 叶级 3D Patch 细粒度 token</h4><ul>
+<li>微观体系（分子&#x2F;晶体&#x2F;蛋白）：每个非空叶视为一个含若干原子的 patch，进一步用 <code>(atom_type, Δxyz, …)</code> 描述。论文中常将 patch 设到<strong>单原子粒度</strong>，从而把”原子类型 + 精确局部坐标”作为分支目标；</li>
+<li>宏观体系（3D 形状）：可用 VQ-VAE 把 patch 几何离散化为补丁 code（论文附录 B）。</li>
+</ul>
+<p>训练损失因此是<strong>多路加权交叉熵</strong>，对应仓库里 <code>uni3dar/losses/ar_loss.py</code>：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stata">loss = λ_tree  · CE(树占据 256 类)<br>     + λ_atom  · CE(原子类型)<br>     + λ_xyz   · CE(坐标量化 <span class="hljs-keyword">token</span>)<br>     + λ_count · CE(原子计数, 仅晶体)<br>     + ...<br># <span class="hljs-keyword">CLI</span> 中对应 --loss-<span class="hljs-keyword">ratio</span>-tree / --loss-<span class="hljs-keyword">ratio</span>-atom / --loss-<span class="hljs-keyword">ratio</span>-xyz / --loss-<span class="hljs-keyword">ratio</span>-<span class="hljs-keyword">count</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="④-Masked-Next-Token-Prediction（MNTP）"><a href="#④-Masked-Next-Token-Prediction（MNTP）" class="headerlink" title="④ Masked Next-Token Prediction（MNTP）"></a>④ Masked Next-Token Prediction（MNTP）</h4><p><strong>问题</strong>：八叉树剪枝后，”下一个非空 token”的物理位置<strong>不均匀</strong>——既不是文本中的 +1 字符，也不是稠密体素中的下一个格。如果把”下一位置”硬塞进当前 token，论文实验显示会引入显著噪声。</p>
+<p><strong>Uni-3DAR 的做法</strong>（直观地）：</p>
+<ol>
+<li>把每个 token 在序列里<strong>复制成两份</strong>：<ul>
+<li>第一份：<strong>内容置为 <code>[MASK]</code></strong>，但<strong>位置嵌入是真实的下一格位置</strong>；</li>
+<li>第二份：<strong>位置同上</strong>、<strong>内容是真实 token</strong>。</li>
+</ul>
+</li>
+<li>因果注意力照常前向；模型在 <code>[MASK]</code> 位置上学<strong>预测紧随其后的真实内容</strong>。</li>
+</ol>
+<p>效果：</p>
+<ul>
+<li>等价于把”动态位置上的 next-token 预测”，转化为”已知位置上的 masked content 填空”；</li>
+<li><strong>不引入双向注意力</strong>，仍是一条因果链，可流式采样；</li>
+<li>代价是序列<strong>约翻倍</strong>，但通过实现优化，推理延迟仅相对标准 next-token +15%~30%，精度收益显著。</li>
+</ul>
+<hr>
+<h2 id="4-关键技术细节"><a href="#4-关键技术细节" class="headerlink" title="4. 关键技术细节"></a>4. 关键技术细节</h2><table>
+<thead>
+<tr>
+<th>技术</th>
+<th>工程对应 (CLI &#x2F; 文件)</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>八叉树编码</strong></td>
+<td><code>--grid-len</code> &#x2F; <code>GridDataset</code></td>
+<td>高效表示稀疏 3D 结构</td>
+</tr>
+<tr>
+<td><strong>两级子树压缩</strong></td>
+<td><code>--merge-level</code> &#x2F; 256 类树头</td>
+<td>序列长度最高降低 <strong>8×</strong></td>
+</tr>
+<tr>
+<td><strong>MNTP</strong></td>
+<td><code>uni3dar/models/uni3dar.py</code> 中的 <code>DecoderInputFeat</code> &#x2F; <code>DecoderGenTargetFeat</code></td>
+<td>解决动态位置的下一 token 预测</td>
+</tr>
+<tr>
+<td><strong>多任务多头</strong></td>
+<td><code>--loss ar</code> + 多个 <code>--loss-ratio-*</code></td>
+<td>单一模型联合优化树&#x2F;原子&#x2F;坐标&#x2F;计数</td>
+</tr>
+<tr>
+<td><strong>几何增广</strong></td>
+<td><code>--tree-delete-ratio</code>、<code>--random-rotation-prob</code>、<code>--crystal-random-shift-prob</code></td>
+<td>抗过拟合，提高 OOD 稳健性</td>
+</tr>
+<tr>
+<td><strong>EMA + bf16</strong></td>
+<td><code>--ema-decay 0.999 --validate-with-ema --bf16</code></td>
+<td>训练稳定性 + 显存友好</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-输入与输出：每个任务的-I-O-规格"><a href="#5-输入与输出：每个任务的-I-O-规格" class="headerlink" title="5. 输入与输出：每个任务的 I&#x2F;O 规格"></a>5. 输入与输出：每个任务的 I&#x2F;O 规格</h2><p>Uni-3DAR 训练阶段统一吃 LMDB 数据库，推理阶段按任务输出标准结构文件。</p>
+<h3 id="5-1-训练输入：LMDB"><a href="#5-1-训练输入：LMDB" class="headerlink" title="5.1 训练输入：LMDB"></a>5.1 训练输入：LMDB</h3><ul>
+<li>路径形如 <code>data_path/train.lmdb</code>、<code>data_path/valid.lmdb</code>，可叠加 <code>.gz</code>；</li>
+<li>每条记录是一个 Python 字典，常见字段：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python">&#123;<br>  <span class="hljs-string">&quot;atom_type&quot;</span>:      [<span class="hljs-built_in">int</span>, ...],         <span class="hljs-comment"># 原子序数 / 元素索引</span><br>  <span class="hljs-string">&quot;atom_pos&quot;</span>:       [[x, y, z], ...],   <span class="hljs-comment"># 笛卡尔坐标，单位 Å</span><br>  <span class="hljs-string">&quot;lattice_matrix&quot;</span>: [[ax,ay,az], ...],  <span class="hljs-comment"># 仅晶体；3×3 晶格矩阵</span><br>  <span class="hljs-string">&quot;pxrd&quot;</span>:           [intensity, ...],   <span class="hljs-comment"># 仅 PXRD-CSP；衍射谱向量</span><br>  <span class="hljs-string">&quot;target&quot;</span>:         [<span class="hljs-built_in">float</span>, ...],       <span class="hljs-comment"># 仅性质回归；多目标向量</span><br>  <span class="hljs-string">&quot;pocket_label&quot;</span>:   [<span class="hljs-number">0</span>/<span class="hljs-number">1</span>, ...],         <span class="hljs-comment"># 仅蛋白 binding；每原子标签</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过 <code>--atom-type-key</code>、<code>--atom-pos-key</code>、<code>--lattice-matrix-key</code>、<code>--mol-target-key</code>、<code>--atom-target-key</code> 指定字段名，因此<strong>自定义数据集只需把字段映射到这套 key 即可</strong>。</p>
+<h3 id="5-2-推理输出"><a href="#5-2-推理输出" class="headerlink" title="5.2 推理输出"></a>5.2 推理输出</h3><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>输出文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QM9 &#x2F; DRUG 分子生成</td>
+<td><code>*.xyz</code></td>
+<td>多分子拼接：每段先一行原子数 <code>N</code>，一行注释，后接 N 行 <code>element x y z</code></td>
+</tr>
+<tr>
+<td>MP20 晶体生成 &#x2F; CSP &#x2F; PXRD-CSP</td>
+<td><code>*.cif</code></td>
+<td>多晶体拼接；每段以 <code>data_&lt;id&gt;</code> 起头，含晶格、原子分数坐标</td>
+</tr>
+<tr>
+<td>评估指标</td>
+<td><code>*.xyz.json</code> &#x2F; <code>*.cif.json</code></td>
+<td>由 <code>evaluation_scripts/&#123;qm9,crystal&#125;/</code> 下的脚本生成</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>⚠️ 推理脚本会<strong>自动调用</strong>对应评测：</p>
+<ul>
+<li>QM9: <code>evaluation_scripts/qm9/molecule_metrics.py</code>（有效性、稳定性、唯一性等）；</li>
+<li>晶体: <code>evaluation_scripts/crystal/crystal_metrics.py</code>（match rate、RMSE、validity 等）。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="6-支持的任务与数据类型"><a href="#6-支持的任务与数据类型" class="headerlink" title="6. 支持的任务与数据类型"></a>6. 支持的任务与数据类型</h2><h3 id="6-1-支持的-3D-数据类型"><a href="#6-1-支持的-3D-数据类型" class="headerlink" title="6.1 支持的 3D 数据类型"></a>6.1 支持的 3D 数据类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>尺度</th>
+<th>数据集示例</th>
+<th><code>--data-type</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🧪 <strong>小分子</strong></td>
+<td>Å</td>
+<td>QM9, GEOM-DRUG</td>
+<td><code>molecule</code></td>
+</tr>
+<tr>
+<td>🧬 <strong>蛋白质</strong></td>
+<td>nm</td>
+<td>蛋白结合位点（binding）</td>
+<td><code>protein</code></td>
+</tr>
+<tr>
+<td>🔗 <strong>聚合物</strong></td>
+<td>nm-µm</td>
+<td>聚合物结构建模</td>
+<td><code>molecule</code> (扩展)</td>
+</tr>
+<tr>
+<td>💎 <strong>晶体</strong></td>
+<td>nm</td>
+<td>MP20</td>
+<td><code>crystal</code></td>
+</tr>
+<tr>
+<td>🏗️ <strong>宏观 3D 物体</strong></td>
+<td>m</td>
+<td>论文附录</td>
+<td><code>mesh/voxel</code> (扩展)</td>
+</tr>
+</tbody></table>
+<h3 id="6-2-支持的任务"><a href="#6-2-支持的任务" class="headerlink" title="6.2 支持的任务"></a>6.2 支持的任务</h3><table>
+<thead>
+<tr>
+<th>任务类别</th>
+<th>具体任务</th>
+<th>仓库内对应脚本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🎨 <strong>生成</strong></td>
+<td>de-novo 分子生成</td>
+<td><code>scripts/inference_qm9.sh</code>, <code>inference_drug.sh</code></td>
+</tr>
+<tr>
+<td>🎨 <strong>生成</strong></td>
+<td>de-novo 晶体生成</td>
+<td><code>scripts/inference_mp20.sh</code></td>
+</tr>
+<tr>
+<td>🔬 <strong>结构预测</strong></td>
+<td>晶体结构预测 (CSP)</td>
+<td><code>scripts/inference_mp20_csp.sh</code></td>
+</tr>
+<tr>
+<td>🔬 <strong>结构预测</strong></td>
+<td>PXRD 引导 CSP</td>
+<td><code>scripts/inference_mp20_pxrd.sh</code></td>
+</tr>
+<tr>
+<td>📊 <strong>性质预测</strong></td>
+<td>HOMO&#x2F;LUMO&#x2F;GAP, E1-CC2…, 偶极矩, aIP, D3 disp</td>
+<td><code>scripts/train_rep_downstream.sh</code></td>
+</tr>
+<tr>
+<td>🧩 <strong>结合预测</strong></td>
+<td>蛋白口袋 binding</td>
+<td><code>scripts/train_rep_downstream.sh task=binding</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-性能表现"><a href="#7-性能表现" class="headerlink" title="7. 性能表现"></a>7. 性能表现</h2><h3 id="7-1-与扩散模型的对比"><a href="#7-1-与扩散模型的对比" class="headerlink" title="7.1 与扩散模型的对比"></a>7.1 与扩散模型的对比</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>相对 SOTA 扩散基线</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>生成质量</strong></td>
+<td>多个数据集上最高 <strong>+256%</strong> 相对提升</td>
+</tr>
+<tr>
+<td><strong>推理速度</strong></td>
+<td>最高 <strong>21.8×</strong> 加速</td>
+</tr>
+<tr>
+<td><strong>序列长度</strong></td>
+<td>数百 token vs. 数万 token（稠密体素）</td>
+</tr>
+</tbody></table>
+<h3 id="7-2-主要优势总结"><a href="#7-2-主要优势总结" class="headerlink" title="7.2 主要优势总结"></a>7.2 主要优势总结</h3><ol>
+<li><strong>统一性</strong>：单一架构覆盖分子&#x2F;蛋白&#x2F;晶体&#x2F;宏观物体；</li>
+<li><strong>高效率</strong>：因果一遍前向 + 短序列，推理远快于扩散模型；</li>
+<li><strong>高精度</strong>：细粒度 patch token 保留原子坐标级细节；</li>
+<li><strong>可扩展性</strong>：从 Å 级分子到 m 级形状的同一框架。</li>
+</ol>
+<hr>
+<h2 id="8-代码与复现指南（含可运行示例）"><a href="#8-代码与复现指南（含可运行示例）" class="headerlink" title="8. 代码与复现指南（含可运行示例）"></a>8. 代码与复现指南（含可运行示例）</h2><h3 id="8-1-代码与权重"><a href="#8-1-代码与权重" class="headerlink" title="8.1 代码与权重"></a>8.1 代码与权重</h3><ul>
+<li><strong>GitHub</strong>：<a target="_blank" rel="noopener" href="https://github.com/dptech-corp/Uni-3DAR">dptech-corp&#x2F;Uni-3DAR</a>（本地：<code>Uni-3DAR-study/code/Uni-3DAR/</code>）</li>
+<li><strong>预训练权重 + 数据</strong>：<a target="_blank" rel="noopener" href="https://huggingface.co/dptech/Uni-3DAR/tree/main">huggingface.co&#x2F;dptech&#x2F;Uni-3DAR</a></li>
+<li><strong>官方主页</strong>：<a target="_blank" rel="noopener" href="https://uni-3dar.github.io/">uni-3dar.github.io</a></li>
+</ul>
+<h3 id="8-2-环境"><a href="#8-2-环境" class="headerlink" title="8.2 环境"></a>8.2 环境</h3><p>推荐直接用官方镜像（含 <a target="_blank" rel="noopener" href="https://github.com/dptech-corp/Uni-Core">Uni-Core</a> 训练栈）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull dptechnology/unicore:2407-pytorch2.4.0-cuda12.5-rdma<br></code></pre></td></tr></table></figure>
+
+<p>进入容器后，确认：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">which</span> unicore-train     <span class="hljs-comment"># 应输出 /opt/conda/bin/unicore-train 类路径</span><br>nvidia-smi<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>大陆网络下载 HF 权重可设：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> HF_ENDPOINT=https://hf-mirror.com<br></code></pre></td></tr></table></figure>
+
+<p>然后参考 <code>Uni-3DAR-study/scripts/download_hf_all.sh</code>。</p>
+</blockquote>
+<h3 id="8-3-已发布权重一览"><a href="#8-3-已发布权重一览" class="headerlink" title="8.3 已发布权重一览"></a>8.3 已发布权重一览</h3><table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>类型</th>
+<th>权重文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QM9</td>
+<td>小分子生成</td>
+<td><code>qm9.pt</code></td>
+<td>4×16&#x3D;64 batch, 12 层, 768 维, <code>merge_level=6</code></td>
+</tr>
+<tr>
+<td>GEOM-DRUG</td>
+<td>类药分子生成</td>
+<td><code>drug.pt</code></td>
+<td>8×16&#x3D;128 batch</td>
+</tr>
+<tr>
+<td>MP20</td>
+<td>晶体 de-novo</td>
+<td><code>mp20.pt</code></td>
+<td><code>data-type=crystal</code></td>
+</tr>
+<tr>
+<td>MP20 CSP</td>
+<td>晶体结构预测</td>
+<td><code>mp20_csp.pt</code></td>
+<td>给定组分预测结构</td>
+</tr>
+<tr>
+<td>MP20 PXRD-CSP</td>
+<td>PXRD 引导 CSP</td>
+<td><code>mp20_pxrd.pt</code></td>
+<td>24 层 &#x2F; 1024 维, 大模型</td>
+</tr>
+<tr>
+<td>分子下游预训练</td>
+<td>性质回归 backbone</td>
+<td><code>mol_pretrain_weight.pt</code></td>
+<td>finetune 入口</td>
+</tr>
+<tr>
+<td>蛋白下游预训练</td>
+<td>binding backbone</td>
+<td><code>protein_pretrain_weight.pt</code></td>
+<td>finetune 入口</td>
+</tr>
+</tbody></table>
+<h3 id="8-4-推理示例（一行命令出结构）"><a href="#8-4-推理示例（一行命令出结构）" class="headerlink" title="8.4 推理示例（一行命令出结构）"></a>8.4 推理示例（一行命令出结构）</h3><blockquote>
+<p>以下命令的工作目录均假定为 <code>Uni-3DAR-study/code/Uni-3DAR/</code>。</p>
+</blockquote>
+<h4 id="a-QM9-分子生成"><a href="#a-QM9-分子生成" class="headerlink" title="(a) QM9 分子生成"></a>(a) QM9 分子生成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 输入: qm9.pt 预训练权重（无需任何输入数据，纯采样）</span><br><span class="hljs-comment"># 输出: ./qm9.pt_res_s1_tt0.9_at0.3_xt0.3_ct1.0_ns10000_rr0.1_rbatom.xyz</span><br><span class="hljs-comment">#       同名 .json 评测结果</span><br>bash scripts/inference_qm9.sh /path/to/qm9.pt<br></code></pre></td></tr></table></figure>
+
+<p>可调环境变量（直接 <code>KEY=VAL bash ...</code>）：</p>
+<ul>
+<li><code>num_samples=10000</code>：生成分子数；</li>
+<li><code>tree_temperature=0.9 / atom_temperature=0.3 / xyz_temperature=0.3</code>：分别控制几何骨架&#x2F;元素类型&#x2F;坐标的随机性，越大越多样；</li>
+<li><code>rank_by=&quot;atom&quot;</code>、<code>rank_ratio=0.1</code>：按原子数对生成结果排序并保留前 10%。</li>
+</ul>
+<h4 id="b-MP20-晶体-de-novo-生成"><a href="#b-MP20-晶体-de-novo-生成" class="headerlink" title="(b) MP20 晶体 de-novo 生成"></a>(b) MP20 晶体 de-novo 生成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 输入: mp20.pt + ./mp20_data/test.csv（提供组分模板，可替换）</span><br><span class="hljs-comment"># 输出: *.cif（多晶体）+ *.cif.json（match rate 等）</span><br>bash scripts/inference_mp20.sh /path/to/mp20.pt ./mp20_data/test.csv<br></code></pre></td></tr></table></figure>
+
+<h4 id="c-MP20-晶体结构预测-CSP"><a href="#c-MP20-晶体结构预测-CSP" class="headerlink" title="(c) MP20 晶体结构预测 (CSP)"></a>(c) MP20 晶体结构预测 (CSP)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 输入: 已知化学组分 → 预测原子摆放与晶格</span><br>data_path=./mp20_data/ \<br>  bash scripts/inference_mp20_csp.sh /path/to/mp20_csp.pt<br></code></pre></td></tr></table></figure>
+
+<h4 id="d-PXRD-引导的晶体结构预测"><a href="#d-PXRD-引导的晶体结构预测" class="headerlink" title="(d) PXRD 引导的晶体结构预测"></a>(d) PXRD 引导的晶体结构预测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 输入: PXRD 谱 + 化学组分 → 预测晶体结构</span><br>data_path=./mp20_data/ \<br>  bash scripts/inference_mp20_pxrd.sh /path/to/mp20_pxrd.pt<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-5-训练示例（从零或继续训练）"><a href="#8-5-训练示例（从零或继续训练）" class="headerlink" title="8.5 训练示例（从零或继续训练）"></a>8.5 训练示例（从零或继续训练）</h3><h4 id="a-QM9-训练"><a href="#a-QM9-训练" class="headerlink" title="(a) QM9 训练"></a>(a) QM9 训练</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 假定数据已解压到 ./qm9_data，输出落在 ./results/my_qm9_exp</span><br>base_dir=./results batch_size=16 \<br>  bash scripts/train_qm9.sh ./qm9_data/ my_qm9_exp<br></code></pre></td></tr></table></figure>
+
+<p>脚本默认 4 卡，每卡 batch 16 → 总 batch 64；通过环境变量 <code>n_gpu=1 batch_size=8</code> 等可单卡跑通。日志在 <code>results/my_qm9_exp/log_0.txt</code>，checkpoint 在 <code>results/my_qm9_exp/ckpt/</code>。</p>
+<h4 id="b-MP20-三种晶体任务训练"><a href="#b-MP20-三种晶体任务训练" class="headerlink" title="(b) MP20 三种晶体任务训练"></a>(b) MP20 三种晶体任务训练</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># de-novo 生成</span><br>base_dir=./results batch_size=16 \<br>  bash scripts/train_mp20.sh ./mp20_data/ mp20_gen_exp<br><br><span class="hljs-comment"># CSP</span><br>base_dir=./results batch_size=8 \<br>  bash scripts/train_mp20_csp.sh ./mp20_data/ mp20_csp_exp<br><br><span class="hljs-comment"># PXRD-CSP（更大模型: 24 层 / 1024 维）</span><br>base_dir=./results batch_size=8 \<br>  bash scripts/train_mp20_pxrd.sh ./mp20_data/ mp20_pxrd_exp<br></code></pre></td></tr></table></figure>
+
+<h4 id="c-性质回归微调（以-HOMO-为例）"><a href="#c-性质回归微调（以-HOMO-为例）" class="headerlink" title="(c) 性质回归微调（以 HOMO 为例）"></a>(c) 性质回归微调（以 HOMO 为例）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">task=homo   <span class="hljs-comment"># 也可 lumo / gap / E1_CC2 / Dipmom_Debye / aIP_eV / D3_disp_corr_eV</span><br>bash scripts/train_rep_downstream.sh \<br>    ./mol_downstream/scaffold_ood_qm9 \<br>    ./results/finetune \<br>    <span class="hljs-variable">$task</span> \<br>    /path/to/mol_pretrain_weight.pt \<br>    <span class="hljs-string">&quot;5e-5 1e-4&quot;</span>     <span class="hljs-comment"># lr 网格</span><br>    <span class="hljs-string">&quot;32 64&quot;</span>         <span class="hljs-comment"># batch_size 网格</span><br>    <span class="hljs-string">&quot;200&quot;</span>           <span class="hljs-comment"># epoch</span><br>    <span class="hljs-string">&quot;0.0&quot;</span>           <span class="hljs-comment"># pooler_dropout</span><br>    <span class="hljs-string">&quot;0.06&quot;</span>          <span class="hljs-comment"># warmup ratio</span><br>    <span class="hljs-string">&quot;0 1 2&quot;</span>         <span class="hljs-comment"># 三个随机种子</span><br></code></pre></td></tr></table></figure>
+
+<p>脚本内部会<strong>自动遍历</strong>这五个超参网格 ×3 个 seed，并把结果记在 <code>./results/finetune/&lt;task&gt;_lr*_bsz*_epoch*_dropout*_warmup*_seed*/log.txt</code>，方便做小型 grid search。</p>
+<h4 id="d-蛋白结合位点预测微调"><a href="#d-蛋白结合位点预测微调" class="headerlink" title="(d) 蛋白结合位点预测微调"></a>(d) 蛋白结合位点预测微调</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">task=binding<br>bash scripts/train_rep_downstream.sh \<br>    ./protein_downstream/binding \<br>    ./results/finetune \<br>    <span class="hljs-variable">$task</span> \<br>    /path/to/protein_pretrain_weight.pt \<br>    <span class="hljs-string">&quot;5e-5 1e-4&quot;</span> <span class="hljs-string">&quot;32 64&quot;</span> <span class="hljs-string">&quot;100&quot;</span> <span class="hljs-string">&quot;0.1&quot;</span> <span class="hljs-string">&quot;0.06&quot;</span> <span class="hljs-string">&quot;0&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-6-采样温度的工程含义（一图看懂）"><a href="#8-6-采样温度的工程含义（一图看懂）" class="headerlink" title="8.6 采样温度的工程含义（一图看懂）"></a>8.6 采样温度的工程含义（一图看懂）</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>影响的 token 类别</th>
+<th>调大 →</th>
+<th>调小 →</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tree_temperature</code></td>
+<td>树占据 256 类</td>
+<td>拓扑更多样</td>
+<td>容易塌缩到训练分布</td>
+</tr>
+<tr>
+<td><code>atom_temperature</code></td>
+<td>元素类型</td>
+<td>元素更杂</td>
+<td>偏好高频元素</td>
+</tr>
+<tr>
+<td><code>xyz_temperature</code></td>
+<td>坐标量化 token</td>
+<td>局部位置更随机</td>
+<td>局部更”干净”但易卡模</td>
+</tr>
+<tr>
+<td><code>count_temperature</code></td>
+<td>原子计数（晶体特有）</td>
+<td>体系大小更分散</td>
+<td>趋于高频晶胞规模</td>
+</tr>
+<tr>
+<td><code>rank_by</code> &#x2F; <code>rank_ratio</code></td>
+<td>后处理筛选</td>
+<td>—</td>
+<td>取前 N% 结构作为最终结果</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-数据管线源码走读"><a href="#9-数据管线源码走读" class="headerlink" title="9. 数据管线源码走读"></a>9. 数据管线源码走读</h2><p>下面这段示意来自仓库 <code>uni3dar/tasks/uni3dar.py</code> 与 <code>uni3dar/data/</code>，便于理解一条记录是如何被切成 token 的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 概念示意（简化自 uni3dar/tasks/uni3dar.py）</span><br><span class="hljs-keyword">from</span> uni3dar.data <span class="hljs-keyword">import</span> (<br>    LMDBDataset,<br>    DataTypeDataset,<br>    ConformationSampleDataset,<br>    GridDataset,<br>    NestedDictionaryDataset,<br>)<br><br>raw   = LMDBDataset(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;data_path&#125;</span>/train.lmdb&quot;</span>, gzip=<span class="hljs-literal">True</span>)<br>typed = DataTypeDataset(raw, data_type=<span class="hljs-string">&quot;crystal&quot;</span>)        <span class="hljs-comment"># molecule/protein/crystal</span><br>conf  = ConformationSampleDataset(typed, seed=<span class="hljs-number">1</span>)         <span class="hljs-comment"># 多构象时随机采一帧</span><br>grid  = GridDataset(                                     <span class="hljs-comment"># 八叉树 + 子树压缩</span><br>    conf,<br>    grid_len=<span class="hljs-number">0.24</span>,<br>    merge_level=<span class="hljs-number">8</span>,<br>    xyz_resolution=<span class="hljs-number">0.01</span>,<br>    atom_type_key=<span class="hljs-string">&quot;atom_type&quot;</span>,<br>    atom_pos_key=<span class="hljs-string">&quot;atom_pos&quot;</span>,<br>    lattice_matrix_key=<span class="hljs-string">&quot;lattice_matrix&quot;</span>,<br>)<br>batch = NestedDictionaryDataset(grid)                    <span class="hljs-comment"># → 喂给 unicore-train</span><br><br><span class="hljs-comment"># 每条 batch 里关键字段：</span><br><span class="hljs-comment">#   tree_tokens    : (B, L_tree)        # octree+子树压缩后的 256 类标签</span><br><span class="hljs-comment">#   atom_tokens    : (B, L_atom)        # 元素 id</span><br><span class="hljs-comment">#   xyz_tokens     : (B, L_atom, 3)     # 量化后的局部坐标</span><br><span class="hljs-comment">#   pos_emb_meta   : (B, L_total, ...)  # MNTP 用的层级/中心坐标</span><br><span class="hljs-comment">#   target_*       : 训练时多路 CE 的标签</span><br></code></pre></td></tr></table></figure>
+
+<p>模型侧 (<code>uni3dar/models/uni3dar.py</code>) 把上述多路输入拼接成因果 1D 序列，喂给 <code>transformer_encoder.py</code> 中的因果 Transformer，输出多个 head：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gauss">hidden = <span class="hljs-built_in">CausalTransformer</span>( <span class="hljs-built_in">concat</span>(tree, atom, <span class="hljs-built_in">xyz</span>, [MASK twins], <span class="hljs-built_in">cond</span>) )<br>└── <span class="hljs-built_in">head_tree</span> (<span class="hljs-number">256</span> 类)            ──→ 下一格占据<br>└── <span class="hljs-built_in">head_atom</span> (|elements| 类)     ──→ 元素<br>└── <span class="hljs-built_in">head_xyz</span>  (R 类 × <span class="hljs-number">3</span>)          ──→ 坐标量化 bin<br>└── <span class="hljs-built_in">head_count</span> (晶体)             ──→ 原子总数<br>└── <span class="hljs-built_in">head_global</span> ([EoS] 上)        ──→ 性质回归 / 分类<br>└── <span class="hljs-built_in">head_local</span>  (叶 <span class="hljs-built_in">token</span> 上)     ──→ 每原子标签（如 binding）<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="10-与晶体性质预测研究方向的相关性"><a href="#10-与晶体性质预测研究方向的相关性" class="headerlink" title="10. 与晶体性质预测研究方向的相关性"></a>10. 与晶体性质预测研究方向的相关性</h2><blockquote>
+<p>王逸轩同学的方向：<strong>用于高通量筛选的晶体性质预测并推理站点贡献</strong>。</p>
+</blockquote>
+<h3 id="10-1-直接关联点"><a href="#10-1-直接关联点" class="headerlink" title="10.1 直接关联点"></a>10.1 直接关联点</h3><table>
+<thead>
+<tr>
+<th>你的需求</th>
+<th>Uni-3DAR 的对应支持</th>
+<th>落地路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🔬 晶体结构生成</td>
+<td><code>--data-type crystal</code> + MP20 de-novo 流程</td>
+<td><code>train_mp20.sh</code> &#x2F; <code>inference_mp20.sh</code></td>
+</tr>
+<tr>
+<td>📊 晶体性质预测</td>
+<td>分子性质 finetune 框架可平移到晶体</td>
+<td>复用 <code>train_rep_downstream.sh</code> 的 <code>--mol-target-*</code> 改为 <code>--atom-target-*</code> 形式</td>
+</tr>
+<tr>
+<td>💎 给定组分预测结构 (CSP)</td>
+<td>专门的 CSP 通道</td>
+<td><code>train_mp20_csp.sh</code> &#x2F; <code>inference_mp20_csp.sh</code></td>
+</tr>
+<tr>
+<td>🔄 高通量筛选</td>
+<td>推理 ~21.8× 快于扩散</td>
+<td>一次 <code>inference_mp20.sh</code> 产 10k+ 候选</td>
+</tr>
+<tr>
+<td>🎯 推理站点贡献</td>
+<td>叶级 token 上有局部 head（如 binding 通道演示）</td>
+<td>仿照 <code>task=binding</code> 在晶体上加 site-level head</td>
+</tr>
+<tr>
+<td>🧪 PXRD 引导反演</td>
+<td>已开放完整 PXRD-CSP 流程</td>
+<td><code>train_mp20_pxrd.sh</code> &#x2F; <code>inference_mp20_pxrd.sh</code></td>
+</tr>
+</tbody></table>
+<h3 id="10-2-对你的潜在工作流建议"><a href="#10-2-对你的潜在工作流建议" class="headerlink" title="10.2 对你的潜在工作流建议"></a>10.2 对你的潜在工作流建议</h3><ol>
+<li><strong>预训练表征复用</strong>：先用 <code>mol_pretrain_weight.pt</code> 风格的方式在 MP20 &#x2F; Alex &#x2F; OQMD 上预训练一个晶体 backbone，再 finetune 到具体性质（formation energy、bandgap 等）；</li>
+<li><strong>高通量虚拟筛选</strong>：<code>inference_mp20.sh num_samples=100000</code> 一次出 10 万候选 → 性质模型打分 → 取 top-K；</li>
+<li><strong>逆向设计</strong>：把目标性质做条件向量（与 PXRD 同样的 cond 注入方式），用条件自回归直接采样满足约束的晶体；</li>
+<li><strong>站点贡献</strong>：复用 <code>binding</code> 头部在晶体叶级 token 上的设计，做”每原子贡献”回归，结合 attention&#x2F;IG 即可输出位点级解释。</li>
+</ol>
+<hr>
+<h2 id="11-常见问题（FAQ）"><a href="#11-常见问题（FAQ）" class="headerlink" title="11. 常见问题（FAQ）"></a>11. 常见问题（FAQ）</h2><ol>
+<li><strong><code>unicore-train</code> 找不到</strong> — 没装 <a target="_blank" rel="noopener" href="https://github.com/dptech-corp/Uni-Core">Uni-Core</a> 或没进 Docker。<code>which unicore-train</code> 应有输出。</li>
+<li><strong>显存不足</strong> — 调小 <code>batch_size</code>、<code>emb_dim</code>、<code>layer</code>；如要继续加载预训练权重，宽度&#x2F;深度需匹配 checkpoint。</li>
+<li><strong>数据路径报错</strong> — 确认 <code>train.lmdb</code>&#x2F;<code>valid.lmdb</code> 在 <code>data_path</code> 下，且与 <code>--gzip</code> 一致。</li>
+<li><strong>HF 下载慢</strong> — <code>export HF_ENDPOINT=https://hf-mirror.com</code> 后再用 <code>Uni-3DAR-study/scripts/download_hf_all.sh</code>。</li>
+<li><strong>采样产物全是噪声</strong> — 先确认 <code>--grid-len</code>、<code>--merge-level</code>、<code>--xyz-resolution</code> 与训练时一致；推理脚本里的这三个值一旦改动，必须重训对应权重。</li>
+<li><strong>想做新数据集</strong> — 把样本写成 <code>&#123;atom_type, atom_pos[, lattice_matrix][, target]&#125;</code> 的 LMDB，复用 <code>train_qm9.sh</code> 或 <code>train_mp20.sh</code> 修改 <code>--data-type</code> 与若干 <code>*-key</code> 即可。</li>
+</ol>
+<hr>
+<h2 id="12-引用"><a href="#12-引用" class="headerlink" title="12. 引用"></a>12. 引用</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;lu2025uni3dar,<br>  author  = &#123;<span class="hljs-keyword">Shuqi </span>Lu <span class="hljs-keyword">and </span>Haowei Lin <span class="hljs-keyword">and </span>Lin Yao <span class="hljs-keyword">and </span>Zhifeng Gao <span class="hljs-keyword">and</span><br><span class="hljs-keyword"></span>             Xiaohong <span class="hljs-keyword">Ji </span><span class="hljs-keyword">and </span>Yitao Liang <span class="hljs-keyword">and </span>Weinan E <span class="hljs-keyword">and</span><br><span class="hljs-keyword"></span>             Linfeng Zhang <span class="hljs-keyword">and </span>Guolin Ke&#125;,<br>  title   = &#123;Uni<span class="hljs-number">-3</span>DAR: Unified <span class="hljs-number">3</span>D Generation <span class="hljs-keyword">and </span>Understanding via<br>             Autoregression on Compressed Spatial Tokens&#125;,<br>  <span class="hljs-keyword">journal </span>= &#123;arXiv preprint arXiv:<span class="hljs-number">2503</span>.<span class="hljs-number">16278</span>&#125;,<br>  year    = &#123;<span class="hljs-number">2025</span>&#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📚-参考资料"><a href="#📚-参考资料" class="headerlink" title="📚 参考资料"></a>📚 参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.16278">arXiv 论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dptech-corp/Uni-3DAR">GitHub 仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/dptech/Uni-3DAR">Hugging Face 模型与数据</a></li>
+<li><a target="_blank" rel="noopener" href="https://uni-3dar.github.io/">项目主页</a></li>
+<li>本地参考资料：<ul>
+<li><code>Uni-3DAR-study/论文阅读报告_Uni-3DAR.md</code></li>
+<li><code>Uni-3DAR-study/使用说明_Uni-3DAR.md</code></li>
+<li><code>Uni-3DAR-study/code/Uni-3DAR/scripts/</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>📝 <em>本文整合 arXiv:2503.16278 v3、GitHub <code>code/Uni-3DAR/</code> 当前 main 分支脚本与本项目本地使用经验整理；CLI 默认值若上游更新，以仓库最新 <code>scripts/*.sh</code> 为准。</em></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">凝聚态物理与人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/DeepLearning/" class="print-no-link">#DeepLearning</a>
+      
+        <a href="/tags/%E7%A7%91%E7%A0%94/" class="print-no-link">#科研</a>
+      
+        <a href="/tags/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86/" class="print-no-link">#凝聚态物理</a>
+      
+        <a href="/tags/Uni-3DAR/" class="print-no-link">#Uni-3DAR</a>
+      
+        <a href="/tags/MP/" class="print-no-link">#MP</a>
+      
+        <a href="/tags/PXRD/" class="print-no-link">#PXRD</a>
+      
+        <a href="/tags/CSP/" class="print-no-link">#CSP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架</div>
+      <div>http://baikelwang.github.io/2026/06/14/Uni-3DAR：统一跨尺度3D生成与理解的自回归框架/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/14/AI%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%88%90%E9%95%BF%E6%89%8B%E5%86%8C/" title="AI 全栈工程师成长手册">
+                        <span class="hidden-mobile">AI 全栈工程师成长手册</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
