@@ -1,0 +1,1118 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一份给「人 + AI」共同协作的工程方法论。 它不教你怎么写 prompt，而是教你怎么把一个项目从 0 到 1 交付得更稳、更快、更可维护。     元数据     版本 v1.0   更新 2026-05-09   适用 中长期 &#x2F; 多人协作 &#x2F; 生产级项目的 AI 协作开发   不适用 一次性脚本、临时 POC、小 bug 修复    目录 一、适用边界 二、全局视图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 AI 高质量交付项目的工作方法">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="一份给「人 + AI」共同协作的工程方法论。 它不教你怎么写 prompt，而是教你怎么把一个项目从 0 到 1 交付得更稳、更快、更可维护。     元数据     版本 v1.0   更新 2026-05-09   适用 中长期 &#x2F; 多人协作 &#x2F; 生产级项目的 AI 协作开发   不适用 一次性脚本、临时 POC、小 bug 修复    目录 一、适用边界 二、全局视图">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-14T09:16:37.254Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工程思维">
+<meta property="article:tag" content="Cursor">
+<meta property="article:tag" content="项目管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>用 AI 高质量交付项目的工作方法 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="用 AI 高质量交付项目的工作方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 13:00" pubdate>
+          2026年6月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">用 AI 高质量交付项目的工作方法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>一份给「人 + AI」共同协作的工程方法论。</strong></p>
+<p>它不教你怎么写 prompt，而是教你<strong>怎么把一个项目从 0 到 1 交付得更稳、更快、更可维护</strong>。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>元数据</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>版本</strong></td>
+<td>v1.0</td>
+</tr>
+<tr>
+<td><strong>更新</strong></td>
+<td>2026-05-09</td>
+</tr>
+<tr>
+<td><strong>适用</strong></td>
+<td>中长期 &#x2F; 多人协作 &#x2F; 生产级项目的 AI 协作开发</td>
+</tr>
+<tr>
+<td><strong>不适用</strong></td>
+<td>一次性脚本、临时 POC、小 bug 修复</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E4%B8%80%E9%80%82%E7%94%A8%E8%BE%B9%E7%95%8C">一、适用边界</a></li>
+<li><a href="#%E4%BA%8C%E5%85%A8%E5%B1%80%E8%A7%86%E5%9B%BE">二、全局视图</a></li>
+<li><a href="#%E4%B8%89%E6%96%B9%E6%B3%95%E4%B8%8E%E5%8E%9F%E5%88%99">三、方法与原则</a><ul>
+<li><a href="#0-%E8%B4%AF%E7%A9%BF%E6%80%A7%E5%8E%9F%E5%88%99">0. 贯穿性原则</a></li>
+<li><a href="#step-1--%E9%9C%80%E6%B1%82%E6%BE%84%E6%B8%85%E4%BA%BA%E4%B8%BB%E5%AF%BC">Step 1 · 需求澄清</a></li>
+<li><a href="#step-2--%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1ai-%E8%B5%B7%E8%8D%89%E4%BA%BA%E5%AE%9A%E7%A8%BF">Step 2 · 方案设计</a></li>
+<li><a href="#step-3--%E9%A1%B9%E7%9B%AE%E9%AA%A8%E6%9E%B6--%E5%A5%91%E7%BA%A6%E5%85%88%E8%A1%8C">Step 3 · 项目骨架 + 契约先行</a></li>
+<li><a href="#step-4--%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8A%A4%E6%A0%8F%E5%85%88%E4%BA%8E%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81">Step 4 · 自动化护栏先于业务代码</a></li>
+<li><a href="#step-5--%E5%9E%82%E7%9B%B4%E5%88%87%E7%89%87%E5%AE%9E%E7%8E%B0">Step 5 · 垂直切片实现</a></li>
+<li><a href="#step-6--%E9%80%90%E6%AD%A5%E6%8E%A8%E8%BF%9B--%E5%8F%AF%E8%A7%82%E6%B5%8B--%E4%BC%9A%E8%AF%9D%E6%B2%BB%E7%90%86">Step 6 · 逐步推进 + 可观测 + 会话治理</a></li>
+<li><a href="#step-7--%E6%94%B6%E5%B0%BE%E4%B8%8E%E6%B2%89%E6%B7%80">Step 7 · 收尾与沉淀</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9Bai-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%AD%A2%E6%8D%9F%E5%8A%A8%E4%BD%9C">四、AI 常见失败模式与止损动作</a></li>
+<li><a href="#%E4%BA%94%E6%8E%A8%E8%8D%90%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF%E4%BB%93%E5%BA%93%E7%BB%93%E6%9E%84">五、推荐的项目模板仓库结构</a></li>
+<li><a href="#%E5%85%ADprompt">六、Prompt</a><ul>
+<li><a href="#part-a--%E9%A1%B9%E7%9B%AE%E7%AB%A0%E7%A8%8B-prompt%E5%BC%80%E5%B1%80%E5%96%82%E4%B8%80%E6%AC%A1">Part A · 项目章程 Prompt</a></li>
+<li><a href="#part-b--%E6%8E%A8%E8%BF%9B%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%A7%A6%E5%8F%91%E7%9F%AD%E8%AF%AD%E6%8C%89%E9%9C%80%E5%A4%8D%E5%88%B6">Part B · 推进过程中的触发短语</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%83%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E7%9F%A9%E9%98%B5">七、模型选择矩阵</a></li>
+<li><a href="#%E5%85%AB%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE">八、使用建议</a></li>
+<li><a href="#%E4%B9%9D%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C%E7%BA%A6%E5%AE%9A">九、多人协作约定</a></li>
+</ul>
+<hr>
+<h2 id="一、适用边界"><a href="#一、适用边界" class="headerlink" title="一、适用边界"></a>一、适用边界</h2><p>在套用任何方法论之前，先判断<strong>该不该用</strong>。</p>
+<blockquote>
+<p>✅ <strong>建议使用本流程</strong></p>
+<ul>
+<li>长期维护的项目、多人协作</li>
+<li>生产代码、对质量与可维护性有要求</li>
+<li>跨多次会话的复杂任务</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>不适用，建议简化或跳过</strong></p>
+<ul>
+<li>一次性脚本（&lt; 100 行）</li>
+<li>探索性 POC、明天就丢的实验</li>
+<li>单点 bug 修复 &#x2F; 明确的小重构</li>
+</ul>
+</blockquote>
+<p><strong>重型流程套到轻量任务上是负担。</strong> 先判断场景，再决定流程深度。</p>
+<hr>
+<h2 id="二、全局视图"><a href="#二、全局视图" class="headerlink" title="二、全局视图"></a>二、全局视图</h2><p>整套方法围绕「<strong>先规划 → 后执行；先骨架 → 后填肉；先验证 → 后推进</strong>」三条主线展开，共 7 步：</p>
+<p><img src="https://cdn.nlark.com/yuque/__mermaid_v3/1686f14b2a6b5f4f2bb0d0125f32a3f9.svg" srcset="/img/loading.gif" lazyload></p>
+<p>每一步都有<strong>明确产物</strong>（<code>docs/NN-xxx.md</code>）和<strong>完成标准</strong>（DoD），形成可审计、可交接的工作链。</p>
+<hr>
+<h2 id="三、方法与原则"><a href="#三、方法与原则" class="headerlink" title="三、方法与原则"></a>三、方法与原则</h2><h3 id="0-贯穿性原则"><a href="#0-贯穿性原则" class="headerlink" title="0. 贯穿性原则"></a>0. 贯穿性原则</h3><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>人</strong></td>
+<td>PM &#x2F; 架构师 —— 定方向、做判断、做验收</td>
+</tr>
+<tr>
+<td><strong>AI</strong></td>
+<td>高级工程搭档 —— 生成候选、写代码、跑命令、写文档</td>
+</tr>
+</tbody></table>
+<p>四条贯穿全流程的铁律：</p>
+<ol>
+<li><strong>AI 不替你做关键判断</strong>，只生成候选 + 解释取舍，等你拍板。</li>
+<li>任何步骤完成后，必须有<strong>可审计的产物</strong>（md &#x2F; 代码 &#x2F; 日志 &#x2F; commit）。</li>
+<li><strong>小步快跑</strong> —— 优先把任务拆成几十分钟一个闭环，避免一次性几小时的大块改动。</li>
+<li><strong>可逆优于可塑</strong> —— 宁可多走半步去拍照（commit &#x2F; 文档 &#x2F; 日志），也不要让状态难以回滚。</li>
+</ol>
+<hr>
+<h3 id="Step-1-·-需求澄清（人主导）"><a href="#Step-1-·-需求澄清（人主导）" class="headerlink" title="Step 1 · 需求澄清（人主导）"></a>Step 1 · 需求澄清（人主导）</h3><p><strong>目标</strong>　把”我想做 X”变成”我要交付什么、怎么算成功”。</p>
+<p><strong>产物</strong>　<code>docs/00-requirements.md</code></p>
+<p><strong>必须包含</strong></p>
+<ul>
+<li>业务目标 &#x2F; 用户故事（一句话能讲清）</li>
+<li><strong>输入 → 输出</strong>（数据形态、接口形态）</li>
+<li><strong>验收标准</strong>（功能 + 非功能：性能、并发、兼容、安全）</li>
+<li><strong>Out-of-Scope</strong> —— 明确不做什么，防止 AI 自由发挥</li>
+<li>约束（技术栈、部署环境、预算、时限）</li>
+</ul>
+<p><strong>DoD</strong>　上述六项均已写明，且人类已签字确认 Out-of-Scope。</p>
+<blockquote>
+<p>💡 <strong>实操技巧</strong>　让 AI 先<strong>反问 5~10 个澄清问题</strong>，再开始写需求。<br>AI 提的问题越多，说明它越在认真理解；如果它一上来就开始写代码，是危险信号。</p>
+</blockquote>
+<hr>
+<h3 id="Step-2-·-方案设计（AI-起草，人定稿）"><a href="#Step-2-·-方案设计（AI-起草，人定稿）" class="headerlink" title="Step 2 · 方案设计（AI 起草，人定稿）"></a>Step 2 · 方案设计（AI 起草，人定稿）</h3><p><strong>产物</strong>　<code>docs/01-design.md</code></p>
+<p><strong>必须包含</strong></p>
+<ul>
+<li>技术原理简述（让 AI 解释为什么这么选）</li>
+<li><strong>架构图 &#x2F; 模块划分</strong>（用 mermaid）</li>
+<li><strong>关键接口 &#x2F; 数据契约</strong>（函数签名、API、Schema）</li>
+<li><strong>2~3 个候选方案对比表</strong>（优劣、成本、风险）</li>
+<li><strong>已知风险 + 缓解措施</strong></li>
+<li><strong>里程碑切分</strong>（M1 &#x2F; M2 &#x2F; M3 …）</li>
+</ul>
+<p><strong>DoD</strong>　候选对比清晰、关键接口签名已固化、风险已识别。</p>
+<blockquote>
+<p>🚩 <strong>红线</strong>　如果 AI 只给一个方案、没风险、没对比，<strong>让它重写</strong>。<br>单一方案往往意味着 AI 没真正思考，只是把第一直觉端上来了。</p>
+</blockquote>
+<hr>
+<h3 id="Step-3-·-项目骨架-契约先行"><a href="#Step-3-·-项目骨架-契约先行" class="headerlink" title="Step 3 · 项目骨架 + 契约先行"></a>Step 3 · 项目骨架 + 契约先行</h3><p><strong>产物</strong>　目录树 + 空文件 + <strong>类型 &#x2F; 接口 &#x2F; Schema 定义</strong> + <code>docs/02-skeleton.md</code></p>
+<p><strong>做法</strong></p>
+<ul>
+<li>目录骨架由 AI 生成</li>
+<li><strong>核心模块的接口先写出来</strong>（TypeScript 类型 &#x2F; Python <code>Protocol</code> &#x2F; OpenAPI &#x2F; Pydantic 模型）</li>
+<li>每个模块写空函数 + docstring + TODO</li>
+<li><strong>不写业务逻辑</strong></li>
+</ul>
+<p><strong>DoD</strong>　目录与接口签名已确认，调用关系在 mermaid 中可视化。</p>
+<blockquote>
+<p>💡 <strong>关键洞察</strong>　接口对了，后面 AI 写错也不会跑偏太远。<br>这是整个流程里”投入产出比”最高的一步。</p>
+</blockquote>
+<hr>
+<h3 id="Step-4-·-自动化护栏先于业务代码"><a href="#Step-4-·-自动化护栏先于业务代码" class="headerlink" title="Step 4 · 自动化护栏先于业务代码"></a>Step 4 · 自动化护栏先于业务代码</h3><p><strong>产物</strong>　CI 配置、lint、format、test 框架、pre-commit + <code>docs/03-guardrails.md</code></p>
+<p><strong>清单</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 包管理 + <strong>依赖锁定文件</strong>（<code>uv.lock</code> &#x2F; <code>package-lock.json</code> 等，防止 AI 乱装包）</li>
+<li><input disabled="" type="checkbox"> <code>.env.example</code> + <code>.gitignore</code>（防止密钥 &#x2F; 产物入库）</li>
+<li><input disabled="" type="checkbox"> lint + format + 类型检查</li>
+<li><input disabled="" type="checkbox"> 测试框架（哪怕只跑一个空测试）</li>
+<li><input disabled="" type="checkbox"> <strong>一个最小的端到端冒烟测试</strong>（哪怕只验证 hello world）</li>
+<li><input disabled="" type="checkbox"> pre-commit + CI 配置</li>
+<li><input disabled="" type="checkbox"> 一条 <code>make test</code> &#x2F; <code>npm test</code> 的入口命令</li>
+</ul>
+<p><strong>DoD</strong>　本地一条命令能跑完所有自动化检查，CI 在空仓上能绿。</p>
+<blockquote>
+<p>🛡️ <strong>价值</strong>　这一步是”<strong>给 AI 戴上安全带</strong>“。<br>CI 能抓住人眼容易漏的低级错误，让人类 review 聚焦在设计与逻辑上。</p>
+</blockquote>
+<hr>
+<h3 id="Step-5-·-垂直切片实现"><a href="#Step-5-·-垂直切片实现" class="headerlink" title="Step 5 · 垂直切片实现"></a>Step 5 · 垂直切片实现</h3><p><strong>核心做法</strong>　<strong>按特性切，不按层切。</strong></p>
+<ul>
+<li>❌ 不要先写完所有 model，再写完所有 service，再写完所有 API</li>
+<li>✅ <strong>选最核心的 1 个用户故事，从最上层到最底层打通一条最薄的路径</strong>（Walking Skeleton）</li>
+</ul>
+<p><strong>节奏</strong></p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fix"><span class="hljs-attr">垂直切片 </span>=<span class="hljs-string"> 一次 commit + 一轮人类 review + 一次本地验证</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>每次提交前，让 AI 自己生成</strong></p>
+<ul>
+<li>改了什么 &#x2F; 为什么 &#x2F; 影响面</li>
+<li>怎么验证（手动 + 自动）</li>
+<li>已知遗留 TODO</li>
+</ul>
+<p><strong>DoD</strong>　核心用户故事可端到端跑通；每个切片都通过 CI。</p>
+<blockquote>
+<p>🚩 <strong>反模式</strong>　让 AI 一次写几百上千行，再让人类 review。<br><strong>人审不动 &#x3D; 实际无审查</strong>，AI 也藏 bug。</p>
+</blockquote>
+<hr>
+<h3 id="Step-6-·-逐步推进-可观测-会话治理"><a href="#Step-6-·-逐步推进-可观测-会话治理" class="headerlink" title="Step 6 · 逐步推进 + 可观测 + 会话治理"></a>Step 6 · 逐步推进 + 可观测 + 会话治理</h3><p><strong>推进做法</strong></p>
+<ul>
+<li>按 M1 → M2 → M3 推进，<strong>每个 M 结束跑一次完整冒烟</strong></li>
+<li>关键路径加日志 &#x2F; metrics</li>
+<li>失败时 AI 必须先 <strong>复述错误 → 给 2~3 种假设 → 选最可能的一种再动手</strong>，禁止无脑试错</li>
+<li>每完成一个里程碑，更新 <code>docs/04-progress.md</code></li>
+</ul>
+<p><strong>会话治理</strong>（长项目必读）</p>
+<ul>
+<li>单 session 不要无限拉长，<strong>及时新开会话</strong>避免上下文污染</li>
+<li>用 <code>docs/04-progress.md</code> 当<strong>外部记忆</strong>，新会话以它作为入口</li>
+<li><strong>模型分工</strong>　日常实现用快模型，方案 &#x2F; 复盘 &#x2F; 疑难调试用强模型或思考模型（详见 <a href="#%E4%B8%83%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E7%9F%A9%E9%98%B5">七、模型选择矩阵</a>）</li>
+</ul>
+<p><strong>DoD</strong>　里程碑通过完整冒烟；进度 md 已更新。</p>
+<hr>
+<h3 id="Step-7-·-收尾与沉淀"><a href="#Step-7-·-收尾与沉淀" class="headerlink" title="Step 7 · 收尾与沉淀"></a>Step 7 · 收尾与沉淀</h3><p><strong>产物</strong></p>
+<ul>
+<li><code>README.md</code> —— 安装、运行、部署</li>
+<li><code>docs/05-runbook.md</code> —— 怎么跑、怎么调试、常见故障</li>
+<li><code>docs/99-retrospective.md</code> —— 踩坑记录、AI 哪里不靠谱、改进项</li>
+<li>把项目里**有效的 prompt 沉淀回 <strong><code>.cursor/rules/</code></strong> 或 **<code>AGENTS.md</code>，下次复用</li>
+</ul>
+<p><strong>DoD</strong>　新成员（或新会话的 AI）凭 <code>README + runbook</code> 能独立把项目跑起来。</p>
+<hr>
+<h2 id="四、AI-常见失败模式与止损动作"><a href="#四、AI-常见失败模式与止损动作" class="headerlink" title="四、AI 常见失败模式与止损动作"></a>四、AI 常见失败模式与止损动作</h2><table>
+<thead>
+<tr>
+<th align="center">#</th>
+<th>失败模式</th>
+<th>典型征兆</th>
+<th>止损动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td><strong>幻觉 API &#x2F; 不存在的库</strong></td>
+<td>引用查不到的函数名、版本号</td>
+<td>让它贴官方文档链接；查不到就换方案</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td><strong>看似写完，跑不起来</strong></td>
+<td>自信满满给一大段代码但没运行</td>
+<td>强制 “写完即跑 + 贴出输出”；进 Step 5 切片节奏</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td><strong>越改越糟（雪球 bug）</strong></td>
+<td>一个 bug 改出三个新 bug</td>
+<td><code>git stash</code> &#x2F; 回到上一绿色 commit，重走”复述→假设→动手”</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td><strong>过度工程化</strong></td>
+<td>100 行需求写出 10 个抽象层</td>
+<td>让它对照 <code>00-requirements.md</code> 自审，砍 Out-of-Scope</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td><strong>沉默改了无关文件</strong></td>
+<td>一次改动悄悄碰了配置 &#x2F; 其他模块</td>
+<td>红线第 4 条触发；要求拆 commit + 解释每处原因</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td><strong>上下文污染（越聊越歪）</strong></td>
+<td>重复犯低级错、忘了之前的约定</td>
+<td>触发”上下文管理”短语；新开会话 + <code>04-progress.md</code> 接力</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td><strong>测试造假</strong></td>
+<td>改测试让代码通过，而不是改代码</td>
+<td>红线项；要求贴”修改前 vs 修改后的测试断言 diff”</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td><strong>盲目重写</strong></td>
+<td>让它修小 bug，它把整个文件重写</td>
+<td>要求 minimal diff；超过原文件 30% 改动必须先解释</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td><strong>隐藏失败</strong></td>
+<td>把异常 catch 掉、log 删掉让流程”通过”</td>
+<td>红线项；review 时 grep <code>except:</code> &#x2F; <code>catch</code> &#x2F; <code>// ignore</code></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td><strong>配置漂移</strong></td>
+<td>偷偷改 <code>.env</code> &#x2F; 依赖版本 &#x2F; CI 配置</td>
+<td>这些文件加入 pre-commit 强保护；改动必须 PR 描述</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>📌 <strong>用法</strong>　项目复盘（Step 7）时，把本项目踩过的失败模式打勾，写入 <code>docs/99-retrospective.md</code>，并把对应的”止损短语”补到 <a href="#part-b--%E6%8E%A8%E8%BF%9B%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%A7%A6%E5%8F%91%E7%9F%AD%E8%AF%AD%E6%8C%89%E9%9C%80%E5%A4%8D%E5%88%B6">Part B</a>。</p>
+</blockquote>
+<hr>
+<h2 id="五、推荐的项目模板仓库结构"><a href="#五、推荐的项目模板仓库结构" class="headerlink" title="五、推荐的项目模板仓库结构"></a>五、推荐的项目模板仓库结构</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs nix">ai-project-template<span class="hljs-symbol">/</span><br>│<br>├── README.md                       <span class="hljs-comment"># 模板使用说明</span><br>├── AGENTS.md                       <span class="hljs-comment"># 给 AI 的全局协作规则（重要）</span><br>│<br>├── .cursor<span class="hljs-symbol">/</span><br>│   └── rules<span class="hljs-symbol">/</span><br>│       ├── workflow.mdc            <span class="hljs-comment"># 强制 AI 按 7 步走</span><br>│       ├── commit-style.mdc        <span class="hljs-comment"># commit 规范</span><br>│       └── code-review.mdc         <span class="hljs-comment"># 自审清单</span><br>│<br>├── docs<span class="hljs-symbol">/</span><br>│   ├── <span class="hljs-number">0</span>0-requirements.md          <span class="hljs-comment"># 需求 + 验收标准</span><br>│   ├── <span class="hljs-number">0</span>1-design.md                <span class="hljs-comment"># 方案对比 + 风险 + 契约</span><br>│   ├── <span class="hljs-number">0</span>2-skeleton.md              <span class="hljs-comment"># 骨架说明</span><br>│   ├── <span class="hljs-number">0</span>3-guardrails.md            <span class="hljs-comment"># 护栏与本地一键验证</span><br>│   ├── <span class="hljs-number">0</span>4-progress.md              <span class="hljs-comment"># 里程碑 / 进度日志（持续更新）</span><br>│   ├── <span class="hljs-number">0</span>5-runbook.md               <span class="hljs-comment"># 怎么跑、怎么调试</span><br>│   └── <span class="hljs-number">9</span>9-retrospective.md         <span class="hljs-comment"># 复盘</span><br>│<br>├── src<span class="hljs-symbol">/</span>                            <span class="hljs-comment"># 业务代码</span><br>├── tests<span class="hljs-symbol">/</span>                          <span class="hljs-comment"># 测试（先于业务代码）</span><br>│   └── smoke<span class="hljs-symbol">/</span>                      <span class="hljs-comment">#   端到端冒烟</span><br>│<br>├── scripts<span class="hljs-symbol">/</span><br>│   ├── bootstrap.sh                <span class="hljs-comment"># 一键初始化</span><br>│   └── verify.sh                   <span class="hljs-comment"># 一键自检</span><br>│<br>├── .github<span class="hljs-symbol">/workflows/ci.yml</span>        <span class="hljs-comment"># CI 护栏</span><br>├── .pre-commit-config.yaml<br>├── .env.example<br>├── Makefile                        <span class="hljs-comment"># make test / make lint / make run</span><br>└── .gitignore<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>📐 <strong>命名一致性原则</strong>　文件命名在「方法与原则」「Prompt」「目录树」三处必须一致。<br>如需新增文档，沿用 <code>NN-name.md</code> 编号。</p>
+</blockquote>
+<hr>
+<h2 id="六、Prompt"><a href="#六、Prompt" class="headerlink" title="六、Prompt"></a>六、Prompt</h2><h3 id="Part-A-·-项目章程-Prompt（开局喂一次）"><a href="#Part-A-·-项目章程-Prompt（开局喂一次）" class="headerlink" title="Part A · 项目章程 Prompt（开局喂一次）"></a>Part A · 项目章程 Prompt（开局喂一次）</h3><blockquote>
+<p>复制下方代码块，整段粘贴给 AI；<br>或保存为 <code>.cursor/rules/workflow.mdc</code> &#x2F; <code>AGENTS.md</code> 让其常驻。</p>
+</blockquote>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-section"># 角色与协作契约</span><br><br>你是我的高级工程搭档。我是 PM + 架构师，负责定方向、做判断、做验收；<br>你是执行者，负责生成候选方案、写代码、跑命令、写文档。<br>请严格遵守以下协作契约，任何一条违反请主动停下并提示我。<br><br><span class="hljs-section">## 一、根本原则</span><br><span class="hljs-bullet">1.</span> 先规划，后执行；先骨架，后填肉；先小步验证，后全量推进。<br><span class="hljs-bullet">2.</span> 你不替我做关键判断，只生成候选 + 解释取舍 + 等我拍板。<br><span class="hljs-bullet">3.</span> 任何阶段完成后，必须有可审计的产物（md / 代码 / 日志 / commit）。<br><span class="hljs-bullet">4.</span> 每一步动手前，先用 3~5 行说明&quot;我打算怎么做&quot;，等我确认后再执行。<br><span class="hljs-bullet">5.</span> 单次改动不超过 3 个文件、不超过约 200 行；超出请主动拆分。<br><span class="hljs-bullet">6.</span> 不臆造 API、库、文件路径、版本号；不确定就先查证或问我。<br><span class="hljs-bullet">7.</span> 报错时：先复述错误 → 给 2~3 种假设 → 选最可能的一种再动手，禁止无脑试错。<br><br><span class="hljs-section">## 二、七步工作流</span><br>按以下 7 步推进，每一步都要产出对应文档，统一存放在 <span class="hljs-code">`docs/`</span>。<br><br><span class="hljs-section">### Step 1｜需求澄清</span><br><span class="hljs-bullet">-</span> 动笔前，先抛 5~10 个澄清问题（业务目标、输入输出、性能、边界、技术约束等）。<br><span class="hljs-bullet">-</span> 我回答后，产出 <span class="hljs-code">`docs/00-requirements.md`</span>，包含：<br><span class="hljs-bullet">  -</span> 业务目标（一句话）<br><span class="hljs-bullet">  -</span> 用户故事 / 使用场景<br><span class="hljs-bullet">  -</span> 输入 → 输出（数据形态、接口形态）<br><span class="hljs-bullet">  -</span> 验收标准（功能 + 非功能）<br><span class="hljs-bullet">  -</span> Out-of-Scope（明确不做什么）<br><span class="hljs-bullet">  -</span> 约束（技术栈、部署环境、预算、时限）<br><br><span class="hljs-section">### Step 2｜方案设计（给我对比，不要单选）</span><br>产出 <span class="hljs-code">`docs/01-design.md`</span>，包含：<br><span class="hljs-bullet">-</span> 技术原理简述（为什么这么选）<br><span class="hljs-bullet">-</span> 架构图 + 模块划分（用 mermaid）<br><span class="hljs-bullet">-</span> 关键接口 / 数据契约（函数签名 / API / Schema）<br><span class="hljs-bullet">-</span> 2~3 个候选方案对比表（优劣、成本、风险）<br><span class="hljs-bullet">-</span> 已知风险 + 缓解措施<br><span class="hljs-bullet">-</span> 里程碑切分（M1 / M2 / M3 …）<br><span class="hljs-bullet">-</span> 如果你只能给一个方案、或没风险分析，请明确说明原因。<br><br><span class="hljs-section">### Step 3｜项目骨架 + 契约先行</span><br><span class="hljs-bullet">-</span> 生成目录树 + 空文件<br><span class="hljs-bullet">-</span> 核心模块的接口 / 类型 / Schema 必须先写<br>  （TS 类型 / Python Protocol / OpenAPI / Pydantic）<br><span class="hljs-bullet">-</span> 每个模块写空函数 + docstring + TODO<br><span class="hljs-bullet">-</span> 产出 <span class="hljs-code">`docs/02-skeleton.md`</span>：目录树 + 模块职责说明<br><span class="hljs-bullet">-</span> 此步骤不写业务逻辑，等我确认骨架。<br><br><span class="hljs-section">### Step 4｜自动化护栏先行</span><br>在写业务代码之前，先搭好：<br><span class="hljs-bullet">-</span> 包管理 + 依赖锁定文件<br><span class="hljs-bullet">-</span> <span class="hljs-code">`.env.example`</span> + <span class="hljs-code">`.gitignore`</span><br><span class="hljs-bullet">-</span> lint + format + 类型检查<br><span class="hljs-bullet">-</span> 测试框架（哪怕只跑一个空测试）<br><span class="hljs-bullet">-</span> 一个最小的端到端冒烟测试<br><span class="hljs-bullet">-</span> pre-commit + CI 配置<br><span class="hljs-bullet">-</span> 一条 <span class="hljs-code">`make test`</span> 或 <span class="hljs-code">`npm test`</span> 的入口命令<br><span class="hljs-bullet">-</span> 产出 <span class="hljs-code">`docs/03-guardrails.md`</span>：如何本地一键验证<br><br><span class="hljs-section">### Step 5｜垂直切片实现（不是按层写）</span><br><span class="hljs-bullet">-</span> 按特性切，不按层切：选最核心的 1 个用户故事，<br>  从最上层到最底层打通一条最薄的路径（Walking Skeleton）。<br><span class="hljs-bullet">-</span> 每个切片 = 一次 commit + 一轮我审 + 一次本地验证通过。<br><span class="hljs-bullet">-</span> 每次提交前，自动生成：<br><span class="hljs-bullet">  -</span> 改了什么 / 为什么 / 影响面<br><span class="hljs-bullet">  -</span> 怎么验证（手动步骤 + 自动测试）<br><span class="hljs-bullet">  -</span> 已知遗留 TODO<br><br><span class="hljs-section">### Step 6｜逐步推进 + 可观测</span><br><span class="hljs-bullet">-</span> 按 M1 → M2 → M3 推进，每个 M 结束跑一次完整冒烟。<br><span class="hljs-bullet">-</span> 关键路径加日志 / metrics。<br><span class="hljs-bullet">-</span> 失败时严格走&quot;复述 → 假设 → 动手&quot;流程。<br><span class="hljs-bullet">-</span> 每完成一个里程碑，更新 <span class="hljs-code">`docs/04-progress.md`</span>。<br><span class="hljs-bullet">-</span> 当本会话上下文较长时，主动提示我&quot;建议新开会话，并以 04-progress.md 为入口&quot;。<br><br><span class="hljs-section">### Step 7｜收尾与沉淀</span><br><span class="hljs-bullet">-</span> <span class="hljs-code">`README.md`</span>：安装 / 运行 / 部署<br><span class="hljs-bullet">-</span> <span class="hljs-code">`docs/05-runbook.md`</span>：怎么跑、怎么调试<br><span class="hljs-bullet">-</span> <span class="hljs-code">`docs/99-retrospective.md`</span>：踩坑记录、AI 哪里不靠谱、改进项<br><span class="hljs-bullet">-</span> 把有效的 prompt 沉淀回 <span class="hljs-code">`.cursor/rules/`</span> 或本文件<br><br><span class="hljs-section">## 三、硬性红线（违反即停止）</span><br><span class="hljs-bullet">-</span> 不写测试就交付业务代码<br><span class="hljs-bullet">-</span> 一次性写超过约 200 行而不分段确认<br><span class="hljs-bullet">-</span> 跳过 Step 1~3 直接动手写业务代码<br><span class="hljs-bullet">-</span> 改动跨 3 个以上文件不主动拆 commit<br><span class="hljs-bullet">-</span> 报错后不分析直接重试<br><span class="hljs-bullet">-</span> 编造不存在的 API / 文件 / 命令<br><br>例外：紧急 hotfix / 一次性脚本 / 我明确说&quot;先跑通再说&quot;时，<br>可临时跳过 Step 1~3，但事后必须补 <span class="hljs-code">`docs/00-requirements.md`</span> 简版。<br><br><span class="hljs-section">## 四、沟通格式</span><br>你的每次回复尽量用以下结构（简单确认除外）：<br><span class="hljs-bullet">-</span> 当前所在步骤：Step X<br><span class="hljs-bullet">-</span> 本轮我打算做：…<br><span class="hljs-bullet">-</span> 预期产物：…<br><span class="hljs-bullet">-</span> 我需要你先确认：…（如有）<br><br>——以上为我们的协作契约，请确认你已理解，并准备好进入 Step 1：开始向我提澄清问题。<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Part-B-·-推进过程中的触发短语（按需复制）"><a href="#Part-B-·-推进过程中的触发短语（按需复制）" class="headerlink" title="Part B · 推进过程中的触发短语（按需复制）"></a>Part B · 推进过程中的触发短语（按需复制）</h3><blockquote>
+<p>长会话里 AI 容易”自由发挥”，用下面这些<strong>短小、明确</strong>的短语强制拉回正轨。</p>
+</blockquote>
+<h4 id="▸-进入下一步"><a href="#▸-进入下一步" class="headerlink" title="▸ 进入下一步"></a>▸ 进入下一步</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit">进入 <span class="hljs-keyword">Step</span> <span class="hljs-number">2</span>：基于已确认的需求，输出 <span class="hljs-number">2</span>~<span class="hljs-number">3</span> 个候选方案对比，等我拍板。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">进入 Step <span class="hljs-number">3</span>：先生成目录骨架 + 接口/<span class="hljs-built_in">Schema</span> 契约，不要写业务逻辑。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">进入 <span class="hljs-keyword">Step</span> <span class="hljs-number">4</span>：搭自动化护栏，本地能一键 lint<span class="hljs-regexp">/test/</span>冒烟。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit">进入 <span class="hljs-keyword">Step</span> <span class="hljs-number">5</span>：选第一个垂直切片（最核心的用户故事），打通一条最薄的端到端路径。<br></code></pre></td></tr></table></figure>
+
+<h4 id="▸-拉回正轨"><a href="#▸-拉回正轨" class="headerlink" title="▸ 拉回正轨"></a>▸ 拉回正轨</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">停。你正在违反协作契约第 <span class="hljs-attribute">X</span> 条。请回到上一步，先做 <span class="hljs-selector-attr">[澄清/方案/骨架/测试]</span>，再动手。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">你这次改动超过了 <span class="hljs-number">3</span> 个文件 <span class="hljs-symbol">/</span> ~<span class="hljs-number">200</span> 行，请拆成多次提交，每次先告诉我打算怎么改。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">请按<span class="hljs-string">&quot;复述错误 → 列 2~3 种假设 → 选一种&quot;</span>的格式重新分析这个报错，再动手。<br></code></pre></td></tr></table></figure>
+
+<h4 id="▸-强制产出"><a href="#▸-强制产出" class="headerlink" title="▸ 强制产出"></a>▸ 强制产出</h4><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos">请把刚才的讨论结论沉淀到 docs/<span class="hljs-number">0</span>X-xxx.<span class="hljs-built_in">md</span>，并列出本轮的 DoD（验收标准）。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">请给这次改动写一段 commit message：what <span class="hljs-symbol">/</span> why <span class="hljs-symbol">/</span> impact <span class="hljs-symbol">/</span> how-to-verify。<br></code></pre></td></tr></table></figure>
+
+<h4 id="▸-上下文管理"><a href="#▸-上下文管理" class="headerlink" title="▸ 上下文管理"></a>▸ 上下文管理</h4><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dos">当前会话上下文已较长。请把项目状态总结到 docs/<span class="hljs-number">04</span>-progress.<span class="hljs-built_in">md</span>，<br>我将在新会话中继续，你将以那份 <span class="hljs-built_in">md</span> 作为外部记忆。<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、模型选择矩阵"><a href="#七、模型选择矩阵" class="headerlink" title="七、模型选择矩阵"></a>七、模型选择矩阵</h2><p>不同任务用不同模型，能显著提升质量 &#x2F; 节省成本。</p>
+<blockquote>
+<p><strong>原则</strong>　便宜的做体力活，贵的做脑力活。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>推荐模型档次</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Step 1　需求澄清 &#x2F; 反问</td>
+<td><strong>强模型（含思考）</strong></td>
+<td>需要从模糊需求中识别隐藏假设、提出关键追问</td>
+</tr>
+<tr>
+<td>Step 2　方案设计 &#x2F; 候选对比</td>
+<td><strong>强模型（含思考）</strong></td>
+<td>涉及架构权衡、风险预判，最不该省钱的环节</td>
+</tr>
+<tr>
+<td>Step 3　骨架 + 接口契约</td>
+<td>中等模型</td>
+<td>模式化工作，但需理解整体设计</td>
+</tr>
+<tr>
+<td>Step 4　护栏 &#x2F; CI &#x2F; 模板</td>
+<td>快模型</td>
+<td>高度模式化，看示例就会写</td>
+</tr>
+<tr>
+<td>Step 5　垂直切片实现</td>
+<td>中等模型为主</td>
+<td>大多数业务代码</td>
+</tr>
+<tr>
+<td>Step 5　遇到疑难 bug</td>
+<td><strong>切换到强模型 &#x2F; 思考模型</strong></td>
+<td>调试需要推理能力</td>
+</tr>
+<tr>
+<td>Step 6　日常推进 &#x2F; 小改动</td>
+<td>快模型</td>
+<td>重复劳动</td>
+</tr>
+<tr>
+<td>Step 6　跨模块重构 &#x2F; 性能优化</td>
+<td><strong>强模型</strong></td>
+<td>需要全局视角</td>
+</tr>
+<tr>
+<td>Step 7　复盘 &#x2F; 文档总结</td>
+<td>中等到强模型</td>
+<td>需要抽象与提炼</td>
+</tr>
+<tr>
+<td>commit message &#x2F; changelog</td>
+<td>快模型</td>
+<td>模式化输出</td>
+</tr>
+<tr>
+<td>code review（自审或互审）</td>
+<td><strong>强模型</strong></td>
+<td>review 比写代码更需要思考</td>
+</tr>
+</tbody></table>
+<p><strong>升档信号</strong>　出现以下情况立刻升档：</p>
+<ul>
+<li>同一个 bug 修了 2 次没修对</li>
+<li>AI 反复要求”再多给点上下文”还说不清</li>
+<li>一个改动牵涉到 3 个以上模块的设计取舍</li>
+<li>出现 <a href="#%E5%9B%9Bai-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%AD%A2%E6%8D%9F%E5%8A%A8%E4%BD%9C">失败模式图鉴</a> 中第 3 &#x2F; 6 &#x2F; 10 条</li>
+</ul>
+<hr>
+<h2 id="八、使用建议"><a href="#八、使用建议" class="headerlink" title="八、使用建议"></a>八、使用建议</h2><ol>
+<li><strong>第一次喂 Part A</strong> —— AI 应主动反问澄清问题，<strong>别让它跳过这步</strong>。</li>
+<li><strong>每次切换阶段用 Part B 的”进入下一步”短语</strong> —— 比模糊地说”继续”靠谱得多。</li>
+<li><strong>AI 走偏时立刻用”拉回正轨”短语</strong> —— 越早纠偏成本越低。</li>
+<li><strong>在 Cursor 中</strong>：<ul>
+<li>Part A 存为 <code>.cursor/rules/workflow.mdc</code>（项目级，自动加载）</li>
+<li>或放到 <code>AGENTS.md</code>（仓库根目录，全局生效）</li>
+</ul>
+</li>
+<li><strong>项目结束做 Step 7 复盘时</strong> —— 把本次有效的 Part B 短语补回这份文档，让方法论持续进化。</li>
+</ol>
+<hr>
+<h2 id="九、多人协作约定"><a href="#九、多人协作约定" class="headerlink" title="九、多人协作约定"></a>九、多人协作约定</h2><blockquote>
+<p>团队场景下价值很大；个人项目可以省略本节。</p>
+</blockquote>
+<h3 id="1-共享-prompt-资产"><a href="#1-共享-prompt-资产" class="headerlink" title="1. 共享 prompt 资产"></a>1. 共享 prompt 资产</h3><p>所有 prompt &#x2F; rules <strong>进 git，跟代码一起 review</strong>。路径约定：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.cursor/rules/</code></td>
+<td>Cursor 项目级规则</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>通用 AI 协作规则（Cursor &#x2F; Codex &#x2F; Claude Code 等都读）</td>
+</tr>
+<tr>
+<td><code>docs/prompts/</code></td>
+<td>一次性、场景化的 prompt 片段（如”重构 X 模块的 prompt”）</td>
+</tr>
+</tbody></table>
+<h3 id="2-修改-prompt-必须走-PR"><a href="#2-修改-prompt-必须走-PR" class="headerlink" title="2. 修改 prompt 必须走 PR"></a>2. 修改 prompt 必须走 PR</h3><ul>
+<li>任何对 <code>AGENTS.md</code> &#x2F; <code>.cursor/rules/</code> 的修改 <strong>&#x3D; 修改”团队工作规则”</strong></li>
+<li>必须有人 review，并在 PR 里说明：<strong>为什么改、改后预期 AI 行为有何不同</strong></li>
+</ul>
+<h3 id="3-AI-产物的标记"><a href="#3-AI-产物的标记" class="headerlink" title="3. AI 产物的标记"></a>3. AI 产物的标记</h3><ul>
+<li>AI 生成且未经人类深度审核的代码 &#x2F; 文档，commit message 加前缀 <code>[AI-DRAFT]</code></li>
+<li>经人类审核确认后，正常提交不加前缀</li>
+<li>这样 <code>git log --grep=&quot;AI-DRAFT&quot;</code> 可以快速找到”待复审债务”</li>
+</ul>
+<h3 id="4-任务交接"><a href="#4-任务交接" class="headerlink" title="4. 任务交接"></a>4. 任务交接</h3><p>中途交接任务给同事 &#x2F; 新会话时，必须更新到 <code>docs/04-progress.md</code>：</p>
+<ul>
+<li>当前在哪一步 &#x2F; 哪个里程碑</li>
+<li>已完成什么（带 commit hash）</li>
+<li>卡在哪里 &#x2F; 待决策事项</li>
+<li>接手人 &#x2F; AI 应该读哪些文件、跑哪些命令</li>
+</ul>
+<blockquote>
+<p>这份 md 就是”项目的状态机快照”。</p>
+</blockquote>
+<h3 id="5-冲突仲裁"><a href="#5-冲突仲裁" class="headerlink" title="5. 冲突仲裁"></a>5. 冲突仲裁</h3><p>当两个 AI（或两个人 + AI）给出不同方案时：</p>
+<ul>
+<li>❌ 不要让 AI 自己投票</li>
+<li>✅ <strong>由人类按 <strong><code>01-design.md</code></strong> 的”候选对比表”格式重新评估</strong></li>
+<li>写入决策记录 <code>docs/decisions/NNNN-title.md</code>（轻量级 ADR）</li>
+</ul>
+<h3 id="6-安全与合规"><a href="#6-安全与合规" class="headerlink" title="6. 安全与合规"></a>6. 安全与合规</h3><p>AI <strong>不得碰</strong>：</p>
+<ul>
+<li><code>.env</code> &#x2F; 任何密钥文件</li>
+<li>生产数据库</li>
+<li>CI&#x2F;CD 部署密钥</li>
+</ul>
+<blockquote>
+<p>在 <code>.cursor/rules/</code> 中写明禁区，并用 pre-commit hook 拦截。</p>
+</blockquote>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><blockquote>
+<p>本文档本身就是一份”<strong>活文档</strong>“。</p>
+<p>每次项目复盘后，<strong>把新踩到的坑、新有效的 prompt、新发现的失败模式补回来</strong>，让方法论持续迭代。</p>
+<p>真正能让 AI 协作变好的，不是某个神奇的 prompt，而是<strong>一套被你和团队反复打磨过的、属于你们自己的工作方法</strong>。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/" class="print-no-link">#工程思维</a>
+      
+        <a href="/tags/Cursor/" class="print-no-link">#Cursor</a>
+      
+        <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="print-no-link">#项目管理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>用 AI 高质量交付项目的工作方法</div>
+      <div>http://baikelwang.github.io/2026/06/14/AI-协作工作方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/14/PXRD%E5%9B%BE%E8%B0%B1%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/" title="PXRD图谱全面解析">
+                        <span class="hidden-mobile">PXRD图谱全面解析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
