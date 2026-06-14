@@ -19,25 +19,27 @@
   <meta name="author" content="北海">
   <meta name="keywords" content="">
   
-    <meta name="description" content="问题的发现最近发现一个问题，就是我身边的很多朋友无法打开我的网站： baikelwang.github.io 但是我自己无论是电脑、平板还是手机都能打开，而且没有翻墙。所以我以为是他们DNS有问题，还让他们修改为8.8.8.8，结果发现还是没有用。 在昨天晚上上厕所的时候，一不留意间发现了问题所在。厕所里信号不好，频段没有5G信号，它自动切换为4G了，结果就变成这样：  这就奇怪了，我之前明明还可">
+    <meta name="description" content="一、什么是PXRD图谱？PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：  横坐标（x轴）：衍射角 2θ（单位：度） 纵坐标（y轴）：衍射强度（单位：计数cps或任意单位a.u.）  图谱呈现一系列衍射峰，每个峰对应晶体中某一组特定晶面（hkl）的衍射。  📊 直观理解：就像”指纹”一样，每种晶体材料都">
 <meta property="og:type" content="article">
-<meta property="og:title" content="国内网络无法访问的问题">
-<meta property="og:url" content="http://baikelwang.github.io/2025/07/05/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="PXRD图谱全面解析">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/PXRD%E5%9B%BE%E8%B0%B1%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="Baikel">
-<meta property="og:description" content="问题的发现最近发现一个问题，就是我身边的很多朋友无法打开我的网站： baikelwang.github.io 但是我自己无论是电脑、平板还是手机都能打开，而且没有翻墙。所以我以为是他们DNS有问题，还让他们修改为8.8.8.8，结果发现还是没有用。 在昨天晚上上厕所的时候，一不留意间发现了问题所在。厕所里信号不好，频段没有5G信号，它自动切换为4G了，结果就变成这样：  这就奇怪了，我之前明明还可">
+<meta property="og:description" content="一、什么是PXRD图谱？PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：  横坐标（x轴）：衍射角 2θ（单位：度） 纵坐标（y轴）：衍射强度（单位：计数cps或任意单位a.u.）  图谱呈现一系列衍射峰，每个峰对应晶体中某一组特定晶面（hkl）的衍射。  📊 直观理解：就像”指纹”一样，每种晶体材料都">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://baikelwang.github.io/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/OSK.jpg">
-<meta property="article:published_time" content="2025-07-05T10:27:40.000Z">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T12:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-14T09:13:26.528Z">
 <meta property="article:author" content="北海">
-<meta property="article:tag" content="5G">
-<meta property="article:tag" content="IP">
+<meta property="article:tag" content="PXRD">
+<meta property="article:tag" content="科研">
+<meta property="article:tag" content="凝聚态物理">
+<meta property="article:tag" content="晶体结构">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://baikelwang.github.io/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/OSK.jpg">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
   
   
   
-  <title>国内网络无法访问的问题 - Baikel</title>
+  <title>PXRD图谱全面解析 - Baikel</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="国内网络无法访问的问题"></span>
+            <span id="subtitle" data-typed-text="PXRD图谱全面解析"></span>
           
         </div>
 
@@ -214,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-07-05 10:27" pubdate>
-          2025年7月5日 上午
+        <time datetime="2026-06-14 12:00" pubdate>
+          2026年6月14日 中午
         </time>
       </span>
     
@@ -226,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.1k 字
         
       </span>
     
@@ -237,7 +239,7 @@
         
         
         
-          12 分钟
+          10 分钟
         
       </span>
     
@@ -274,102 +276,132 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">国内网络无法访问的问题</h1>
+            <h1 id="seo-header">PXRD图谱全面解析</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="问题的发现"><a href="#问题的发现" class="headerlink" title="问题的发现"></a>问题的发现</h1><p>最近发现一个问题，就是我身边的很多朋友无法打开我的网站： <a href="https://baikelwang.github.io/">baikelwang.github.io</a></p>
-<p>但是我自己无论是电脑、平板还是手机都能打开，而且没有翻墙。所以我以为是他们DNS有问题，还让他们修改为8.8.8.8，结果发现还是没有用。</p>
-<p>在昨天晚上上厕所的时候，一不留意间发现了问题所在。厕所里信号不好，频段没有5G信号，它自动切换为4G了，结果就变成这样：</p>
-<p><img src="/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/4.jpg" srcset="/img/loading.gif" lazyload alt="无法访问"></p>
-<p>这就奇怪了，我之前明明还可以访问的，现在怎么突然不可以了？</p>
-<p>上完厕所之后，手机自动切回到5G频段，又加载出来了：</p>
-<p><img src="/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/5.jpg" srcset="/img/loading.gif" lazyload alt="访问成功"></p>
-<p>这就奇怪了，然后我一查IP，发现</p>
-<p><img src="/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/4g.jpg" srcset="/img/loading.gif" lazyload alt="4G IP"></p>
-<p><img src="/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/5g.jpg" srcset="/img/loading.gif" lazyload alt="5G IP"></p>
-<p>学校电脑连接的是校园网WiFi，也可以在不翻墙状态下访问，于是我就检查校园网的频段，果然是5G的：</p>
-<p><img src="/img/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/njupt.png" srcset="/img/loading.gif" lazyload alt="校园网"></p>
-<p>这不由得让我思考：4G和5G分配的IP在对国外网站的访问许可管理上是否有不同？</p>
-<p>以下是查阅资料得出的总结：</p>
-<h1 id="查阅资料"><a href="#查阅资料" class="headerlink" title="查阅资料"></a>查阅资料</h1><h3 id="🔧-一、核心差异机制：4G-与-5G-的-IP-分配与路由策略"><a href="#🔧-一、核心差异机制：4G-与-5G-的-IP-分配与路由策略" class="headerlink" title="🔧 一、核心差异机制：4G 与 5G 的 IP 分配与路由策略"></a>🔧 <strong>一、核心差异机制：4G 与 5G 的 IP 分配与路由策略</strong></h3><h4 id="1-IP-地址池的隔离性"><a href="#1-IP-地址池的隔离性" class="headerlink" title="1. IP 地址池的隔离性"></a>1. <strong>IP 地址池的隔离性</strong></h4><ul>
-<li><strong>4G 网络</strong>：通常使用大规模共享 IP 池，这些 IP 因长期被滥用（如爬虫、批量注册）易被海外网站标记为高风险，尤其 GitHub 等平台会主动屏蔽频繁触发风控的 IP 段。</li>
-<li><strong>5G 网络</strong>：运营商为 5G 独立分配<strong>新 IP 段</strong>，且因商用时间短、用户基数小，IP 历史“清白度”更高，被目标网站拦截的概率显著降低。</li>
+                <h2 id="一、什么是PXRD图谱？"><a href="#一、什么是PXRD图谱？" class="headerlink" title="一、什么是PXRD图谱？"></a>一、什么是PXRD图谱？</h2><p><strong>PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱</strong>是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：</p>
+<ul>
+<li><strong>横坐标（x轴）</strong>：衍射角 <strong>2θ</strong>（单位：度）</li>
+<li><strong>纵坐标（y轴）</strong>：衍射<strong>强度</strong>（单位：计数cps或任意单位a.u.）</li>
 </ul>
-<h4 id="2-国际出口路由的差异"><a href="#2-国际出口路由的差异" class="headerlink" title="2. 国际出口路由的差异"></a>2. <strong>国际出口路由的差异</strong></h4><ul>
-<li><strong>4G 出口</strong>：多经过运营商集中式网关，易受<strong>深度包检测（DPI）</strong> 干扰，对未备案境外域名（如 <code>github.io</code>）实施 QoS 限速或直接重置连接。</li>
-<li><strong>5G 核心网（SA 模式）</strong>：支持 <strong>本地分流（Local Breakout）</strong>，部分流量可绕过传统国际关口局，直接通过跨境专线优化路由，降低干扰概率。</li>
-</ul>
-<h4 id="3-协议支持与传输优化"><a href="#3-协议支持与传输优化" class="headerlink" title="3. 协议支持与传输优化"></a>3. <strong>协议支持与传输优化</strong></h4><ul>
-<li><strong>5G 原生优势</strong>：低延迟（1–10ms）和高带宽（1Gbps+）更适应 <strong>TLS 1.3&#x2F;HTTP3</strong> 等现代协议，减少因网络抖动导致的握手失败；而 4G 高延迟（30–50ms）易触发 TLS 超时，被误判为访问失败。</li>
-<li><strong>IPv6 兼容性</strong>：5G 默认启用 IPv6，但若网站或本地网络 IPv6 支持不全（如 CDN 未优化），反而可能引发访问问题。部分运营商对 IPv6 国际流量施加更严格过滤。</li>
+<p>图谱呈现一系列<strong>衍射峰</strong>，每个峰对应晶体中某一组特定晶面（hkl）的衍射。</p>
+<blockquote>
+<p>📊 <strong>直观理解</strong>：就像”指纹”一样，每种晶体材料都有自己独特的PXRD图谱。</p>
+</blockquote>
+<hr>
+<h2 id="二、PXRD图谱长什么样？"><a href="#二、PXRD图谱长什么样？" class="headerlink" title="二、PXRD图谱长什么样？"></a>二、PXRD图谱长什么样？</h2><p>典型的PXRD图谱示例：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs 1c">强度<span class="hljs-punctuation">(</span>I<span class="hljs-punctuation">)</span><br>  ↑<br>  <span class="hljs-string">|    ██</span><br>  <span class="hljs-string">|   ████      ██</span><br>  <span class="hljs-string">|  ██████    ████     ██</span><br>  <span class="hljs-string">| ████████  ██████   ████    ██</span><br>  <span class="hljs-string">|███████████████████████████████████→ 2θ(°)</span><br>  <span class="hljs-string">|  20°    30°    40°    50°    60°</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>峰的位置（2θ）</strong> → 反映晶面间距 d（晶胞大小和形状）</li>
+<li><strong>峰的高度（强度）</strong> → 反映原子种类和位置（结构信息）</li>
+<li><strong>峰的宽度（半高宽）</strong> → 反映晶粒尺寸和微观应变</li>
 </ul>
 <hr>
-<h3 id="📊-二、运营商策略差异：访问权限的分级管理"><a href="#📊-二、运营商策略差异：访问权限的分级管理" class="headerlink" title="📊 二、运营商策略差异：访问权限的分级管理"></a>📊 <strong>二、运营商策略差异：访问权限的分级管理</strong></h3><table>
+<h2 id="三、PXRD有什么用？（核心应用）"><a href="#三、PXRD有什么用？（核心应用）" class="headerlink" title="三、PXRD有什么用？（核心应用）"></a>三、PXRD有什么用？（核心应用）</h2><h3 id="🔬-1-物相鉴定（最常用）"><a href="#🔬-1-物相鉴定（最常用）" class="headerlink" title="🔬 1. 物相鉴定（最常用）"></a>🔬 1. 物相鉴定（最常用）</h3><ul>
+<li>将样品的PXRD图谱与<strong>PDF卡片数据库</strong>（ICDD&#x2F;JCPDS）比对</li>
+<li>快速确定样品中含有哪些物相</li>
+<li>例：一种白色粉末，通过PXRD确认是TiO₂的锐钛矿相还是金红石相</li>
+</ul>
+<h3 id="🧪-2-晶体结构解析"><a href="#🧪-2-晶体结构解析" class="headerlink" title="🧪 2. 晶体结构解析"></a>🧪 2. 晶体结构解析</h3><ul>
+<li><strong>从头解析</strong>：从PXRD数据反推未知晶体结构</li>
+<li><strong>Rietveld精修</strong>：已知大致结构，通过拟合优化原子坐标</li>
+</ul>
+<h3 id="📏-3-晶格参数测定"><a href="#📏-3-晶格参数测定" class="headerlink" title="📏 3. 晶格参数测定"></a>📏 3. 晶格参数测定</h3><ul>
+<li>精确测量晶胞参数 a、b、c、α、β、γ</li>
+<li>监测固溶体、掺杂、相变引起的晶格变化</li>
+</ul>
+<h3 id="🔍-4-晶粒尺寸与微应变分析"><a href="#🔍-4-晶粒尺寸与微应变分析" class="headerlink" title="🔍 4. 晶粒尺寸与微应变分析"></a>🔍 4. 晶粒尺寸与微应变分析</h3><ul>
+<li>利用<strong>Scherrer公式</strong>估算纳米晶粒尺寸：D &#x3D; Kλ &#x2F; (βcosθ)</li>
+<li>通过峰形分析评估晶格应变</li>
+</ul>
+<h3 id="🌡️-5-原位研究"><a href="#🌡️-5-原位研究" class="headerlink" title="🌡️ 5. 原位研究"></a>🌡️ 5. 原位研究</h3><ul>
+<li>变温XRD：跟踪相变、热膨胀</li>
+<li>电化学原位XRD：观察电池充放电过程中电极材料的结构变化</li>
+</ul>
+<h3 id="✅-6-纯度与结晶度评估"><a href="#✅-6-纯度与结晶度评估" class="headerlink" title="✅ 6. 纯度与结晶度评估"></a>✅ 6. 纯度与结晶度评估</h3><ul>
+<li>非晶态物质产生弥散峰，结晶物质产生尖锐峰</li>
+<li>可定量结晶度比例</li>
+</ul>
+<hr>
+<h2 id="四、PXRD的工作原理（核心原理）"><a href="#四、PXRD的工作原理（核心原理）" class="headerlink" title="四、PXRD的工作原理（核心原理）"></a>四、PXRD的工作原理（核心原理）</h2><h3 id="⚛️-物理本质：X射线与晶体的相互作用"><a href="#⚛️-物理本质：X射线与晶体的相互作用" class="headerlink" title="⚛️ 物理本质：X射线与晶体的相互作用"></a>⚛️ 物理本质：X射线与晶体的相互作用</h3><h3 id="第一步：入射与散射"><a href="#第一步：入射与散射" class="headerlink" title="第一步：入射与散射"></a>第一步：入射与散射</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-attribute">X</span>射线源                   探测器<br>   │                        │<br>   │  λ (Cu Kα, <span class="hljs-number">1.54</span>Å)      │<br>   └─────────→ 样品 ←───────┘<br>               ⬇<br>       原子中的电子被激发<br>       重新发射<span class="hljs-attribute">X</span>射线（散射）<br></code></pre></td></tr></table></figure>
+
+<h3 id="第二步：布拉格定律（核心公式）"><a href="#第二步：布拉格定律（核心公式）" class="headerlink" title="第二步：布拉格定律（核心公式）"></a>第二步：布拉格定律（核心公式）</h3><p>当X射线照射到晶体上时，不同原子层（晶面）散射的X射线会发生<strong>干涉</strong>：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs livescript">入射X射线         反射X射线<br>    <span class="hljs-string">\</span>              /<br>     <span class="hljs-string">\</span>            /<br>      <span class="hljs-string">\θ</span>        θ/<br>       ────────  ← 晶面间距 d<br>        <span class="hljs-string">\</span>      /<br>         <span class="hljs-string">\</span>    /<br>          <span class="hljs-string">\</span>  /<br></code></pre></td></tr></table></figure>
+
+<p><strong>布拉格定律</strong>是PXRD的基石：</p>
+<blockquote>
+<p><strong>2d sinθ &#x3D; nλ</strong></p>
+</blockquote>
+<p>其中：</p>
+<ul>
+<li><strong>d</strong> &#x3D; 晶面间距（Å）</li>
+<li><strong>θ</strong> &#x3D; 入射角&#x2F;反射角（度）</li>
+<li><strong>λ</strong> &#x3D; X射线波长（Cu Kα ≈ 1.5406 Å）</li>
+<li><strong>n</strong> &#x3D; 衍射级数（正整数，通常取1）</li>
+</ul>
+<h3 id="第三步：为什么会得到峰？"><a href="#第三步：为什么会得到峰？" class="headerlink" title="第三步：为什么会得到峰？"></a>第三步：为什么会得到峰？</h3><ul>
+<li><strong>满足布拉格条件时</strong>：各原子层散射的X射线<strong>相位相同</strong> → <strong>相干加强</strong> → <strong>出现衍射峰</strong></li>
+<li><strong>不满足条件时</strong>：散射光相互抵消 → <strong>背景信号</strong></li>
+</ul>
+<h3 id="第四步：粉末为什么有这么多峰？"><a href="#第四步：粉末为什么有这么多峰？" class="headerlink" title="第四步：粉末为什么有这么多峰？"></a>第四步：粉末为什么有这么多峰？</h3><ul>
+<li>粉末样品中有无数<strong>随机取向</strong>的小晶粒</li>
+<li>总有一部分晶粒的某个晶面恰好满足布拉格条件</li>
+<li>旋转探测器即可记录所有方向的衍射信号</li>
+</ul>
+<hr>
+<h2 id="五、一个具体计算示例"><a href="#五、一个具体计算示例" class="headerlink" title="五、一个具体计算示例"></a>五、一个具体计算示例</h2><p>以<strong>NaCl</strong>为例，计算其第一个衍射峰（200面）：</p>
+<table>
 <thead>
 <tr>
-<th><strong>策略维度</strong></th>
-<th><strong>4G 网络</strong></th>
-<th><strong>5G 网络</strong></th>
-<th><strong>对访问 GitHub 的影响</strong></th>
+<th>参数</th>
+<th>数值</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>IP 信誉库更新</strong></td>
-<td>旧 IP 段，被屏蔽率高</td>
-<td>新 IP 段，风控系统信任度高</td>
-<td>5G 更易绕过黑名单</td>
+<td>晶胞参数 a</td>
+<td>5.64 Å</td>
+<td>NaCl面心立方</td>
 </tr>
 <tr>
-<td><strong>国际带宽分配</strong></td>
-<td>低优先级，易拥堵</td>
-<td>高优先级保障，专线优化</td>
-<td>5G 加载速度更快，不易超时</td>
+<td>晶面 (200)</td>
+<td>d &#x3D; a&#x2F;√(h²+k²+l²)</td>
+<td>&#x3D; 5.64&#x2F;2 &#x3D; 2.82 Å</td>
 </tr>
 <tr>
-<td><strong>协议干扰强度</strong></td>
-<td>对未备案域名主动干扰</td>
-<td>干扰较少（试验期政策宽松）</td>
-<td>4G 可能遭遇 RST 阻断</td>
+<td>λ (Cu Kα)</td>
+<td>1.5406 Å</td>
+<td>常用靶材</td>
 </tr>
 <tr>
-<td><strong>地理位置模拟</strong></td>
-<td>国内出口 IP，易被识别</td>
-<td>可能分配“混合定位”IP</td>
-<td>5G 更易伪装为本地用户访问</td>
+<td>布拉格方程</td>
+<td>2×2.82×sinθ &#x3D; 1×1.5406</td>
+<td>代入n&#x3D;1</td>
+</tr>
+<tr>
+<td><strong>2θ 结果</strong></td>
+<td><strong>2θ &#x3D; 2×arcsin(0.273) &#x3D; 31.7°</strong></td>
+<td><strong>实验峰位置</strong></td>
 </tr>
 </tbody></table>
-<h3 id="🌐-三、哪些网站易现-4G-5G-访问差异？"><a href="#🌐-三、哪些网站易现-4G-5G-访问差异？" class="headerlink" title="🌐 三、哪些网站易现 4G&#x2F;5G 访问差异？"></a>🌐 <strong>三、哪些网站易现 4G&#x2F;5G 访问差异？</strong></h3><p>以下类型网站因依赖境外服务或敏感域名，易受网络类型影响：  </p>
-<ol>
-<li><strong>开源平台</strong>：GitHub Pages、GitLab Pages、Netlify（<code>*.netlify.app</code>）  </li>
-<li><strong>文档服务</strong>：ReadTheDocs（<code>*.readthedocs.io</code>）、Vercel（<code>*.vercel.app</code>）  </li>
-<li><strong>轻量 API 服务</strong>：JSONPlaceholder、httpbin.org  </li>
-<li><strong>学术资源</strong>：arXiv、Internet Archive（部分镜像）</li>
-</ol>
-<blockquote>
-<p>💡 特征：未备案境外域名、HTTPS 证书未托管于国内 CA、服务端部署在 AWS&#x2F;GCP 等国际云平台。</p>
-</blockquote>
-<h3 id="🛠️-四、针对性解决方案：突破-4G-访问限制"><a href="#🛠️-四、针对性解决方案：突破-4G-访问限制" class="headerlink" title="🛠️ 四、针对性解决方案：突破 4G 访问限制"></a>🛠️ <strong>四、针对性解决方案：突破 4G 访问限制</strong></h3><h4 id="1-基础优化：DNS-与协议层调整"><a href="#1-基础优化：DNS-与协议层调整" class="headerlink" title="1. 基础优化：DNS 与协议层调整"></a>1. <strong>基础优化：DNS 与协议层调整</strong></h4><ul>
-<li><strong>切换 DNS</strong>：在 4G 网络设置中指定 <code>8.8.8.8</code>（Google）或 <code>1.1.1.1</code>（Cloudflare），避开运营商 DNS 污染。</li>
-<li><strong>强制 HTTPS</strong>：手动输入 <code>https://</code> 开头的 URL，避免运营商对 HTTP 的中间人干扰。</li>
-<li><strong>关闭 IPv6</strong>：若开启后访问异常，在手机网络设置中禁用 IPv6。</li>
-</ul>
-<h4 id="2-高阶方案：代理与路由优化"><a href="#2-高阶方案：代理与路由优化" class="headerlink" title="2. 高阶方案：代理与路由优化"></a>2. <strong>高阶方案：代理与路由优化</strong></h4><ul>
-<li><strong>VPN&#x2F;代理 IP</strong>：使用 <strong>住宅代理 IP</strong>（如 IPIPGO 的 4G&#x2F;5G 动态 IP）模拟真实本地用户，直接绕过 IP 黑名单。</li>
-<li><strong>协议选择</strong>：优先支持 <strong>WireGuard 或 Shadowsocks</strong> 的 VPN 服务，其流量特征更难被识别。</li>
-<li><strong>路由工具</strong>：配置 <strong>Clash 规则</strong>，仅对受限网站走代理，国内流量直连提升速度。</li>
-</ul>
-<h4 id="3-替代访问路径"><a href="#3-替代访问路径" class="headerlink" title="3. 替代访问路径"></a>3. <strong>替代访问路径</strong></h4><ul>
-<li><strong>官方 App</strong>：GitHub Mobile App 对网络波动容忍度更高，部分场景可替代网页访问。</li>
-<li><strong>镜像加速</strong>：通过 <strong>FastGit</strong> 或 <strong>Gitee 同步</strong> 间接获取 GitHub 资源。</li>
-</ul>
-<h3 id="💎-总结：5G-的“访问红利”是暂时的，但可主动利用"><a href="#💎-总结：5G-的“访问红利”是暂时的，但可主动利用" class="headerlink" title="💎 总结：5G 的“访问红利”是暂时的，但可主动利用"></a>💎 <strong>总结：5G 的“访问红利”是暂时的，但可主动利用</strong></h3><p>当前 5G 的访问优势源于 <strong>IP 池的新鲜度、路由优先级及宽松政策</strong>，但随着 5G 用户增长和风控系统升级，这一红利可能逐渐消失。建议：  </p>
+<p>实验中确实在约31.7°观察到NaCl的最强衍射峰！✅</p>
+<hr>
+<h2 id="六、PXRD流程总结"><a href="#六、PXRD流程总结" class="headerlink" title="六、PXRD流程总结"></a>六、PXRD流程总结</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs nix">┌─────────────┐<br>│   合成样品   │<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐<br>│ 研磨成粉末   │ ← 增加晶粒随机取向<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐<br>│   PXRD测量   │ ← <span class="hljs-number">2</span>θ范围通常<span class="hljs-number">5</span>°~<span class="hljs-number">80</span>°<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐     ┌─────────────┐<br>│   图谱分析   │ ← → │  与CIF计算  │<br>│            │     │   图谱比较   │<br>└──────┬──────┘     └─────────────┘<br>       ↓<br>┌─────────────┐<br>│ 物相鉴定<span class="hljs-symbol">/</span>   │<br>│ 结构精修    │<br>└─────────────┘<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="简单记忆"><a href="#简单记忆" class="headerlink" title="简单记忆"></a>简单记忆</h2><blockquote>
+<p><strong>PXRD &#x3D; 用X射线给晶体”拍X光片”</strong></p>
 <ul>
-<li><strong>短期</strong>：在 4G 下切换 DNS 或启用 VPN 解决访问问题；  </li>
-<li><strong>长期</strong>：若需高频访问境外资源，优先使用 5G 网络，并配置 <strong>动态代理池+协议混淆</strong> 组合（如 IPIPGO + Clash），实现稳定访问。  </li>
-<li>若问题持续，可补充所在城市、运营商（如移动&#x2F;电信）及具体错误代码，我会进一步定制方案。</li>
+<li>每个晶体有独特的”DNA指纹”——PXRD图谱</li>
+<li>布拉格定律是核心：2d sinθ &#x3D; nλ</li>
+<li>峰位置→晶面间距→晶体结构</li>
+<li>峰强度→原子排布→物相确认</li>
 </ul>
+</blockquote>
+<p><strong>这就是为什么从CIF文件能算出PXRD——因为CIF中包含了所有计算所需的结构信息（晶胞参数、原子坐标、空间群），算法本质上就是在模拟这个物理过程！</strong></p>
 
                 
               </div>
@@ -388,7 +420,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  <a href="/categories/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">凝聚态物理与人工智能</a>
   
   
 
@@ -403,9 +435,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/5G/" class="print-no-link">#5G</a>
+        <a href="/tags/PXRD/" class="print-no-link">#PXRD</a>
       
-        <a href="/tags/IP/" class="print-no-link">#IP</a>
+        <a href="/tags/%E7%A7%91%E7%A0%94/" class="print-no-link">#科研</a>
+      
+        <a href="/tags/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86/" class="print-no-link">#凝聚态物理</a>
+      
+        <a href="/tags/%E6%99%B6%E4%BD%93%E7%BB%93%E6%9E%84/" class="print-no-link">#晶体结构</a>
       
     </div>
   
@@ -417,8 +453,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>国内网络无法访问的问题</div>
-      <div>http://baikelwang.github.io/2025/07/05/国内网络无法访问的问题/</div>
+      <div>PXRD图谱全面解析</div>
+      <div>http://baikelwang.github.io/2026/06/14/PXRD图谱全面解析/</div>
     </div>
     <div class="license-meta">
       
@@ -430,7 +466,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年7月5日</div>
+          <div>2026年6月14日</div>
         </div>
       
       
@@ -462,18 +498,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BC%95%E5%85%A5/" title="数据结构第一章：概念与引入">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据结构第一章：概念与引入</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/07/04/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/" title="Unet神经网络图像分割研究与应用">
-                        <span class="hidden-mobile">Unet神经网络图像分割研究与应用</span>
+                      <a href="/2026/06/14/Uni-3DAR%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B7%A8%E5%B0%BA%E5%BA%A63D%E7%94%9F%E6%88%90%E4%B8%8E%E7%90%86%E8%A7%A3%E7%9A%84%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A1%86%E6%9E%B6/" title="Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架">
+                        <span class="hidden-mobile">Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
