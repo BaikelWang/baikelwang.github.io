@@ -1,7 +1,0 @@
-# Consolidate all commit identities to BaikelWang for GitHub Contributors display.
-# Format: <canonical name> <canonical email> <legacy name> <legacy email>
-# https://git-scm.com/docs/gitmailmap
-
-BaikelWang <2393947100@qq.com> Cursor Agent <cursoragent@cursor.com>
-BaikelWang <2393947100@qq.com> cursor[bot] <206951365+cursor[bot]@users.noreply.github.com>
-BaikelWang <2393947100@qq.com> Dieuwyx <2393947100@qq.com>
