@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>区间动态规划：最长回文子序列与通用模板</title>
+    <link href="/2026/06/18/%E5%8C%BA%E9%97%B4%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%9A%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E5%BA%8F%E5%88%97%E4%B8%8E%E9%80%9A%E7%94%A8%E6%A8%A1%E6%9D%BF/"/>
+    <url>/2026/06/18/%E5%8C%BA%E9%97%B4%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%9A%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E5%BA%8F%E5%88%97%E4%B8%8E%E9%80%9A%E7%94%A8%E6%A8%A1%E6%9D%BF/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-前言：区间-DP-的战略地位与核心逻辑"><a href="#1-前言：区间-DP-的战略地位与核心逻辑" class="headerlink" title="1. 前言：区间 DP 的战略地位与核心逻辑"></a>1. 前言：区间 DP 的战略地位与核心逻辑</h2><p>在高级算法面试中，区间动态规划（Interval Dynamic Programming）往往被视为区分中高级候选人的「分水岭」。它不仅考察代码实现，更考察候选人对子问题依赖关系的深刻理解。区间 DP 专门用于解决那些涉及「连续子区间」合并或划分的问题，其核心逻辑在于<strong>由内向外、由短及长</strong>地构建最优解。</p><p><strong>为何初学者难以直观定义区间 DP？</strong> 初学者的思维往往局限于线性增长（如 i → i+1）。然而，区间问题要求我们同时维护左端点 i 和右端点 j。最难突破的障碍是<strong>计算顺序的依赖性</strong>：大区间 [i, j] 的最优解通常依赖于其内部小区间（如 [i+1, j-1]）的结果。如果按照常规的双重循环顺序遍历，极易在计算当前状态时引用尚未初始化的「未来状态」。</p><p>本报告将通过深度拆解最长回文子序列（LPS）及其变体，揭示区间 DP 的通用建模范式。</p><h2 id="2-核心题目详解：LeetCode-516-最长回文子序列-LPS"><a href="#2-核心题目详解：LeetCode-516-最长回文子序列-LPS" class="headerlink" title="2. 核心题目详解：LeetCode 516. 最长回文子序列 (LPS)"></a>2. 核心题目详解：LeetCode 516. 最长回文子序列 (LPS)</h2><h3 id="2-1-题目原型与深度剖析"><a href="#2-1-题目原型与深度剖析" class="headerlink" title="2.1 题目原型与深度剖析"></a>2.1 题目原型与深度剖析</h3><p><strong>题目要求：</strong> 给定一个字符串 s，找出其中最长的回文子序列的长度。</p><p><strong>约束：</strong> n ≤ 1000，暗示 O(n²) 的时间复杂度是可接受的，而 O(2ⁿ) 的暴力搜索必将超时。</p><p><strong>核心辨析：子序列 vs. 子串</strong></p><ul><li><strong>子串 (Substring)：</strong> 必须连续。如 <code>&quot;cbbd&quot;</code> 的最长回文子串是 <code>&quot;bb&quot;</code>。</li><li><strong>子序列 (Subsequence)：</strong> 可以不连续，只需保持相对顺序。例如 <code>&quot;cbbd&quot;</code> 的子序列包括 <code>&quot;cbd&quot;</code>、<code>&quot;bb&quot;</code> 等。</li><li><strong>面试逻辑点：</strong> 子序列赋予了我们「跳过」某些字符的权利，这种非连续性正是区间 DP 状态转移中 <code>max(dp[i+1][j], dp[i][j-1])</code> 的来源。</li></ul><p><strong>示例 1：</strong> <code>s = &quot;bbbab&quot;</code>，输出 <code>4</code>。回文子序列可以是 <code>&quot;bbbb&quot;</code>。</p><p><strong>示例 2：</strong> <code>s = &quot;cbbd&quot;</code>，输出 <code>2</code>。回文子序列是 <code>&quot;bb&quot;</code>。即使两个 <code>&#39;b&#39;</code> 在原串中相邻，我们也应视其为选择了下标 1 和 2 的字符。若输入为 <code>&quot;abcba&quot;</code>，即便去掉中间的 <code>&#39;c&#39;</code>，两端的 <code>&#39;a&#39;</code> 和 <code>&#39;b&#39;</code> 依然能构成回文。</p><h3 id="2-2-解题思路：从对称性观察到动态规划"><a href="#2-2-解题思路：从对称性观察到动态规划" class="headerlink" title="2.2 解题思路：从对称性观察到动态规划"></a>2.2 解题思路：从对称性观察到动态规划</h3><p><strong>1. 状态定义：</strong> 定义 <code>dp[i][j]</code> 为字符串 s 在区间 [i, j] 内的最长回文子序列长度。最终答案即为 <code>dp[0][n-1]</code>。</p><p><strong>2. 核心决策逻辑（为什么想到区间 DP？）：</strong> 观察区间的两端字符 s[i] 和 s[j]：</p><ul><li><strong>若 s[i] &#x3D;&#x3D; s[j]：</strong> 这两个字符可以匹配，作为回文的最外层。长度在内部区间 [i+1, j-1] 的基础上加 2。<ul><li>方程：<code>dp[i][j] = dp[i+1][j-1] + 2</code></li></ul></li><li><strong>若 s[i] ≠ s[j]：</strong> 说明这两个字符无法同时出现在同一个最长回文子序列中。我们需要在「舍弃 s[i]」和「舍弃 s[j]」之间取最优解。<ul><li>方程：<code>dp[i][j] = max(dp[i+1][j], dp[i][j-1])</code></li></ul></li></ul><p><strong>3. 可视化填表过程（以 <code>&quot;bbbab&quot;</code> 为例）：</strong> 关键在于<strong>计算顺序</strong>。由于 <code>dp[i][j]</code> 依赖于下一行 <code>i+1</code> 的数据，我们必须<strong>倒着遍历 i</strong>（从 n-1 到 0）。</p><table><thead><tr><th>i \ j</th><th>0 (b)</th><th>1 (b)</th><th>2 (b)</th><th>3 (a)</th><th>4 (b)</th></tr></thead><tbody><tr><td><strong>0 (b)</strong></td><td><strong>1</strong></td><td>2</td><td>3</td><td>3</td><td><strong>4</strong></td></tr><tr><td><strong>1 (b)</strong></td><td>-</td><td><strong>1</strong></td><td>2</td><td>2</td><td>3</td></tr><tr><td><strong>2 (b)</strong></td><td>-</td><td>-</td><td><strong>1</strong></td><td>1</td><td>3</td></tr><tr><td><strong>3 (a)</strong></td><td>-</td><td>-</td><td>-</td><td><strong>1</strong></td><td>1</td></tr><tr><td><strong>4 (b)</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>1</strong></td></tr></tbody></table><p><em>注：<code>dp[2][4]</code> 对应串 <code>&quot;bab&quot;</code>，因为 s[2]&#x3D;&#x3D;s[4]，故 <code>dp[2][4] = dp[3][3] + 2 = 1 + 2 = 3</code>。</em></p><h3 id="2-3-工业级代码实现与避坑指南"><a href="#2-3-工业级代码实现与避坑指南" class="headerlink" title="2.3 工业级代码实现与避坑指南"></a>2.3 工业级代码实现与避坑指南</h3><h4 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPalindromeSubseq</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>    n = <span class="hljs-built_in">len</span>(s)<br>    dp = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):<br>        dp[i][i] = <span class="hljs-number">1</span>  <span class="hljs-comment"># 基础子问题：单个字符</span><br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):<br>            <span class="hljs-keyword">if</span> s[i] == s[j]:<br>                dp[i][j] = dp[i + <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">2</span><br>            <span class="hljs-keyword">else</span>:<br>                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i + <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>]<br></code></pre></td></tr></table></figure><h4 id="C-实现-更体现内存布局"><a href="#C-实现-更体现内存布局" class="headerlink" title="C++ 实现 (更体现内存布局)"></a>C++ 实现 (更体现内存布局)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">longestPalindromeSubseq</span><span class="hljs-params">(string s)</span> </span>&#123;<br>    <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();<br>    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">dp</span>(n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-type">int</span>&gt;(n, <span class="hljs-number">0</span>));<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; --i) &#123;<br>        dp[i][i] = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; ++j) &#123;<br>            <span class="hljs-keyword">if</span> (s[i] == s[j]) dp[i][j] = dp[i + <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">else</span> dp[i][j] = <span class="hljs-built_in">max</span>(dp[i + <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>]);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>];<br>&#125;<br></code></pre></td></tr></table></figure><p><strong>避坑指南（The Pitfalls）：</strong></p><ol><li><strong>遍历方向错误：</strong> 如果写成 <code>for i in range(n)</code>，在计算 <code>dp[0][5]</code> 时，<code>dp[1][4]</code> 尚未被更新（仍为初始值 0），导致结果全错。</li><li><strong>空间溢出：</strong> 1000 × 1000 的 <code>int</code> 矩阵约占用 4MB 内存，但在一些嵌入式或严格限制内存的笔试中，需考虑下文提到的空间优化。</li></ol><h2 id="3-扩展进阶：LeetCode-1039-多边形三角剖分的最低得分"><a href="#3-扩展进阶：LeetCode-1039-多边形三角剖分的最低得分" class="headerlink" title="3. 扩展进阶：LeetCode 1039. 多边形三角剖分的最低得分"></a>3. 扩展进阶：LeetCode 1039. 多边形三角剖分的最低得分</h2><h3 id="3-1-几何问题的区间化转换"><a href="#3-1-几何问题的区间化转换" class="headerlink" title="3.1 几何问题的区间化转换"></a>3.1 几何问题的区间化转换</h3><p>该题要求将 N 边形剖分为 N-2 个三角形，使顶点权值乘积之和最小。</p><p><strong>核心策略：</strong> 固定一边 (i, j)，并在中间寻找一个顶点 k。在这个模型中，边 (i, j) 一定是某个三角形 (i, k, j) 的底边。一旦选定了 k，原来的多边形就被切割成了三部分：</p><ol><li>中间的三角形 (i, k, j)。</li><li>左侧的子多边形（顶点为 i … k）。</li><li>右侧的子多边形（顶点为 k … j）。</li></ol><h3 id="3-2-状态转移方程"><a href="#3-2-状态转移方程" class="headerlink" title="3.2 状态转移方程"></a>3.2 状态转移方程</h3><p>定义 v 为顶点权重数组。<code>dp[i][j]</code> 为顶点 i 到 j 组成的多边形剖分后的最低得分。</p><p><code>dp[i][j] = min_&#123;i &lt; k &lt; j&#125; &#123; dp[i][k] + dp[k][j] + v[i] × v[k] × v[j] &#125;</code></p><p>此处的「底边固定」思想，成功将复杂的几何嵌套转化为了区间的线性分割。</p><h2 id="4-方法论沉淀：区间-DP-通用模板与实战套路"><a href="#4-方法论沉淀：区间-DP-通用模板与实战套路" class="headerlink" title="4. 方法论沉淀：区间 DP 通用模板与实战套路"></a>4. 方法论沉淀：区间 DP 通用模板与实战套路</h2><h3 id="4-1-万能解题模板"><a href="#4-1-万能解题模板" class="headerlink" title="4.1 万能解题模板"></a>4.1 万能解题模板</h3><p>为了避免遍历顺序出错，工业界最稳健的写法是<strong>按区间长度升序遍历</strong>。这样能百分之百保证在计算长区间时，短区间（子问题）已经完成计算。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 通用模板：三层循环</span><br><span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):           <span class="hljs-comment"># 1. 遍历区间长度</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):      <span class="hljs-comment"># 2. 遍历左端点</span><br>        j = i + length - <span class="hljs-number">1</span>               <span class="hljs-comment"># 3. 计算右端点</span><br>        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, j):        <span class="hljs-comment"># 4. 遍历中间分割点/决策点</span><br>            dp[i][j] = <span class="hljs-built_in">min</span>/<span class="hljs-built_in">max</span>(dp[i][j], dp[i][k] + dp[k][j] + cost)<br></code></pre></td></tr></table></figure><h3 id="4-2-「举一反三」题单推荐"><a href="#4-2-「举一反三」题单推荐" class="headerlink" title="4.2 「举一反三」题单推荐"></a>4.2 「举一反三」题单推荐</h3><ol><li><strong>LC 1312. 最少插入次数：</strong> 求让字符串成为回文的最少步数。逻辑：<code>n - LPS(s)</code>。</li><li><strong>LC 1547. 切棍子的最小成本：</strong> 典型的「切割点即分割点」问题。</li><li><strong>LC 3472. K 次操作后的 LPS：</strong> 区间 DP 的进阶，状态需增加一个维度 <code>dp[i][j][k]</code>。</li></ol><h2 id="5-面试实战：高频追问与应对策略"><a href="#5-面试实战：高频追问与应对策略" class="headerlink" title="5. 面试实战：高频追问与应对策略"></a>5. 面试实战：高频追问与应对策略</h2><p><strong>问：如何将空间复杂度从 O(n²) 优化到 O(n)？</strong></p><p><strong>答：</strong> 观察 LPS 转移方程，<code>dp[i][j]</code> 只依赖于 <code>dp[i+1]</code>（下一行）和 <code>dp[i]</code>（当前行）。我们可以使用<strong>滚动数组</strong>。进一步观察，如果使用一行数组 <code>dp[j]</code>，<code>dp[i+1][j-1]</code> 会被上一轮的值覆盖，因此需要一个变量 <code>pre</code> 记录左下角的值：</p><p><code>new_dp[j] = (s[i] == s[j]) ? pre + 2 : max(dp[j], dp[j-1])</code></p><p><strong>问：求回文「子串」与「子序列」的 DP 定义有何不同？</strong></p><p><strong>答：</strong> 子串要求连续，其 <code>dp[i][j]</code> 通常是布尔值，表示 [i, j] 是否为回文。若 s[i] ≠ s[j]，<code>dp[i][j]</code> 直接为 <code>false</code>，不存在 <code>max</code> 转移，因为断开了就不是子串了。</p><p><strong>问：递归加记忆化 vs. 递推（自底向上）？</strong></p><p><strong>答：</strong> 记忆化搜索（自顶向下）更容易思考，且能自动剪枝（只访问合法状态）；递推则在空间优化上更具优势，且在 C++&#x2F;Java 中由于消除了函数调用开销，执行速度通常更快。</p><p><strong>结语：</strong> 区间 DP 的本质是处理「边界的扩张与收缩」。掌握了 i, j 两个指针的摆动规律，就拿到了通往高级动态规划大门的钥匙。算法能力的建立没有捷径：做完 1000 道，再来 1000 道。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+      <tag>动态规划</tag>
+      
+      <tag>LeetCode</tag>
+      
+      <tag>数据结构与算法</tag>
+      
+      <tag>算法面试</tag>
+      
+      <tag>区间DP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>软件工程世界观与做事方法</title>
     <link href="/2026/06/18/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E4%B8%96%E7%95%8C%E8%A7%82%E4%B8%8E%E5%81%9A%E4%BA%8B%E6%96%B9%E6%B3%95/"/>
     <url>/2026/06/18/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E4%B8%96%E7%95%8C%E8%A7%82%E4%B8%8E%E5%81%9A%E4%BA%8B%E6%96%B9%E6%B3%95/</url>
@@ -160,13 +195,13 @@
       
       <tag>AI</tag>
       
+      <tag>MLOps</tag>
+      
       <tag>工程思维</tag>
       
       <tag>Cursor</tag>
       
       <tag>项目管理</tag>
-      
-      <tag>MLOps</tag>
       
     </tags>
     
@@ -292,13 +327,13 @@
       
       <tag>AI</tag>
       
-      <tag>工程思维</tag>
-      
       <tag>全栈</tag>
       
       <tag>MLOps</tag>
       
       <tag>Python</tag>
+      
+      <tag>工程思维</tag>
       
       <tag>DeepLearning</tag>
       
