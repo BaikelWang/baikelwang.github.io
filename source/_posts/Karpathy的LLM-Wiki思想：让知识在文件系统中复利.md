@@ -1,15 +1,14 @@
 ---
 title: "Karpathy 的 LLM Wiki 思想：让知识在文件系统中复利"
 date: 2026-07-05 19:36:27
-updated: 2026-07-05 19:36:27
+updated: 2026-07-06 11:58:31
 categories: 人工智能
 tags:
   - LLM
   - Agent
   - Obsidian
   - 知识管理
-index_img: /img/default.png
-mermaid: true
+index_img: /img/karpathy-llm-wiki/cover.jpg
 permalink: 2026/07/05/karpathy-llm-wiki/
 ---
 
@@ -29,12 +28,7 @@ LLM Wiki 想改变的，正是这种“每次从零开始”的状态。
 
 Karpathy 提出的思路则是：在用户与原始资料之间增加一个持久的 Wiki 层。
 
-```mermaid
-flowchart LR
-    A[原始资料 Raw Sources] -->|读取与编译| B[持续维护的 Wiki]
-    B -->|检索与综合| C[回答、文章与分析]
-    C -->|有价值的结论写回| B
-```
+![从原始资料到持续演化 Wiki 的知识编译流程](/img/karpathy-llm-wiki/knowledge-flow.svg)
 
 当一篇新论文或文章进入系统时，LLM 不只是给它建立索引，而是把信息整合进已有知识结构：创建来源摘要，更新相关人物、概念和主题页面，补充交叉链接，标记新旧材料的分歧，并调整当前的综合认识。
 
