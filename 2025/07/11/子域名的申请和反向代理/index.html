@@ -1,0 +1,711 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="之前不是在腾讯云中购买了一个域名和服务器嘛，然后我自己的网站是 baikelwang.github.io，现在我想给自己的网站申请一个子域名，这样国内也能解析到，就不会被墙了。 创建子域名找到腾讯云的云解析 DNS，然后点击你的域名。  然后点击添加域名解析，创建一条如是的解析记录  请注意，一定要 CNAME 类型，然后填你的 github 网站，不要用 ip 地址！ 配置 caddy关于 ca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子域名的申请和反向代理配置">
+<meta property="og:url" content="http://baikelwang.github.io/2025/07/11/%E5%AD%90%E5%9F%9F%E5%90%8D%E7%9A%84%E7%94%B3%E8%AF%B7%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="之前不是在腾讯云中购买了一个域名和服务器嘛，然后我自己的网站是 baikelwang.github.io，现在我想给自己的网站申请一个子域名，这样国内也能解析到，就不会被墙了。 创建子域名找到腾讯云的云解析 DNS，然后点击你的域名。  然后点击添加域名解析，创建一条如是的解析记录  请注意，一定要 CNAME 类型，然后填你的 github 网站，不要用 ip 地址！ 配置 caddy关于 ca">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/%E5%BB%BA%E7%BD%91%E7%AB%99/image.png">
+<meta property="article:published_time" content="2025-07-11T03:37:38.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.959Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="网站">
+<meta property="article:tag" content="域名">
+<meta property="article:tag" content="caddy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/%E5%BB%BA%E7%BD%91%E7%AB%99/image.png">
+  
+  
+  
+  <title>子域名的申请和反向代理配置 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="子域名的申请和反向代理配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-11 11:37" pubdate>
+          2025年7月11日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          776 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">子域名的申请和反向代理配置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>之前不是在腾讯云中购买了一个域名和服务器嘛，然后我自己的网站是 baikelwang.github.io，现在我想给自己的网站申请一个子域名，这样国内也能解析到，就不会被墙了。</p>
+<h1 id="创建子域名"><a href="#创建子域名" class="headerlink" title="创建子域名"></a>创建子域名</h1><p>找到腾讯云的云解析 DNS，然后点击你的域名。</p>
+<p><img src="/img/%E5%BB%BA%E7%BD%91%E7%AB%99/yundns.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后点击添加域名解析，创建一条如是的解析记录</p>
+<p><img src="/img/%E5%BB%BA%E7%BD%91%E7%AB%99/jiexi.png" srcset="/img/loading.gif" lazyload></p>
+<p>请注意，一定要 CNAME 类型，然后填你的 github 网站，不要用 ip 地址！</p>
+<h1 id="配置-caddy"><a href="#配置-caddy" class="headerlink" title="配置 caddy"></a>配置 caddy</h1><p>关于 caddy 为什么要配置，请结合 _**在腾讯云轻量级服务器中部署hugoblox静态网站 **_一文。</p>
+<h3 id="步骤-1：配置-Caddyfile"><a href="#步骤-1：配置-Caddyfile" class="headerlink" title="步骤 1：配置 Caddyfile"></a>步骤 1：配置 Caddyfile</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> nano /etc/caddy/Caddyfile<br></code></pre></td></tr></table></figure>
+
+<p>添加以下配置（替换 <code>xxx.cn</code> 为您的实际域名）：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 主域名配置</span><br>www.xxx.<span class="hljs-section">cn</span> &#123;<br>    <span class="hljs-attribute">reverse_proxy</span> <span class="hljs-number">127.0.0.1:1313</span><br>&#125;<br><br><span class="hljs-comment"># 子域名配置 - 反向代理到 GitHub Pages</span><br>baikel.xxx.cn &#123;<br>    <span class="hljs-attribute">reverse_proxy</span> https://baikelwang.github.io &#123;<br>        <span class="hljs-comment"># 重要：设置正确的 Host 头</span><br>        <span class="hljs-attribute">header_up</span> Host &#123;upstream_hostport&#125;<br>        <span class="hljs-comment"># 其他必要的头设置</span><br>        <span class="hljs-attribute">header_up</span> X-Forwarded-For &#123;remote_host&#125;<br>    &#125;<br>  <br>    <span class="hljs-comment"># 强制 HTTPS（可选但推荐）</span><br>    <span class="hljs-attribute">redir</span> https://&#123;host&#125;&#123;uri&#125; <span class="hljs-attribute">permanent</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="步骤-2：保存并应用配置"><a href="#步骤-2：保存并应用配置" class="headerlink" title="步骤 2：保存并应用配置"></a>步骤 2：保存并应用配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 保存文件 (Nano: Ctrl+O → Enter → Ctrl+X)</span><br><span class="hljs-built_in">sudo</span> caddy validate --config /etc/caddy/Caddyfile  <span class="hljs-comment"># 验证配置</span><br><span class="hljs-built_in">sudo</span> systemctl reload caddy  <span class="hljs-comment"># 重新加载服务</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="步骤-3：DNS-配置（关键）"><a href="#步骤-3：DNS-配置（关键）" class="headerlink" title="步骤 3：DNS 配置（关键）"></a>步骤 3：DNS 配置（关键）</h3><ol>
+<li><strong>在域名控制台检查 CNAME 记录</strong>：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plain">类型: CNAME<br>名称: baikel<br>值: baikelwang.github.io<br>TTL: 自动<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>验证 DNS 解析</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">dig baikel.xxx.cn +short<br><span class="hljs-comment"># 应返回 baikelwang.github.io 的 IP 地址</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="步骤-4：GitHub-Pages-设置"><a href="#步骤-4：GitHub-Pages-设置" class="headerlink" title="步骤 4：GitHub Pages 设置"></a>步骤 4：GitHub Pages 设置</h3><ol>
+<li>在 GitHub 仓库设置中添加自定义域名：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plain">Settings → Pages → Custom domain → 输入 &quot;baikel.xxx.cn&quot;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>勾选 “Enforce HTTPS” 选项</li>
+</ol>
+<h3 id="步骤-5：验证配置"><a href="#步骤-5：验证配置" class="headerlink" title="步骤 5：验证配置"></a>步骤 5：验证配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 检查 Caddy 日志</span><br><span class="hljs-built_in">sudo</span> journalctl -u caddy -f --since <span class="hljs-string">&quot;5 minutes ago&quot;</span><br><br><span class="hljs-comment"># 测试访问</span><br>curl -I https://baikel.xxx.cn<br><span class="hljs-comment"># 应返回 200 OK 和 GitHub 的服务器头</span><br></code></pre></td></tr></table></figure>
+<h3 id="步骤-6：在-hexo-中配置-cname"><a href="#步骤-6：在-hexo-中配置-cname" class="headerlink" title="步骤 6：在 hexo 中配置 cname"></a>步骤 6：在 hexo 中配置 cname</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入项目目录</span><br><span class="hljs-built_in">cd</span> /path/to/your/hexo/project<br><span class="hljs-comment"># 创建 CNAME 文件</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;baikel.iamlgao.cn&quot;</span> &gt; <span class="hljs-built_in">source</span>/CNAME<br></code></pre></td></tr></table></figure>
+<h3 id="高级配置选项"><a href="#高级配置选项" class="headerlink" title="高级配置选项"></a>高级配置选项</h3><h4 id="1-添加-HSTS-安全头"><a href="#1-添加-HSTS-安全头" class="headerlink" title="1. 添加 HSTS 安全头"></a>1. 添加 HSTS 安全头</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nginx">baikel.xxx.<span class="hljs-section">cn</span> &#123;<br>    <span class="hljs-attribute">header</span> Strict-Transport-Security <span class="hljs-string">&quot;max-age=31536000;&quot;</span><br>    <span class="hljs-comment"># ...其他配置...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-缓存优化（提升速度）"><a href="#2-缓存优化（提升速度）" class="headerlink" title="2. 缓存优化（提升速度）"></a>2. 缓存优化（提升速度）</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nginx">baikel.xxx.<span class="hljs-section">cn</span> &#123;<br>    <span class="hljs-attribute">reverse_proxy</span> https://baikelwang.github.io &#123;<br>        <span class="hljs-attribute">header_up</span> Host &#123;upstream_hostport&#125;<br>      <br>        <span class="hljs-comment"># 缓存静态资源</span><br>        @<span class="hljs-section">static</span> &#123;<br>            <span class="hljs-attribute">path</span> <span class="hljs-regexp">*.css</span> <span class="hljs-regexp">*.js</span> <span class="hljs-regexp">*.jpg</span> <span class="hljs-regexp">*.png</span> <span class="hljs-regexp">*.gif</span><br>        &#125;<br>        reverse_proxy_cache <span class="hljs-variable">@static</span> &#123;<br>            <span class="hljs-attribute">duration</span> <span class="hljs-number">24h</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-备用方案（如果反向代理有问题）"><a href="#3-备用方案（如果反向代理有问题）" class="headerlink" title="3. 备用方案（如果反向代理有问题）"></a>3. 备用方案（如果反向代理有问题）</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs nginx">baikel.xxx.<span class="hljs-section">cn</span> &#123;<br>    <span class="hljs-comment"># 直接重定向（不保留URL路径）</span><br>    <span class="hljs-attribute">redir</span> https://baikelwang.github.io&#123;uri&#125; <span class="hljs-attribute">permanent</span><br>  <br>    <span class="hljs-comment"># 或保留完整路径的重定向</span><br>    rewrite * /&#123;path&#125;?&#123;query&#125;<br>    <span class="hljs-attribute">redir</span> https://baikelwang.github.io&#123;uri&#125; <span class="hljs-attribute">permanent</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="常见问题解决"><a href="#常见问题解决" class="headerlink" title="常见问题解决"></a>常见问题解决</h3><p><strong>问题：访问显示 404 或 GitHub 404 页面</strong></p>
+<ul>
+<li>检查 GitHub 仓库设置中是否添加了 <code>baikel.xxx.cn</code></li>
+<li>在仓库根目录添加 <code>CNAME</code> 文件（内容为 <code>baikel.xxx.cn</code>）</li>
+</ul>
+<p><strong>问题：SSL 证书错误</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 强制重新申请证书</span><br><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">rm</span> -rf /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/baikel.xxx.cn*<br><span class="hljs-built_in">sudo</span> systemctl restart caddy<br></code></pre></td></tr></table></figure>
+
+<p><strong>问题：内容更新延迟</strong></p>
+<ul>
+<li>GitHub Pages 有 1-10 分钟的缓存延迟</li>
+<li>在 Caddy 配置中添加缓存清除机制：</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">header</span> Cache-Control <span class="hljs-string">&quot;public, max-age=300&quot;</span>  <span class="hljs-comment"># 5分钟缓存</span><br></code></pre></td></tr></table></figure>
+
+<p>完成以上步骤后，<code>baikel.xxx.cn</code> 将作为子域名指向GitHub Pages 网站，并通过 Caddy 自动获得 SSL 证书。整个过程通常需要 5-30 分钟生效（主要取决于 DNS 传播时间）。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%BD%91%E7%AB%99/" class="print-no-link">#网站</a>
+      
+        <a href="/tags/%E5%9F%9F%E5%90%8D/" class="print-no-link">#域名</a>
+      
+        <a href="/tags/caddy/" class="print-no-link">#caddy</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>子域名的申请和反向代理配置</div>
+      <div>http://baikelwang.github.io/2025/07/11/子域名的申请和反向代理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/11/%E5%9C%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%AD%E9%83%A8%E7%BD%B2hugoblox%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99/" title="在腾讯云轻量级服务器中部署hugoblox静态网站">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在腾讯云轻量级服务器中部署hugoblox静态网站</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E9%A1%BA%E5%BA%8F%E8%A1%A8/" title="数据结构第二章：顺序表">
+                        <span class="hidden-mobile">数据结构第二章：顺序表</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

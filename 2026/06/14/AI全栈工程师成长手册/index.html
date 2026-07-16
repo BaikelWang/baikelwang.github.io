@@ -1,0 +1,1289 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从入门到精通：算法 × 架构 × 工程 × 管理的完整知识体系与实战方法论。用法：① 作为学习路线图按阶段推进；② 项目开发时按章节查阅对应 Checklist；③ 定期回顾「能力自评表」校准成长方向。   目录 角色定位与能力地图 基础知识体系 机器学习与深度学习 大模型（LLM)专题 数据工程 后端工程 前端工程 系统架构设计 性能优化与算子优化 MLOps：模型部署与运维 测试与 Debu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 全栈工程师成长手册">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/AI%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%88%90%E9%95%BF%E6%89%8B%E5%86%8C/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="从入门到精通：算法 × 架构 × 工程 × 管理的完整知识体系与实战方法论。用法：① 作为学习路线图按阶段推进；② 项目开发时按章节查阅对应 Checklist；③ 定期回顾「能力自评表」校准成长方向。   目录 角色定位与能力地图 基础知识体系 机器学习与深度学习 大模型（LLM)专题 数据工程 后端工程 前端工程 系统架构设计 性能优化与算子优化 MLOps：模型部署与运维 测试与 Debu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.948Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工程思维">
+<meta property="article:tag" content="全栈">
+<meta property="article:tag" content="MLOps">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="DeepLearning">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>AI 全栈工程师成长手册 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI 全栈工程师成长手册"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 10:00" pubdate>
+          2026年6月14日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          61 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI 全栈工程师成长手册</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>从入门到精通：算法 × 架构 × 工程 × 管理的完整知识体系与实战方法论。<br>用法：① 作为学习路线图按阶段推进；② 项目开发时按章节查阅对应 Checklist；③ 定期回顾「能力自评表」校准成长方向。</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#%E4%B8%80%E8%A7%92%E8%89%B2%E5%AE%9A%E4%BD%8D%E4%B8%8E%E8%83%BD%E5%8A%9B%E5%9C%B0%E5%9B%BE">角色定位与能力地图</a></li>
+<li><a href="#%E4%BA%8C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB">基础知识体系</a></li>
+<li><a href="#%E4%B8%89%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0">机器学习与深度学习</a></li>
+<li><a href="#%E5%9B%9B%E5%A4%A7%E6%A8%A1%E5%9E%8Bllm%E4%B8%93%E9%A2%98">大模型（LLM)专题</a></li>
+<li><a href="#%E4%BA%94%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B">数据工程</a></li>
+<li><a href="#%E5%85%AD%E5%90%8E%E7%AB%AF%E5%B7%A5%E7%A8%8B">后端工程</a></li>
+<li><a href="#%E4%B8%83%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B">前端工程</a></li>
+<li><a href="#%E5%85%AB%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1">系统架构设计</a></li>
+<li><a href="#%E4%B9%9D%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%8E%E7%AE%97%E5%AD%90%E4%BC%98%E5%8C%96">性能优化与算子优化</a></li>
+<li><a href="#%E5%8D%81mlops%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E7%BB%B4">MLOps：模型部署与运维</a></li>
+<li><a href="#%E5%8D%81%E4%B8%80%E6%B5%8B%E8%AF%95%E4%B8%8E-debug-%E6%96%B9%E6%B3%95%E8%AE%BA">测试与 Debug 方法论</a></li>
+<li><a href="#%E5%8D%81%E4%BA%8C%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84%E4%B8%8E%E6%88%90%E6%9C%AC">安全、合规与成本</a></li>
+<li><a href="#%E5%8D%81%E4%B8%89%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C">项目管理与团队协作</a></li>
+<li><a href="#%E5%8D%81%E5%9B%9B%E9%A1%B9%E7%9B%AE%E5%85%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-checklist">项目全生命周期 Checklist</a></li>
+<li><a href="#%E5%8D%81%E4%BA%94%E6%88%90%E9%95%BF%E8%B7%AF%E7%BA%BF%E5%85%A5%E9%97%A8--%E8%BF%9B%E9%98%B6--%E7%B2%BE%E9%80%9A">成长路线：入门 → 进阶 → 精通</a></li>
+<li><a href="#%E5%8D%81%E5%85%AD%E8%83%BD%E5%8A%9B%E8%87%AA%E8%AF%84%E8%A1%A8">能力自评表</a></li>
+<li><a href="#%E5%8D%81%E4%B8%83%E6%8E%A8%E8%8D%90%E8%B5%84%E6%BA%90">推荐资源</a></li>
+</ol>
+<hr>
+<h2 id="一、角色定位与能力地图"><a href="#一、角色定位与能力地图" class="headerlink" title="一、角色定位与能力地图"></a>一、角色定位与能力地图</h2><h3 id="1-1-什么是-AI-全栈工程师"><a href="#1-1-什么是-AI-全栈工程师" class="headerlink" title="1.1 什么是 AI 全栈工程师"></a>1.1 什么是 AI 全栈工程师</h3><p>能够独立完成「需求 → 算法验证 → 系统设计 → 开发 → 部署 → 运维 → 迭代」全链路的工程师。核心价值不是每个领域都最深，而是：</p>
+<ul>
+<li><strong>端到端交付能力</strong>：一个人能把想法变成线上可用的产品；</li>
+<li><strong>跨域翻译能力</strong>：把产品需求翻译成算法指标，把算法约束翻译成架构决策；</li>
+<li><strong>瓶颈定位能力</strong>：知道问题出在数据、模型、工程还是产品哪一层。</li>
+</ul>
+<h3 id="1-2-能力地图（T-型结构）"><a href="#1-2-能力地图（T-型结构）" class="headerlink" title="1.2 能力地图（T 型结构）"></a>1.2 能力地图（T 型结构）</h3><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">横向广度（都要会）：<br>  数学基础 |<span class="hljs-string"> Python/SQL </span>|<span class="hljs-string"> ML/DL 原理 </span>|<span class="hljs-string"> 数据工程 </span>|<span class="hljs-string"> 后端 </span>|<span class="hljs-string"> 前端</span><br><span class="hljs-string">  </span>|<span class="hljs-string"> 架构设计 </span>|<span class="hljs-string"> DevOps </span>|<span class="hljs-string"> MLOps </span>|<span class="hljs-string"> 安全合规 </span>|<span class="hljs-string"> 项目管理</span><br><span class="hljs-string"></span><br><span class="hljs-string">纵向深度（选 1~2 个做到精通）：</span><br><span class="hljs-string">  ① 算法方向：模型训练/微调、算法创新、论文复现</span><br><span class="hljs-string">  ② 推理优化方向：量化、编译、算子、推理引擎</span><br><span class="hljs-string">  ③ 平台架构方向：高并发系统、ML 平台、分布式系统</span><br><span class="hljs-string">  ④ 应用工程方向：Agent/RAG 应用、产品化、全栈交付</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>建议</strong>：先铺横向（6<del>12 个月），再根据兴趣和市场选纵向深耕（1</del>2 年）。绝大多数岗位要求 &#x3D; 横向及格 + 一个纵向突出。</p>
+<hr>
+<h2 id="二、基础知识体系"><a href="#二、基础知识体系" class="headerlink" title="二、基础知识体系"></a>二、基础知识体系</h2><h3 id="2-1-数学（够用即可，按需加深）"><a href="#2-1-数学（够用即可，按需加深）" class="headerlink" title="2.1 数学（够用即可，按需加深）"></a>2.1 数学（够用即可，按需加深）</h3><table>
+<thead>
+<tr>
+<th>领域</th>
+<th>必须掌握</th>
+<th>用在哪</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>线性代数</td>
+<td>矩阵乘法、特征值、SVD、范数</td>
+<td>一切深度学习的语言</td>
+</tr>
+<tr>
+<td>概率统计</td>
+<td>贝叶斯、分布、期望&#x2F;方差、假设检验、极大似然</td>
+<td>损失函数、评估、AB 测试</td>
+</tr>
+<tr>
+<td>微积分</td>
+<td>偏导、链式法则、梯度</td>
+<td>反向传播</td>
+</tr>
+<tr>
+<td>优化</td>
+<td>凸优化概念、SGD&#x2F;Adam、学习率调度</td>
+<td>训练调参</td>
+</tr>
+<tr>
+<td>信息论</td>
+<td>熵、交叉熵、KL 散度</td>
+<td>损失函数、蒸馏</td>
+</tr>
+</tbody></table>
+<p>学习方式：不要从头啃教材，遇到看不懂的公式再回头补对应章节。</p>
+<h3 id="2-2-计算机科学基础"><a href="#2-2-计算机科学基础" class="headerlink" title="2.2 计算机科学基础"></a>2.2 计算机科学基础</h3><ul>
+<li><strong>数据结构与算法</strong>：哈希、堆、树、图、动态规划——面试必备，工程中用于设计缓存、索引、调度。</li>
+<li><strong>操作系统</strong>：进程&#x2F;线程&#x2F;协程、内存管理、IO 模型（epoll）、虚拟内存——理解高并发和性能问题的根基。</li>
+<li><strong>计算机网络</strong>：TCP&#x2F;HTTP&#x2F;HTTPS&#x2F;WebSocket&#x2F;gRPC、DNS、负载均衡——分布式系统的血管。</li>
+<li><strong>数据库原理</strong>：索引（B+树）、事务（ACID）、隔离级别、锁、MVCC——后端的核心。</li>
+<li><strong>编译与硬件基础</strong>（进阶）：CPU 缓存层级、SIMD、GPU 体系结构（SM、warp、显存带宽）——算子优化的前提。</li>
+</ul>
+<h3 id="2-3-编程语言"><a href="#2-3-编程语言" class="headerlink" title="2.3 编程语言"></a>2.3 编程语言</h3><table>
+<thead>
+<tr>
+<th>语言</th>
+<th>定位</th>
+<th>掌握程度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Python</td>
+<td>算法、后端、脚本，主力语言</td>
+<td>精通：类型注解、异步、装饰器、性能陷阱（GIL）</td>
+</tr>
+<tr>
+<td>SQL</td>
+<td>数据处理的通用语言</td>
+<td>精通：窗口函数、执行计划、索引优化</td>
+</tr>
+<tr>
+<td>TypeScript&#x2F;JS</td>
+<td>前端 + Node 工具链</td>
+<td>熟练</td>
+</tr>
+<tr>
+<td>Go 或 Rust</td>
+<td>高性能服务、基础设施</td>
+<td>熟练其一</td>
+</tr>
+<tr>
+<td>C++&#x2F;CUDA</td>
+<td>算子优化、推理引擎</td>
+<td>按纵向方向选学</td>
+</tr>
+<tr>
+<td>Shell</td>
+<td>运维、自动化</td>
+<td>熟练</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-工程基本功（每天都在用）"><a href="#2-4-工程基本功（每天都在用）" class="headerlink" title="2.4 工程基本功（每天都在用）"></a>2.4 工程基本功（每天都在用）</h3><ul>
+<li><strong>Git</strong>：分支策略（trunk-based &#x2F; git-flow）、rebase vs merge、code review 流程。</li>
+<li><strong>Linux</strong>：常用命令、systemd、性能排查工具（top&#x2F;htop&#x2F;iostat&#x2F;ss&#x2F;strace）。</li>
+<li><strong>Docker</strong>：镜像分层、多阶段构建、compose；理解容器 ≠ 虚拟机。</li>
+<li><strong>IDE 与 AI 工具</strong>：熟练使用 AI 辅助编程（Cursor 等），但保持代码审查能力——AI 生成的代码你必须能逐行解释。</li>
+</ul>
+<hr>
+<h2 id="三、机器学习与深度学习"><a href="#三、机器学习与深度学习" class="headerlink" title="三、机器学习与深度学习"></a>三、机器学习与深度学习</h2><h3 id="3-1-经典机器学习（不要跳过）"><a href="#3-1-经典机器学习（不要跳过）" class="headerlink" title="3.1 经典机器学习（不要跳过）"></a>3.1 经典机器学习（不要跳过）</h3><ul>
+<li>线性&#x2F;逻辑回归、决策树、随机森林、GBDT（XGBoost&#x2F;LightGBM）、SVM、KMeans、PCA。</li>
+<li><strong>为什么重要</strong>：表格数据场景 GBDT 仍是王者；理解过拟合&#x2F;正则化&#x2F;偏差方差权衡是所有模型调优的基础；很多业务问题用简单模型 + 好特征就能解决，成本远低于深度学习。</li>
+</ul>
+<h3 id="3-2-深度学习核心"><a href="#3-2-深度学习核心" class="headerlink" title="3.2 深度学习核心"></a>3.2 深度学习核心</h3><ul>
+<li><strong>基础组件</strong>：全连接、卷积、RNN&#x2F;LSTM、Attention、Transformer（必须能手写一遍）、归一化（BN&#x2F;LN&#x2F;RMSNorm）、残差连接。</li>
+<li><strong>训练要素</strong>：损失函数选择、优化器、学习率调度（warmup + cosine）、梯度裁剪、混合精度（AMP）、梯度累积。</li>
+<li><strong>正则化手段</strong>：Dropout、数据增强、早停、标签平滑、权重衰减。</li>
+<li><strong>框架</strong>：PyTorch 为主（必须熟练 autograd、DataLoader、分布式 DDP&#x2F;FSDP）。</li>
+</ul>
+<h3 id="3-3-评估方法论（比训练更重要）"><a href="#3-3-评估方法论（比训练更重要）" class="headerlink" title="3.3 评估方法论（比训练更重要）"></a>3.3 评估方法论（比训练更重要）</h3><ul>
+<li>分类：精确率&#x2F;召回率&#x2F;F1&#x2F;AUC，<strong>理解业务上 FP 和 FN 哪个代价更高</strong>。</li>
+<li>回归：MAE&#x2F;RMSE&#x2F;R²。</li>
+<li>排序：NDCG&#x2F;MRR。</li>
+<li>生成：BLEU&#x2F;ROUGE 已不够，需要 LLM-as-judge + 人工评估。</li>
+<li><strong>铁律</strong>：训练&#x2F;验证&#x2F;测试集严格隔离；警惕数据泄漏（时间泄漏、ID 泄漏、预处理泄漏）；线下指标提升 ≠ 线上效果提升，最终以 AB 测试为准。</li>
+</ul>
+<h3 id="3-4-算法选型决策树"><a href="#3-4-算法选型决策树" class="headerlink" title="3.4 算法选型决策树"></a>3.4 算法选型决策树</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">有现成 API/开源模型能达标吗？<br>├─ 能 → 直接用（prompt<span class="hljs-regexp">/RAG/</span>zero-shot），成本最低<br>└─ 不能 → 微调能达标吗？<br>    ├─ 能 → LoRA/全参微调<br>    └─ 不能 → 数据够吗？<br>        ├─ 够 → 从头训练（极少需要）<br>        └─ 不够 → 回头改产品定义或先做数据<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、大模型（LLM-专题"><a href="#四、大模型（LLM-专题" class="headerlink" title="四、大模型（LLM)专题"></a>四、大模型（LLM)专题</h2><h3 id="4-1-原理层（理解到能讲清楚）"><a href="#4-1-原理层（理解到能讲清楚）" class="headerlink" title="4.1 原理层（理解到能讲清楚）"></a>4.1 原理层（理解到能讲清楚）</h3><ul>
+<li>Transformer Decoder 架构、KV Cache、位置编码（RoPE）、tokenizer（BPE）。</li>
+<li>训练三阶段：预训练 → SFT → 对齐（RLHF&#x2F;DPO）。</li>
+<li>推理过程：prefill vs decode、采样参数（temperature&#x2F;top_p）、上下文窗口的本质。</li>
+<li>Scaling Law 与涌现能力的基本认识。</li>
+</ul>
+<h3 id="4-2-应用层（当前就业最大需求）"><a href="#4-2-应用层（当前就业最大需求）" class="headerlink" title="4.2 应用层（当前就业最大需求）"></a>4.2 应用层（当前就业最大需求）</h3><ul>
+<li><strong>Prompt Engineering</strong>：角色设定、few-shot、思维链、结构化输出（JSON mode）、prompt 版本管理与回归测试。</li>
+<li><strong>RAG</strong>：文档切分策略、Embedding 选型、向量库（pgvector&#x2F;Milvus&#x2F;Qdrant）、混合检索（向量+BM25）、重排序（rerank）、引用溯源。RAG 效果差的原因 90% 在检索而不是生成。</li>
+<li><strong>Agent</strong>：工具调用（function calling）、ReAct 模式、规划与反思、多 Agent 编排、MCP 协议；重点是<strong>可控性设计</strong>——超时、步数上限、人工确认点。</li>
+<li><strong>微调</strong>：LoRA&#x2F;QLoRA 实操、数据配比、过拟合判断、灾难性遗忘。</li>
+<li><strong>评估</strong>：建立自己的评测集，LLM-as-judge + 抽样人工，每次改动跑回归。</li>
+</ul>
+<h3 id="4-3-LLM-工程化要点"><a href="#4-3-LLM-工程化要点" class="headerlink" title="4.3 LLM 工程化要点"></a>4.3 LLM 工程化要点</h3><ul>
+<li>流式输出（SSE）、token 计数与成本核算、上下文管理（截断&#x2F;摘要策略）。</li>
+<li>结构化输出校验与重试、幂等设计。</li>
+<li>多供应商抽象层（OpenAI&#x2F;Anthropic&#x2F;开源自托管可切换）。</li>
+<li>缓存策略：精确缓存 + 语义缓存。</li>
+</ul>
+<hr>
+<h2 id="五、数据工程"><a href="#五、数据工程" class="headerlink" title="五、数据工程"></a>五、数据工程</h2><blockquote>
+<p>80% 的模型效果问题出在数据上。数据能力是 AI 工程师被严重低估的核心竞争力。</p>
+</blockquote>
+<h3 id="5-1-数据全流程"><a href="#5-1-数据全流程" class="headerlink" title="5.1 数据全流程"></a>5.1 数据全流程</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">采集 → 清洗 → 标注 → 版本管理 → 特征工程 → 训练消费 → 线上回流<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>采集</strong>：埋点设计、爬虫合规、第三方数据协议审查。</li>
+<li><strong>清洗</strong>：去重（精确+模糊）、异常值、缺失值策略、格式归一化；脏数据检测要自动化成 pipeline。</li>
+<li><strong>标注</strong>：标注规范文档（含边界 case 裁决规则）、多人标注求一致性（Kappa 系数）、主动学习降低标注量。</li>
+<li><strong>版本管理</strong>：数据集像代码一样打版本（DVC &#x2F; lakeFS &#x2F; 简单的快照+manifest），任何模型必须能追溯到训练数据版本。</li>
+<li><strong>回流闭环</strong>：线上 bad case → 自动收集 → 标注队列 → 加入训练集 → 新版本模型。<strong>这个闭环的效率决定产品迭代速度。</strong></li>
+</ul>
+<h3 id="5-2-数据基础设施"><a href="#5-2-数据基础设施" class="headerlink" title="5.2 数据基础设施"></a>5.2 数据基础设施</h3><ul>
+<li>批处理：Spark &#x2F; 单机 Polars、DuckDB（中小规模首选，别动不动上集群）。</li>
+<li>流处理：Kafka + Flink（确有实时需求才用）。</li>
+<li>存储分层：对象存储（原始数据）→ 数仓（清洗后）→ 特征库&#x2F;向量库（服务消费）。</li>
+<li>调度：Airflow &#x2F; Dagster &#x2F; Prefect，任务要幂等、可重跑、有告警。</li>
+</ul>
+<h3 id="5-3-数据质量红线"><a href="#5-3-数据质量红线" class="headerlink" title="5.3 数据质量红线"></a>5.3 数据质量红线</h3><ul>
+<li>Schema 校验前置（pydantic &#x2F; Great Expectations）；</li>
+<li>训练&#x2F;服务特征一致性（training-serving skew 是经典事故源）；</li>
+<li>监控数据分布漂移（PSI &#x2F; KL 散度），漂移告警先于效果下降。</li>
+</ul>
+<hr>
+<h2 id="六、后端工程"><a href="#六、后端工程" class="headerlink" title="六、后端工程"></a>六、后端工程</h2><h3 id="6-1-核心能力"><a href="#6-1-核心能力" class="headerlink" title="6.1 核心能力"></a>6.1 核心能力</h3><ul>
+<li><strong>Web 框架</strong>：FastAPI（Python 生态首选，类型驱动 + 异步 + 自动文档）；Go 的 Gin&#x2F;Echo 备选。</li>
+<li><strong>API 设计</strong>：RESTful 规范、版本化（&#x2F;v1&#x2F;）、分页、错误码体系（业务码 ≠ HTTP 码）、OpenAPI 文档即契约。</li>
+<li><strong>异步与并发</strong>：理解 async&#x2F;await 的适用场景（IO 密集）、线程池处理 CPU 密集、协程陷阱（阻塞调用拖死事件循环）。</li>
+<li><strong>数据库实战</strong>：连接池、索引设计、慢查询分析（EXPLAIN）、N+1 问题、事务边界最小化、分页深翻页优化。</li>
+<li><strong>缓存</strong>：Redis 数据结构应用、缓存穿透&#x2F;击穿&#x2F;雪崩对策、缓存一致性策略（先更新库再删缓存）。</li>
+<li><strong>消息队列</strong>：至少精通一个（Kafka&#x2F;RabbitMQ&#x2F;Redis Stream），理解 at-least-once 语义下的幂等消费。</li>
+</ul>
+<h3 id="6-2-AI-服务后端的特殊模式"><a href="#6-2-AI-服务后端的特殊模式" class="headerlink" title="6.2 AI 服务后端的特殊模式"></a>6.2 AI 服务后端的特殊模式</h3><ul>
+<li><strong>长任务模式</strong>：提交任务 → 返回 task_id → 轮询 &#x2F; WebSocket &#x2F; Webhook 通知；任务状态机：<code>pending → running → succeeded / failed / cancelled</code>。</li>
+<li><strong>流式响应</strong>：SSE 实现、断线续传、中途取消的资源释放。</li>
+<li><strong>限流与背压</strong>：令牌桶限流（按用户&#x2F;按租户）、队列深度监控、优雅拒绝（429 + Retry-After）。</li>
+<li><strong>超时与重试矩阵</strong>：每层设超时（网关 &lt; 业务 &lt; 推理总和），重试带指数退避 + 抖动，区分可重试（超时、503）与不可重试（400、内容违规）。</li>
+<li><strong>成本埋点</strong>：每个请求记录 token 数 &#x2F; GPU 秒 &#x2F; 模型版本，按用户&#x2F;功能聚合。</li>
+</ul>
+<h3 id="6-3-可观测性（必须项，不是可选项）"><a href="#6-3-可观测性（必须项，不是可选项）" class="headerlink" title="6.3 可观测性（必须项，不是可选项）"></a>6.3 可观测性（必须项，不是可选项）</h3><ul>
+<li>结构化日志（JSON），trace_id 贯穿全链路；</li>
+<li>指标：RED 方法（Rate&#x2F;Errors&#x2F;Duration）+ 队列深度 + GPU 利用率；</li>
+<li>分布式追踪：OpenTelemetry；</li>
+<li>AI 特有：输入输出抽样存档、置信度分布、模型版本标记。</li>
+</ul>
+<hr>
+<h2 id="七、前端工程"><a href="#七、前端工程" class="headerlink" title="七、前端工程"></a>七、前端工程</h2><h3 id="7-1-核心技术栈"><a href="#7-1-核心技术栈" class="headerlink" title="7.1 核心技术栈"></a>7.1 核心技术栈</h3><ul>
+<li>React + TypeScript（主流首选）、Next.js（全栈&#x2F;SSR）、状态管理（Zustand&#x2F;TanStack Query）、样式（Tailwind）。</li>
+<li>移动端：React Native &#x2F; Flutter 选其一了解即可，除非岗位明确要求。</li>
+</ul>
+<h3 id="7-2-AI-产品前端的关键模式"><a href="#7-2-AI-产品前端的关键模式" class="headerlink" title="7.2 AI 产品前端的关键模式"></a>7.2 AI 产品前端的关键模式</h3><ul>
+<li><strong>不确定性 UX</strong>：骨架屏、流式渲染（打字机效果）、进度反馈、可取消、失败重试入口、超时友好提示。管理用户对”慢和不确定”的预期是 AI 前端的核心命题。</li>
+<li><strong>结果可编辑 + 反馈采集</strong>：AI 输出允许修正，修正&#x2F;点踩行为回传作为标注数据。</li>
+<li><strong>大文件处理</strong>：分片上传 + 预签名 URL 直传对象存储，前端做断点续传。</li>
+<li><strong>实时通信</strong>：SSE（单向流式首选，简单可靠）vs WebSocket（双向）选型。</li>
+<li><strong>错误边界</strong>：AI 输出可能是畸形 JSON&#x2F;超长文本&#x2F;包含危险内容，渲染层必须有防御（sanitize、长度截断、Markdown 安全渲染）。</li>
+</ul>
+<h3 id="7-3-工程化"><a href="#7-3-工程化" class="headerlink" title="7.3 工程化"></a>7.3 工程化</h3><ul>
+<li>组件设计：容器&#x2F;展示分离、设计系统意识（统一 token：颜色&#x2F;间距&#x2F;字号）。</li>
+<li>性能：代码分割、虚拟列表（长会话&#x2F;大表格必备）、防抖节流、乐观更新。</li>
+<li>测试：关键交互写集成测试（Playwright），别追求 100% 单测覆盖。</li>
+</ul>
+<hr>
+<h2 id="八、系统架构设计"><a href="#八、系统架构设计" class="headerlink" title="八、系统架构设计"></a>八、系统架构设计</h2><h3 id="8-1-架构设计的思维框架"><a href="#8-1-架构设计的思维框架" class="headerlink" title="8.1 架构设计的思维框架"></a>8.1 架构设计的思维框架</h3><p>每个架构决策回答四个问题：</p>
+<ol>
+<li><strong>量级</strong>：QPS 多少？数据多大？用户多少？——没有量级就没有架构，1k QPS 和 100k QPS 是两个世界。</li>
+<li><strong>SLA</strong>：可用性目标（99.9%？）、延迟目标（P99 &lt; ?ms）、一致性要求（强一致还是最终一致）。</li>
+<li><strong>变化轴</strong>：未来最可能变的是什么（流量？功能？模型？），为变化留接口，为不变做优化。</li>
+<li><strong>成本</strong>：人力成本 + 机器成本 + 维护成本，过度设计是负债。</li>
+</ol>
+<h3 id="8-2-AI-数据处理服务的参考架构"><a href="#8-2-AI-数据处理服务的参考架构" class="headerlink" title="8.2 AI 数据处理服务的参考架构"></a>8.2 AI 数据处理服务的参考架构</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs nix">客户端 (APP<span class="hljs-operator">/</span>Web)<br>    │ HTTPS <span class="hljs-symbol">/</span> WSS<br>API 网关（鉴权、限流、路由、TLS）<br>    │<br>业务服务层（无状态、水平扩展）<br> ├─ 同步轻请求 → 直接处理<br> └─ 异步重任务 → 消息队列（Kafka<span class="hljs-operator">/</span>RabbitMQ）<br>                      │<br>              任务编排 Worker（状态机、重试、超时）<br>                      │ RPC <span class="hljs-symbol">/</span> HTTP<br>              模型推理服务（独立 GPU 资源池）<br>               ├─ 推理引擎（vLLM <span class="hljs-symbol">/</span> Triton <span class="hljs-symbol">/</span> ONNX Runtime）<br>               ├─ Dynamic Batching<br>               └─ 模型版本路由（灰度<span class="hljs-operator">/</span>AB）<br>    │<br>存储层<br> ├─ PostgreSQL（业务数据、任务状态）<br> ├─ Redis（缓存、分布式锁、限流计数）<br> ├─ 对象存储 S3（文件、模型、数据集）<br> └─ 向量库（如有检索需求）<br>    │<br>可观测性：日志 <span class="hljs-operator">+</span> 指标 <span class="hljs-operator">+</span> 追踪 <span class="hljs-operator">+</span> 告警（Grafana<span class="hljs-operator">/</span>Prometheus<span class="hljs-operator">/</span>Datadog）<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-3-关键架构原则"><a href="#8-3-关键架构原则" class="headerlink" title="8.3 关键架构原则"></a>8.3 关键架构原则</h3><ul>
+<li><strong>推理服务独立部署</strong>：GPU 与 CPU 服务扩缩容逻辑完全不同，必须解耦。</li>
+<li><strong>无状态业务层</strong>：状态全部下沉到存储层，服务才能随意扩缩容。</li>
+<li><strong>队列削峰解耦</strong>：重任务一律异步化，消费者按 GPU 吞吐拉取。</li>
+<li><strong>幂等性</strong>：所有写操作支持幂等（幂等键&#x2F;版本号），因为重试无处不在。</li>
+<li><strong>故障设计</strong>：每个依赖都会挂——降级方案（小模型兜底&#x2F;规则兜底&#x2F;排队提示）、熔断、舱壁隔离。</li>
+<li><strong>多租户</strong>（ToB）：数据隔离（行级&#x2F;库级）、配额、优先级队列。</li>
+<li><strong>演进式架构</strong>：单体起步 → 按瓶颈拆分。一上来就微服务全家桶是最常见的自杀方式。</li>
+</ul>
+<h3 id="8-4-技术选型方法论"><a href="#8-4-技术选型方法论" class="headerlink" title="8.4 技术选型方法论"></a>8.4 技术选型方法论</h3><ul>
+<li>默认选「无聊的技术」（PostgreSQL &gt; 新潮数据库），创新预算只花在核心差异点上；</li>
+<li>选型写 ADR（架构决策记录）：背景、选项、权衡、决定，三个月后还能看懂为什么；</li>
+<li>可逆决策快速做，不可逆决策（数据库、云厂商、核心协议）慢慢做。</li>
+</ul>
+<hr>
+<h2 id="九、性能优化与算子优化"><a href="#九、性能优化与算子优化" class="headerlink" title="九、性能优化与算子优化"></a>九、性能优化与算子优化</h2><h3 id="9-1-优化总原则"><a href="#9-1-优化总原则" class="headerlink" title="9.1 优化总原则"></a>9.1 优化总原则</h3><blockquote>
+<p><strong>没有 profiling 就没有优化。</strong> 凭感觉优化 &#x3D; 浪费时间 + 引入复杂度。</p>
+</blockquote>
+<p>工具箱：<code>py-spy</code>、<code>torch.profiler</code>、<code>nsys</code>（Nsight Systems）、<code>ncu</code>（Nsight Compute）、火焰图、<code>EXPLAIN ANALYZE</code>。</p>
+<h3 id="9-2-按-ROI-排序的优化路径"><a href="#9-2-按-ROI-排序的优化路径" class="headerlink" title="9.2 按 ROI 排序的优化路径"></a>9.2 按 ROI 排序的优化路径</h3><p><strong>第一层：系统层（最便宜，先做）</strong></p>
+<ul>
+<li>缓存：相同输入直接命中；语义缓存。</li>
+<li>批处理：dynamic batching 把零散请求攒成 batch，GPU 吞吐提升数倍。</li>
+<li>并发：异步 IO、连接复用、预热（避免模型冷加载）。</li>
+<li>数据链路：减少序列化开销、零拷贝、CPU↔GPU 传输用 pinned memory。</li>
+</ul>
+<p><strong>第二层：模型层</strong></p>
+<ul>
+<li>量化：FP16 → INT8 → INT4（AWQ&#x2F;GPTQ），精度损失换吞吐。</li>
+<li>蒸馏：大模型教小模型，简单请求分流到小模型。</li>
+<li>推理引擎：vLLM（LLM 首选，PagedAttention + continuous batching）、TensorRT、ONNX Runtime——裸跑 PyTorch 推理是浪费。</li>
+<li>结构优化：剪枝、投机解码（speculative decoding）。</li>
+</ul>
+<p><strong>第三层：算子层（最贵，最后做）</strong></p>
+<ul>
+<li>先用现成的：FlashAttention、<code>torch.compile</code>、CUDA Graph、融合算子库。</li>
+<li>确认瓶颈算子且现有方案覆盖不到，才手写 Triton &#x2F; CUDA kernel。</li>
+<li>手写算子必备知识：GPU 内存层级（HBM&#x2F;SMEM&#x2F;寄存器）、warp 调度、访存合并、occupancy、roofline 模型（判断 compute-bound 还是 memory-bound）。</li>
+<li><strong>多数”慢”是 memory-bound</strong>：优化访存模式收益 &gt; 优化计算。</li>
+</ul>
+<h3 id="9-3-常见性能陷阱"><a href="#9-3-常见性能陷阱" class="headerlink" title="9.3 常见性能陷阱"></a>9.3 常见性能陷阱</h3><ul>
+<li>Python for 循环处理张量（应向量化）；</li>
+<li>DataLoader 成为瓶颈（num_workers、预取、解码放 GPU）；</li>
+<li>同步点过多（<code>.item()</code>、<code>.cpu()</code> 频繁调用打断 GPU 流水）；</li>
+<li>显存碎片（长短序列混跑）；</li>
+<li>数据库慢查询拖死整个服务（监控慢查询日志）。</li>
+</ul>
+<hr>
+<h2 id="十、MLOps：模型部署与运维"><a href="#十、MLOps：模型部署与运维" class="headerlink" title="十、MLOps：模型部署与运维"></a>十、MLOps：模型部署与运维</h2><h3 id="10-1-模型交付标准化"><a href="#10-1-模型交付标准化" class="headerlink" title="10.1 模型交付标准化"></a>10.1 模型交付标准化</h3><p>模型不是一个 <code>.pt</code> 文件，而是一个<strong>交付包</strong>：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nix">model_package<span class="hljs-symbol">/</span><br>├── model 文件（ONNX<span class="hljs-operator">/</span>safetensors）<br>├── 模型卡片（输入输出 schema、指标、资源需求、已知缺陷）<br>├── 预处理<span class="hljs-operator">/</span>后处理代码（与训练严格一致）<br>├── 依赖锁定（Docker 镜像 <span class="hljs-symbol">/</span> requirements.lock）<br>├── 评测报告（评测集版本 <span class="hljs-operator">+</span> 结果）<br>└── 数值一致性校验结果（训练框架 vs 推理引擎 diff）<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-2-部署流程"><a href="#10-2-部署流程" class="headerlink" title="10.2 部署流程"></a>10.2 部署流程</h3><ol>
+<li><strong>注册</strong>：模型进模型仓库（MLflow Registry &#x2F; 对象存储+元数据），带训练数据版本、代码 commit、指标。</li>
+<li><strong>打包</strong>：Docker 锁定 CUDA&#x2F;框架版本；导出推理格式后做数值一致性校验。</li>
+<li><strong>压测</strong>：确定单实例吞吐与 P99 延迟 → 推算资源量 → 设定扩缩容策略（注意 GPU 冷启动几十秒，扩容要提前量）。</li>
+<li><strong>灰度</strong>：Shadow mode（跑但不生效，对比新旧输出）→ 5% 流量 → 50% → 全量；每阶段看业务指标不只看技术指标。</li>
+<li><strong>回滚</strong>：一键回滚必须是分钟级，模型版本路由配置化，不重新部署。</li>
+</ol>
+<h3 id="10-3-线上监控（两层缺一不可）"><a href="#10-3-线上监控（两层缺一不可）" class="headerlink" title="10.3 线上监控（两层缺一不可）"></a>10.3 线上监控（两层缺一不可）</h3><table>
+<thead>
+<tr>
+<th>层</th>
+<th>监控什么</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>服务健康</td>
+<td>延迟&#x2F;错误率&#x2F;QPS&#x2F;GPU 利用率&#x2F;显存&#x2F;队列深度</td>
+<td>Prometheus + Grafana</td>
+</tr>
+<tr>
+<td>模型健康</td>
+<td>输入分布漂移、输出置信度分布、抽样人工评估、bad case 率</td>
+<td>自建 + Evidently 等</td>
+</tr>
+</tbody></table>
+<p><strong>模型不会报错，只会悄悄变差</strong>——模型健康监控是 AI 服务区别于传统服务的核心运维项。</p>
+<h3 id="10-4-CI-CD-for-ML"><a href="#10-4-CI-CD-for-ML" class="headerlink" title="10.4 CI&#x2F;CD for ML"></a>10.4 CI&#x2F;CD for ML</h3><ul>
+<li>代码 CI：lint + 单测 + 集成测试；</li>
+<li>模型 CI：评测集回归（指标不回退才能合入）；</li>
+<li>数据 CI：schema 校验 + 分布检查；</li>
+<li>CD：GitOps（ArgoCD）&#x2F; 流水线自动化，环境分级 dev → staging → prod。</li>
+</ul>
+<hr>
+<h2 id="十一、测试与-Debug-方法论"><a href="#十一、测试与-Debug-方法论" class="headerlink" title="十一、测试与 Debug 方法论"></a>十一、测试与 Debug 方法论</h2><h3 id="11-1-测试金字塔（AI-版）"><a href="#11-1-测试金字塔（AI-版）" class="headerlink" title="11.1 测试金字塔（AI 版）"></a>11.1 测试金字塔（AI 版）</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nix">      人工评估 <span class="hljs-symbol">/</span> AB 测试（最贵，最少）<br>    模型评测集回归（每次改动必跑）<br>  集成测试（API 级，含 mock 模型）<br>单元测试（业务逻辑、数据处理函数，最多）<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>评测集是 AI 项目的”单元测试”：几十~几百条带标准答案的用例，覆盖正常 + 边界 + 对抗 case，持续扩充。</li>
+<li>数据处理函数必须有单测（清洗、解析、转换是 bug 重灾区）。</li>
+<li>集成测试 mock 掉模型（用固定输出），测的是工程链路而不是模型效果。</li>
+</ul>
+<h3 id="11-2-工程-Bug-调试（确定性问题）"><a href="#11-2-工程-Bug-调试（确定性问题）" class="headerlink" title="11.2 工程 Bug 调试（确定性问题）"></a>11.2 工程 Bug 调试（确定性问题）</h3><ol>
+<li><strong>复现</strong>：构造最小复现用例，不能稳定复现的先加日志&#x2F;监控收集证据。</li>
+<li><strong>定位</strong>：二分法缩小范围（版本二分 git bisect、链路二分、数据二分）。</li>
+<li><strong>证据驱动</strong>：看日志和 trace 而不是猜；分布式问题用 trace_id 串全链路。</li>
+<li><strong>修复后</strong>：补回归测试，问一句”同类问题还有哪里”。</li>
+</ol>
+<h3 id="11-3-效果-Bug-调试（概率性问题）"><a href="#11-3-效果-Bug-调试（概率性问题）" class="headerlink" title="11.3 效果 Bug 调试（概率性问题）"></a>11.3 效果 Bug 调试（概率性问题）</h3><ol>
+<li><strong>固定变量</strong>：锁定随机种子、模型版本、数据版本，确认可复现性。</li>
+<li><strong>分层 dump</strong>：输入 → 预处理后 → 模型原始输出 → 后处理 → 展示，逐层落盘对比，定位是哪一层引入的偏差。</li>
+<li><strong>Bad case 归类</strong>：批量收集错误样本，聚类分析——错误集中在某类输入？数据漂移？标注噪声？逐类解决而非逐条修。</li>
+<li><strong>对照实验</strong>：每次只改一个变量，用评测集量化前后差异。</li>
+<li><strong>经典陷阱排查清单</strong>：训练&#x2F;推理预处理不一致、tokenizer 版本不一致、数值精度（FP16 溢出）、数据泄漏、标签错误。</li>
+</ol>
+<h3 id="11-4-线上故障处理（SRE-基本功）"><a href="#11-4-线上故障处理（SRE-基本功）" class="headerlink" title="11.4 线上故障处理（SRE 基本功）"></a>11.4 线上故障处理（SRE 基本功）</h3><ul>
+<li>第一优先级是<strong>止血</strong>（回滚&#x2F;降级&#x2F;扩容），不是找根因；</li>
+<li>故障后写复盘（timeline、根因、action items），对事不对人；</li>
+<li>大事故的根因往往是多个小问题叠加——修系统而不是修单点。</li>
+</ul>
+<hr>
+<h2 id="十二、安全、合规与成本"><a href="#十二、安全、合规与成本" class="headerlink" title="十二、安全、合规与成本"></a>十二、安全、合规与成本</h2><h3 id="12-1-应用安全"><a href="#12-1-应用安全" class="headerlink" title="12.1 应用安全"></a>12.1 应用安全</h3><ul>
+<li>基础：HTTPS 全站、SQL 注入&#x2F;XSS&#x2F;CSRF 防护、依赖漏洞扫描、密钥管理（绝不进代码库，用 Vault&#x2F;环境变量&#x2F;KMS）。</li>
+<li>认证授权：OAuth2&#x2F;JWT、RBAC、API key 轮换、最小权限原则。</li>
+<li><strong>AI 特有</strong>：<ul>
+<li>Prompt 注入防护（用户输入与系统指令隔离、输出过滤）；</li>
+<li>模型输出内容安全（审核 API &#x2F; 规则过滤）；</li>
+<li>训练数据投毒意识；</li>
+<li>模型文件供应链安全（不加载不可信 pickle）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-2-数据合规"><a href="#12-2-数据合规" class="headerlink" title="12.2 数据合规"></a>12.2 数据合规</h3><ul>
+<li>收集前：隐私政策、用户授权（数据是否可用于训练要单独授权）；</li>
+<li>处理中：脱敏（PII 识别与遮蔽）、加密（传输 TLS + 存储加密）、访问审计；</li>
+<li>法规意识：GDPR &#x2F; 个保法 &#x2F; 数据出境规定 &#x2F; 行业规范（金融、医疗尤严）；</li>
+<li>用户权利：数据导出、删除权（注意：已训练进模型的数据如何处理要提前设计）。</li>
+</ul>
+<h3 id="12-3-成本工程（AI-产品的生死线）"><a href="#12-3-成本工程（AI-产品的生死线）" class="headerlink" title="12.3 成本工程（AI 产品的生死线）"></a>12.3 成本工程（AI 产品的生死线）</h3><ul>
+<li><strong>单位经济模型</strong>：算清每请求成本（token&#x2F;GPU 秒）vs 每请求收入，毛利为负的功能要么提价要么降本要么砍掉。</li>
+<li>降本手段优先级：缓存命中 &gt; 小模型分流 &gt; 量化 &gt; 批处理 &gt; 竞价实例 &gt; 自托管。</li>
+<li>预算告警：按用户&#x2F;功能&#x2F;租户设成本监控与熔断（防止被刷爆）。</li>
+<li>GPU 利用率是核心指标：&lt; 40% 说明架构有问题（batch 不够、调度差、资源闲置）。</li>
+</ul>
+<hr>
+<h2 id="十三、项目管理与团队协作"><a href="#十三、项目管理与团队协作" class="headerlink" title="十三、项目管理与团队协作"></a>十三、项目管理与团队协作</h2><h3 id="13-1-AI-项目管理的特殊性"><a href="#13-1-AI-项目管理的特殊性" class="headerlink" title="13.1 AI 项目管理的特殊性"></a>13.1 AI 项目管理的特殊性</h3><ul>
+<li><strong>双轨迭代</strong>：工程轨（确定性，按 sprint 排期）+ 算法轨（探索性，按实验周期 + 时间盒管理）。算法任务不承诺”何时达到 X 指标”，承诺”投入 N 天给出结论与下一步建议”。</li>
+<li><strong>PoC 先行</strong>：立项前用时间盒（1~2 周）验证技术可行性，明确 go&#x2F;no-go 标准。</li>
+<li><strong>指标对齐</strong>：开工前产品、算法、工程三方对齐成功指标（业务指标 → 算法指标的映射），写进文档。</li>
+</ul>
+<h3 id="13-2-协作交付物标准化"><a href="#13-2-协作交付物标准化" class="headerlink" title="13.2 协作交付物标准化"></a>13.2 协作交付物标准化</h3><table>
+<thead>
+<tr>
+<th>交付物</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需求文档 PRD</td>
+<td>用户故事、成功指标、边界与非目标</td>
+</tr>
+<tr>
+<td>技术方案 &#x2F; ADR</td>
+<td>架构图、接口契约、选型权衡、风险</td>
+</tr>
+<tr>
+<td>模型卡片</td>
+<td>schema、指标、资源、缺陷、版本</td>
+</tr>
+<tr>
+<td>实验记录</td>
+<td>用 MLflow&#x2F;W&amp;B，禁止 Excel + 口头传播</td>
+</tr>
+<tr>
+<td>Runbook</td>
+<td>部署步骤、回滚步骤、告警处理手册</td>
+</tr>
+<tr>
+<td>复盘文档</td>
+<td>故障&#x2F;里程碑后的经验沉淀</td>
+</tr>
+</tbody></table>
+<h3 id="13-3-沟通与领导力（从工程师到大牛的分水岭"><a href="#13-3-沟通与领导力（从工程师到大牛的分水岭" class="headerlink" title="13.3 沟通与领导力（从工程师到大牛的分水岭)"></a>13.3 沟通与领导力（从工程师到大牛的分水岭)</h3><ul>
+<li><strong>向上沟通</strong>：用业务语言汇报（收入&#x2F;成本&#x2F;风险），不要堆技术细节；坏消息早说。</li>
+<li><strong>跨职能翻译</strong>：给产品讲清”模型能做什么不能做什么”，给算法讲清”工程约束是什么”。</li>
+<li><strong>Code Review 文化</strong>：评审看设计与正确性而非风格（风格交给 linter）；评论对事不对人。</li>
+<li><strong>写作能力</strong>：设计文档、复盘、技术分享——写作是放大影响力的杠杆，大牛都是把事情讲清楚的人。</li>
+<li><strong>带人</strong>：把任务拆到他人可执行的粒度、容忍短期效率损失换团队成长。</li>
+</ul>
+<hr>
+<h2 id="十四、项目全生命周期-Checklist"><a href="#十四、项目全生命周期-Checklist" class="headerlink" title="十四、项目全生命周期 Checklist"></a>十四、项目全生命周期 Checklist</h2><blockquote>
+<p>每个新项目过一遍，按需裁剪。</p>
+</blockquote>
+<h3 id="Phase-0：立项（1-2-周）"><a href="#Phase-0：立项（1-2-周）" class="headerlink" title="Phase 0：立项（1~2 周）"></a>Phase 0：立项（1~2 周）</h3><ul>
+<li><input disabled="" type="checkbox"> 问题定义清晰：为谁解决什么问题，现状如何解决</li>
+<li><input disabled="" type="checkbox"> 成功指标量化：业务指标 + 算法指标 + 可用线&#x2F;理想线</li>
+<li><input disabled="" type="checkbox"> PoC 验证模型效果达到可用线（时间盒，go&#x2F;no-go）</li>
+<li><input disabled="" type="checkbox"> 数据可得性确认（来源、规模、合规、标注成本）</li>
+<li><input disabled="" type="checkbox"> 单位经济测算（成本 vs 收益粗算）</li>
+<li><input disabled="" type="checkbox"> 竞品与替代方案调研（为什么不直接用现成产品&#x2F;API）</li>
+</ul>
+<h3 id="Phase-1：设计（1-周）"><a href="#Phase-1：设计（1-周）" class="headerlink" title="Phase 1：设计（1 周）"></a>Phase 1：设计（1 周）</h3><ul>
+<li><input disabled="" type="checkbox"> 技术方案文档 + 架构图 + ADR</li>
+<li><input disabled="" type="checkbox"> API 契约定义（OpenAPI），前后端&#x2F;算法工程接口冻结</li>
+<li><input disabled="" type="checkbox"> 数据 schema 与版本策略</li>
+<li><input disabled="" type="checkbox"> 非功能需求明确：QPS、P99、可用性、安全合规要求</li>
+<li><input disabled="" type="checkbox"> 降级与兜底方案设计</li>
+<li><input disabled="" type="checkbox"> 里程碑拆解与排期（算法任务用时间盒）</li>
+</ul>
+<h3 id="Phase-2：开发（迭代进行）"><a href="#Phase-2：开发（迭代进行）" class="headerlink" title="Phase 2：开发（迭代进行）"></a>Phase 2：开发（迭代进行）</h3><ul>
+<li><input disabled="" type="checkbox"> 数据 pipeline 先行（采集→清洗→版本化）</li>
+<li><input disabled="" type="checkbox"> 评测集建立（先于模型迭代）</li>
+<li><input disabled="" type="checkbox"> 工程链路打通（用 mock 模型跑通端到端）</li>
+<li><input disabled="" type="checkbox"> 模型迭代（实验记录、每版跑评测集回归）</li>
+<li><input disabled="" type="checkbox"> 可观测性同步建设（日志&#x2F;指标&#x2F;追踪&#x2F;成本埋点）</li>
+<li><input disabled="" type="checkbox"> 安全检查（密钥管理、注入防护、权限）</li>
+<li><input disabled="" type="checkbox"> CI 全绿：单测 + 集成测试 + 评测集回归</li>
+</ul>
+<h3 id="Phase-3：上线（1-2-周）"><a href="#Phase-3：上线（1-2-周）" class="headerlink" title="Phase 3：上线（1~2 周）"></a>Phase 3：上线（1~2 周）</h3><ul>
+<li><input disabled="" type="checkbox"> 压测达标，扩缩容策略配置</li>
+<li><input disabled="" type="checkbox"> 灰度计划（shadow → 5% → 全量）+ 一键回滚验证过</li>
+<li><input disabled="" type="checkbox"> 监控告警配置（服务健康 + 模型健康 + 成本）</li>
+<li><input disabled="" type="checkbox"> Runbook 完成，值班安排</li>
+<li><input disabled="" type="checkbox"> 数据回流管道就绪（bad case 收集、用户反馈入口）</li>
+</ul>
+<h3 id="Phase-4：迭代（持续）"><a href="#Phase-4：迭代（持续）" class="headerlink" title="Phase 4：迭代（持续）"></a>Phase 4：迭代（持续）</h3><ul>
+<li><input disabled="" type="checkbox"> 周期性查看：业务指标、模型健康、成本、bad case</li>
+<li><input disabled="" type="checkbox"> 数据回流 → 标注 → 再训练的闭环跑起来</li>
+<li><input disabled="" type="checkbox"> AB 测试驱动模型&#x2F;功能升级</li>
+<li><input disabled="" type="checkbox"> 季度技术债清理与架构回顾</li>
+<li><input disabled="" type="checkbox"> 复盘沉淀（故障复盘 + 里程碑复盘）</li>
+</ul>
+<hr>
+<h2 id="十五、成长路线：入门-→-进阶-→-精通"><a href="#十五、成长路线：入门-→-进阶-→-精通" class="headerlink" title="十五、成长路线：入门 → 进阶 → 精通"></a>十五、成长路线：入门 → 进阶 → 精通</h2><h3 id="阶段一：入门（0-6-个月）——-能跑通"><a href="#阶段一：入门（0-6-个月）——-能跑通" class="headerlink" title="阶段一：入门（0~6 个月）—— 能跑通"></a>阶段一：入门（0~6 个月）—— 能跑通</h3><p><strong>目标</strong>：独立完成一个端到端小项目（如：文档智能问答服务）。</p>
+<ul>
+<li>Python 扎实 + SQL + Git + Linux 基础</li>
+<li>ML&#x2F;DL 核心概念 + PyTorch 入门（跑通训练和推理）</li>
+<li>FastAPI 写出带数据库的 CRUD 服务</li>
+<li>React 写出能调 API 的简单前端</li>
+<li>Docker 打包部署到一台云服务器</li>
+<li><strong>里程碑项目</strong>：RAG 问答应用（前端 + 后端 + 向量检索 + LLM API），部署上线给真人用</li>
+</ul>
+<h3 id="阶段二：进阶（6-18-个月）——-能做好"><a href="#阶段二：进阶（6-18-个月）——-能做好" class="headerlink" title="阶段二：进阶（6~18 个月）—— 能做好"></a>阶段二：进阶（6~18 个月）—— 能做好</h3><p><strong>目标</strong>：达到中级岗位水平，对系统有质量意识。</p>
+<ul>
+<li>深度学习进阶：手写 Transformer、微调实操（LoRA）、读经典论文（每月 2~4 篇）</li>
+<li>后端进阶：消息队列、缓存、分布式基础、压测与性能调优</li>
+<li>工程化：CI&#x2F;CD、可观测性三件套、测试体系</li>
+<li>MLOps 入门：模型版本管理、灰度发布、监控</li>
+<li>架构入门：读《DDIA》，给自己的项目写技术方案文档</li>
+<li><strong>里程碑项目</strong>：带异步任务队列 + 独立推理服务 + 监控告警的生产级 AI 服务，扛住真实流量；做一次量化&#x2F;批处理优化并量化收益</li>
+</ul>
+<h3 id="阶段三：精通（18-个月-）——-能扛事"><a href="#阶段三：精通（18-个月-）——-能扛事" class="headerlink" title="阶段三：精通（18 个月+）—— 能扛事"></a>阶段三：精通（18 个月+）—— 能扛事</h3><p><strong>目标</strong>：高级&#x2F;资深水平，选定纵向方向深耕，具备技术领导力。</p>
+<ul>
+<li>纵向深耕（选 1~2 个）：<ul>
+<li>推理优化：CUDA&#x2F;Triton、vLLM 源码、roofline 分析</li>
+<li>平台架构：高并发设计、ML 平台建设、多租户系统</li>
+<li>算法：论文复现与改进、领域模型训练</li>
+<li>应用：复杂 Agent 系统、行业解决方案</li>
+</ul>
+</li>
+<li>软实力：技术方案评审、带项目、带人、写作与分享</li>
+<li>视野：关注成本与商业模式，能参与产品决策</li>
+<li><strong>里程碑</strong>：主导一个多人协作项目从 0 到 1 上线并持续运营；做一次公开技术分享&#x2F;开源贡献；能在故障时镇得住场</li>
+</ul>
+<h3 id="贯穿始终的习惯"><a href="#贯穿始终的习惯" class="headerlink" title="贯穿始终的习惯"></a>贯穿始终的习惯</h3><ol>
+<li><strong>以战代练</strong>：知识不落地到项目 &#x3D; 没学会。每个阶段都要有上线的东西。</li>
+<li><strong>写学习笔记&#x2F;博客</strong>：费曼学习法，讲不清楚 &#x3D; 没懂。</li>
+<li><strong>读源码</strong>：每个阶段精读一个项目源码（FastAPI → vLLM → 按方向选）。</li>
+<li><strong>建立个人知识库</strong>：踩坑记录、决策模板、代码片段库，复利积累。</li>
+<li><strong>用 AI 加速学习</strong>：让 AI 当导师提问&#x2F;出题&#x2F;review 你的代码，但核心概念必须自己推导一遍。</li>
+</ol>
+<hr>
+<h2 id="十六、能力自评表"><a href="#十六、能力自评表" class="headerlink" title="十六、能力自评表"></a>十六、能力自评表</h2><blockquote>
+<p>每季度自评一次：1 &#x3D; 听说过，2 &#x3D; 用过，3 &#x3D; 熟练，4 &#x3D; 精通能教人，5 &#x3D; 领域专家。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>能力项</th>
+<th>当前</th>
+<th>目标</th>
+<th>行动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Python &#x2F; SQL</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数据结构算法 &#x2F; CS 基础</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ML&#x2F;DL 原理与训练</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LLM 应用（RAG&#x2F;Agent&#x2F;微调）</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数据工程</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>后端开发与数据库</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>前端开发</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>系统架构设计</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>性能优化 &#x2F; 算子</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>MLOps &#x2F; 部署运维</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>测试与 Debug</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>安全与合规</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>成本工程</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>项目管理与沟通</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>写作与影响力</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>岗位胜任参考</strong>：初级 &#x3D; 多数 2<del>3；中级 &#x3D; 多数 3，主攻项 4；高级 &#x3D; 多数 3</del>4，主攻项 4~5 + 项目领导经验。</p>
+<hr>
+<h2 id="十七、推荐资源"><a href="#十七、推荐资源" class="headerlink" title="十七、推荐资源"></a>十七、推荐资源</h2><h3 id="书籍（按阶段）"><a href="#书籍（按阶段）" class="headerlink" title="书籍（按阶段）"></a>书籍（按阶段）</h3><ul>
+<li><strong>入门</strong>：《动手学深度学习》(d2l.ai)、《流畅的 Python》</li>
+<li><strong>进阶</strong>：《Designing Data-Intensive Applications》（DDIA，架构圣经）、《机器学习系统设计》(Chip Huyen)、《SQL 性能优化》类</li>
+<li><strong>精通</strong>：《Site Reliability Engineering》(Google SRE)、《A Philosophy of Software Design》、CUDA Programming Guide</li>
+</ul>
+<h3 id="课程与论文"><a href="#课程与论文" class="headerlink" title="课程与论文"></a>课程与论文</h3><ul>
+<li>Stanford CS231n（CV）&#x2F; CS224n（NLP）&#x2F; CS25（Transformers）</li>
+<li>Andrej Karpathy 的 “Neural Networks: Zero to Hero”（手写 GPT，强烈推荐）</li>
+<li>经典论文：Attention Is All You Need、GPT 系列、LoRA、FlashAttention、vLLM (PagedAttention)</li>
+<li>MLOps：Google 的 “Hidden Technical Debt in Machine Learning Systems”</li>
+</ul>
+<h3 id="实践平台与源码"><a href="#实践平台与源码" class="headerlink" title="实践平台与源码"></a>实践平台与源码</h3><ul>
+<li>Kaggle（数据与建模手感）、Hugging Face（模型生态）</li>
+<li>精读源码：FastAPI、vLLM、LangChain（批判性地读）、nanoGPT</li>
+<li>关注工程博客：OpenAI&#x2F;Anthropic&#x2F;Meta AI&#x2F;字节&#x2F;美团技术博客</li>
+</ul>
+<h3 id="保持更新"><a href="#保持更新" class="headerlink" title="保持更新"></a>保持更新</h3><ul>
+<li>每周固定 2~3 小时读论文&#x2F;博客&#x2F;release note；</li>
+<li>加入 1~2 个高质量社区（HN、Reddit r&#x2F;MachineLearning、相关 Discord）；</li>
+<li><strong>原则</strong>：新技术先问”解决了我什么问题”，不追热点，按需引入。</li>
+</ul>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>大牛 &#x3D; 扎实的基础 × 端到端交付的项目积累 × 把事讲清楚的表达力 × 时间复利。</p>
+<p>这份手册是地图，不是终点。把它放在每个项目的开工 checklist 里，每季度回顾一次自评表，两年后回头看，你已经走出很远。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/" class="print-no-link">#工程思维</a>
+      
+        <a href="/tags/%E5%85%A8%E6%A0%88/" class="print-no-link">#全栈</a>
+      
+        <a href="/tags/MLOps/" class="print-no-link">#MLOps</a>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+        <a href="/tags/DeepLearning/" class="print-no-link">#DeepLearning</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 全栈工程师成长手册</div>
+      <div>http://baikelwang.github.io/2026/06/14/AI全栈工程师成长手册/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/14/Uni-3DAR%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B7%A8%E5%B0%BA%E5%BA%A63D%E7%94%9F%E6%88%90%E4%B8%8E%E7%90%86%E8%A7%A3%E7%9A%84%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A1%86%E6%9E%B6/" title="Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/17/%E7%94%9F%E6%97%A5%E5%BF%AB%E4%B9%90/" title="生日快乐！">
+                        <span class="hidden-mobile">生日快乐！</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

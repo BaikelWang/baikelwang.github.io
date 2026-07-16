@@ -1,0 +1,1424 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一份给”AI 项目决策设计者 + AI 监督员”的工程思维指南。 你不亲自写每一行代码，但你必须能：判断方案、识别风险、设定护栏、验收产出、止损决策。本文综合 2026 年 MLOps 生命周期、AI infra 主流栈、CRISP-ML(Q) 质量框架、AI agent 管理实践，并落到一个完整示例上。   目录 一、角色再定义 二、八大核心工程思维 三、示例 · LLM 微调 + RAG 系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 监督员的工程思维">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/AI%E7%9B%91%E7%9D%A3%E5%91%98%E7%9A%84%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="一份给”AI 项目决策设计者 + AI 监督员”的工程思维指南。 你不亲自写每一行代码，但你必须能：判断方案、识别风险、设定护栏、验收产出、止损决策。本文综合 2026 年 MLOps 生命周期、AI infra 主流栈、CRISP-ML(Q) 质量框架、AI agent 管理实践，并落到一个完整示例上。   目录 一、角色再定义 二、八大核心工程思维 三、示例 · LLM 微调 + RAG 系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.950Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工程思维">
+<meta property="article:tag" content="Cursor">
+<meta property="article:tag" content="项目管理">
+<meta property="article:tag" content="MLOps">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>AI 监督员的工程思维 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI 监督员的工程思维"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 14:00" pubdate>
+          2026年6月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI 监督员的工程思维</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>一份给”AI 项目决策设计者 + AI 监督员”的工程思维指南。</strong></p>
+<p>你不亲自写每一行代码，但你必须能：判断方案、识别风险、设定护栏、验收产出、止损决策。<br>本文综合 2026 年 MLOps 生命周期、AI infra 主流栈、CRISP-ML(Q) 质量框架、AI agent 管理实践，并落到一个完整示例上。</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E4%B8%80%E8%A7%92%E8%89%B2%E5%86%8D%E5%AE%9A%E4%B9%89">一、角色再定义</a></li>
+<li><a href="#%E4%BA%8C%E5%85%AB%E5%A4%A7%E6%A0%B8%E5%BF%83%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4">二、八大核心工程思维</a></li>
+<li><a href="#%E4%B8%89%E7%A4%BA%E4%BE%8B--llm-%E5%BE%AE%E8%B0%83--rag-%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%8C%E6%95%B4%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B">三、示例 · LLM 微调 + RAG 系统的完整开发流程</a></li>
+<li><a href="#%E5%9B%9B%E7%A4%BA%E4%BE%8B--ai-infrallm-%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B">四、示例 · AI Infra（推理服务）开发流程</a></li>
+<li><a href="#%E4%BA%94%E7%9B%91%E7%9D%A3%E5%91%98%E7%9A%84%E5%85%B3%E9%94%AE%E5%86%B3%E7%AD%96%E7%82%B9go--no-go-gates">五、监督员的关键决策点（Go &#x2F; No-Go Gates）</a></li>
+<li><a href="#%E5%85%AD%E4%B8%8E-7-%E6%AD%A5%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E6%98%A0%E5%B0%84">六、与 7 步工作流的映射</a></li>
+<li><a href="#%E4%B8%83%E5%B8%B8%E8%A7%81%E8%B8%A9%E5%9D%91%E4%B8%8E%E7%BA%A2%E6%97%97%E4%BF%A1%E5%8F%B7">七、常见踩坑与红旗信号</a></li>
+<li><a href="#%E5%85%AB%E7%9B%91%E7%9D%A3%E5%91%98%E7%9A%84%E5%B7%A5%E5%85%B7%E7%AE%B1">八、监督员的工具箱</a></li>
+<li><a href="#%E4%B9%9D%E8%A1%8C%E5%8A%A8%E6%B8%85%E5%8D%95">九、行动清单</a></li>
+</ul>
+<hr>
+<h2 id="一、角色再定义"><a href="#一、角色再定义" class="headerlink" title="一、角色再定义"></a>一、角色再定义</h2><blockquote>
+<p>2026 年的趋势：<strong>工程经理正在从”管人写代码”转变为”管 AI agent 群产出 + 做高阶判断”</strong>。<br>来源：Allstacks、techinterview、Plain English（”Why Half Your Engineering Managers Will Fail at Managing AI Agents”）等多份 2026 年文章。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>旧角色</th>
+<th>新角色（你）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tech Lead &#x2F; 高级工程师</td>
+<td><strong>AI 项目决策设计者</strong></td>
+</tr>
+<tr>
+<td>Code reviewer</td>
+<td><strong>AI 产出验收员 + 信任校准员</strong></td>
+</tr>
+<tr>
+<td>自己写关键代码</td>
+<td><strong>设定护栏、写规范、定流程、做止损</strong></td>
+</tr>
+<tr>
+<td>关注实现细节</td>
+<td>关注<strong>契约、验收、风险、可观测性</strong></td>
+</tr>
+</tbody></table>
+<p><strong>核心心智模型</strong>：</p>
+<blockquote>
+<p>“我是项目的<strong>架构师 + 质量门</strong>，AI 是我的<strong>高产出但需校准的工程团队</strong>。<br>我不需要比 AI 写得更快，但我必须比 AI <strong>想得更深、看得更远、判断得更准</strong>。”</p>
+</blockquote>
+<hr>
+<h2 id="二、八大核心工程思维"><a href="#二、八大核心工程思维" class="headerlink" title="二、八大核心工程思维"></a>二、八大核心工程思维</h2><p>监督 AI 项目所需的工程思维，可以归纳为八条。每一条都要做到「理解 + 行动 + 工具」。</p>
+<h3 id="1-契约思维（Contract-First-Thinking）"><a href="#1-契约思维（Contract-First-Thinking）" class="headerlink" title="1. 契约思维（Contract-First Thinking）"></a>1. 契约思维（Contract-First Thinking）</h3><p><strong>定义</strong>：在写实现之前，<strong>先把接口、数据格式、错误码、SLA 定下来</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>在 AI 项目中的体现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>训练前：定 <strong>数据 Schema</strong>（输入字段、标签格式、缺失值策略）</td>
+</tr>
+<tr>
+<td>推理前：定 <strong>API 契约</strong>（输入&#x2F;输出 JSON、错误码、超时）</td>
+</tr>
+<tr>
+<td>微调前：定 <strong>评估集 + 指标阈值</strong>（precision ≥ 0.85）</td>
+</tr>
+<tr>
+<td>Agent 前：定 <strong>工具 Schema</strong>（function signature）</td>
+</tr>
+</tbody></table>
+<p><strong>为什么对 AI 项目特别重要</strong>：AI 输出本质上是<strong>概率性</strong>的，没有契约，质量不可度量、不可回归。</p>
+<blockquote>
+<p>🚩 红旗：训练数据没有 schema 校验，模型一上线就遇到字段缺失。</p>
+</blockquote>
+<hr>
+<h3 id="2-可逆性思维（Reversibility-Blast-Radius）"><a href="#2-可逆性思维（Reversibility-Blast-Radius）" class="headerlink" title="2. 可逆性思维（Reversibility &#x2F; Blast Radius）"></a>2. 可逆性思维（Reversibility &#x2F; Blast Radius）</h3><p><strong>定义</strong>：评估每个动作的<strong>爆炸半径</strong>，永远保留<strong>可回滚路径</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>决策类型</th>
+<th>可逆性</th>
+<th>监督员动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>修改 prompt</td>
+<td>高</td>
+<td>直接试</td>
+</tr>
+<tr>
+<td>改 RAG chunking 策略</td>
+<td>中</td>
+<td>A&#x2F;B 测试</td>
+</tr>
+<tr>
+<td>重新微调模型</td>
+<td>低</td>
+<td>走完整评估 + 灰度</td>
+</tr>
+<tr>
+<td>切换 base model</td>
+<td><strong>极低</strong></td>
+<td>必须走方案评审 + 双跑对比</td>
+</tr>
+</tbody></table>
+<p><strong>实践</strong>：</p>
+<ul>
+<li>模型版本必须有 registry（MLflow &#x2F; SageMaker &#x2F; Vertex AI），支持 <code>production</code> &#x2F; <code>staging</code> &#x2F; <code>candidate</code> 别名</li>
+<li>推理服务用蓝绿 &#x2F; 金丝雀部署，能秒级回滚</li>
+<li>数据集做版本化（DVC），训练可复现</li>
+</ul>
+<blockquote>
+<p>来源：MLOps 2026 best practices —— “Reproducibility First”、”Model Registry &amp; Versioning”。</p>
+</blockquote>
+<hr>
+<h3 id="3-数据思维（Data-Centric-Thinking）"><a href="#3-数据思维（Data-Centric-Thinking）" class="headerlink" title="3. 数据思维（Data-Centric Thinking）"></a>3. 数据思维（Data-Centric Thinking）</h3><p><strong>定义</strong>：<strong>数据质量 &gt; 模型选型 &gt; 调参</strong>。AI 项目 80% 的问题是数据问题。</p>
+<p>监督员要不断追问：</p>
+<ul>
+<li>训练数据的<strong>分布</strong>和真实场景一致吗？</li>
+<li>标注质量怎么保证？标注一致性多少？</li>
+<li>测试集是否被污染（data leakage）？</li>
+<li><strong>训练-推理偏差</strong>（training-serving skew）怎么消除？→ 用 Feature Store</li>
+</ul>
+<blockquote>
+<p>🛡️ 关键工具：<strong>Feature Store（Feast &#x2F; Tecton &#x2F; Hopsworks）</strong> —— 让训练和推理用同一份特征定义。</p>
+</blockquote>
+<hr>
+<h3 id="4-评估思维（Evaluation-Driven-Development）"><a href="#4-评估思维（Evaluation-Driven-Development）" class="headerlink" title="4. 评估思维（Evaluation-Driven Development）"></a>4. 评估思维（Evaluation-Driven Development）</h3><p><strong>定义</strong>：<strong>没有评估集，就没有项目</strong>。评估是 AI 项目的”测试”。</p>
+<table>
+<thead>
+<tr>
+<th>评估层次</th>
+<th>内容</th>
+<th>频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>离线评估</strong></td>
+<td>在固定测试集上跑指标</td>
+<td>每次模型变更</td>
+</tr>
+<tr>
+<td><strong>在线评估</strong></td>
+<td>A&#x2F;B、影子流量、用户反馈</td>
+<td>灰度阶段</td>
+</tr>
+<tr>
+<td><strong>回归评估</strong></td>
+<td>防止旧能力退化</td>
+<td>每次发布</td>
+</tr>
+<tr>
+<td><strong>对抗评估</strong></td>
+<td>红队测试、越狱、prompt injection</td>
+<td>上线前</td>
+</tr>
+</tbody></table>
+<p><strong>监督员铁律</strong>：</p>
+<blockquote>
+<p>如果一个改动<strong>说不清”用什么指标、在什么集上、提升多少”</strong>，那就<strong>不允许合入</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="5-可观测性思维（Observability）"><a href="#5-可观测性思维（Observability）" class="headerlink" title="5. 可观测性思维（Observability）"></a>5. 可观测性思维（Observability）</h3><p><strong>定义</strong>：<strong>线上一切要可见、可追溯、可告警</strong>。</p>
+<p>AI 系统必须监控：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>指标举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>性能</td>
+<td>p50 &#x2F; p95 &#x2F; p99 延迟、QPS</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>token 用量、GPU 利用率、单请求成本</td>
+</tr>
+<tr>
+<td>质量</td>
+<td>输出长度分布、拒答率、事实性得分</td>
+</tr>
+<tr>
+<td>漂移</td>
+<td>输入分布漂移、embedding 分布漂移</td>
+</tr>
+<tr>
+<td>安全</td>
+<td>越狱命中率、敏感词拦截率</td>
+</tr>
+<tr>
+<td>用户</td>
+<td>thumbs up&#x2F;down、改写率、复购率</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>来源：AI Engineer Skills 2026 —— “Observability Focus” 是 Layer 3 高级技能的核心。</p>
+</blockquote>
+<hr>
+<h3 id="6-抽象与边界思维（Abstraction-Boundaries）"><a href="#6-抽象与边界思维（Abstraction-Boundaries）" class="headerlink" title="6. 抽象与边界思维（Abstraction &amp; Boundaries）"></a>6. 抽象与边界思维（Abstraction &amp; Boundaries）</h3><p><strong>定义</strong>：把系统切成<strong>职责单一、契约清晰</strong>的模块。</p>
+<p>AI 系统典型分层（<strong>监督员必须能在白板上画出来</strong>）：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs delphi">应用层（业务逻辑、Agent orchestration）<br>   ↓<br>RAG 层（retriever、reranker、chunking）<br>   ↓<br>模型服务层（vLLM / SGLang，统一 OpenAI 兼容 API）<br>   ↓<br>模型仓库层（model registry、版本、别名）<br>   ↓<br>基础设施层（K8s + Kueue + GPU <span class="hljs-keyword">Operator</span>）<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>来源：2026 AI&#x2F;ML on Kubernetes Stack（vLLM &#x2F; Kueue &#x2F; KAITO &#x2F; KServe &#x2F; llm-d &#x2F; Ray）。</p>
+</blockquote>
+<hr>
+<h3 id="7-成本与权衡思维（Cost-Latency-Quality-Trade-off）"><a href="#7-成本与权衡思维（Cost-Latency-Quality-Trade-off）" class="headerlink" title="7. 成本与权衡思维（Cost &#x2F; Latency &#x2F; Quality Trade-off）"></a>7. 成本与权衡思维（Cost &#x2F; Latency &#x2F; Quality Trade-off）</h3><p><strong>定义</strong>：AI 系统是<strong>三角约束</strong>——质量、延迟、成本，三选二。</p>
+<p>监督员要问的问题：</p>
+<ul>
+<li>准确率 +2%，但延迟 +200ms，业务能接受吗？</li>
+<li>用 GPT-4 还是开源 7B + RAG？月成本差 30 倍。</li>
+<li>FP4 量化 vs FP16，质量损失多少？吞吐提升多少？</li>
+<li>用 vLLM 还是 TensorRT-LLM？前者运维简单，后者吞吐高 30%。</li>
+</ul>
+<blockquote>
+<p>来源：AI Infra 2026 —— “FP4 default for B200, FP8 for H100, INT4 for A100, quantization is no longer optional”；”Disaggregated inference delivers 30-50% throughput gains”。</p>
+</blockquote>
+<hr>
+<h3 id="8-安全-治理-合规思维（Governance）"><a href="#8-安全-治理-合规思维（Governance）" class="headerlink" title="8. 安全 &#x2F; 治理 &#x2F; 合规思维（Governance）"></a>8. 安全 &#x2F; 治理 &#x2F; 合规思维（Governance）</h3><p><strong>定义</strong>：把”如何不出事”作为<strong>一等公民</strong>纳入设计。</p>
+<table>
+<thead>
+<tr>
+<th>风险类别</th>
+<th>监督员动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据隐私</strong></td>
+<td>PII 脱敏、训练集合规审查、用户数据隔离</td>
+</tr>
+<tr>
+<td><strong>模型安全</strong></td>
+<td>prompt injection 防护、输出过滤</td>
+</tr>
+<tr>
+<td><strong>可解释性</strong></td>
+<td>关键决策可追溯（为什么是这个答案）</td>
+</tr>
+<tr>
+<td><strong>合规审计</strong></td>
+<td>Governance as Code，policy 嵌入 CI&#x2F;CD</td>
+</tr>
+<tr>
+<td><strong>偏见</strong></td>
+<td>公平性指标、不同子群表现差异</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>来源：CRISP-ML(Q) —— 每一阶段都要”识别风险 + 缓解措施”，质量保证不是事后的事。</p>
+</blockquote>
+<hr>
+<h2 id="三、示例-·-LLM-微调-RAG-系统的完整开发流程"><a href="#三、示例-·-LLM-微调-RAG-系统的完整开发流程" class="headerlink" title="三、示例 · LLM 微调 + RAG 系统的完整开发流程"></a>三、示例 · LLM 微调 + RAG 系统的完整开发流程</h2><blockquote>
+<p><strong>场景</strong>：给客服系统接入一个基于公司知识库的智能问答助手。<br>选 LLM 微调 + RAG 是因为它<strong>同时覆盖了 ML 工程 + 软件工程</strong>，最能展示监督员的全套思维。</p>
+</blockquote>
+<h3 id="3-1-完整开发流程图"><a href="#3-1-完整开发流程图" class="headerlink" title="3.1 完整开发流程图"></a>3.1 完整开发流程图</h3><p><img src="https://cdn.nlark.com/yuque/__mermaid_v3/6ac02e84d5198b96a1a20a8975fb2c02.svg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-2-各阶段监督员的注意点"><a href="#3-2-各阶段监督员的注意点" class="headerlink" title="3.2 各阶段监督员的注意点"></a>3.2 各阶段监督员的注意点</h3><h4 id="阶段-0-·-业务理解与立项"><a href="#阶段-0-·-业务理解与立项" class="headerlink" title="阶段 0 · 业务理解与立项"></a>阶段 0 · 业务理解与立项</h4><table>
+<thead>
+<tr>
+<th>监督员该做的</th>
+<th>该警惕的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>写出<strong>一句话业务目标</strong></td>
+<td>“提升体验”这种不可度量的目标</td>
+</tr>
+<tr>
+<td>定义<strong>业务 KPI</strong>（人工客服替代率 ≥ 30%）</td>
+<td>只盯模型指标不盯业务指标</td>
+</tr>
+<tr>
+<td>明确 <strong>Out-of-Scope</strong>（不处理售后投诉）</td>
+<td>“顺便也做一下 X” 的范围蔓延</td>
+</tr>
+<tr>
+<td>评估<strong>反例</strong>（如果上线失败成本是什么）</td>
+<td>没想清楚”失败长什么样”就开干</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="阶段-1-·-数据工程（最容易翻车的阶段）"><a href="#阶段-1-·-数据工程（最容易翻车的阶段）" class="headerlink" title="阶段 1 · 数据工程（最容易翻车的阶段）"></a>阶段 1 · 数据工程（最容易翻车的阶段）</h4><blockquote>
+<p><strong>数据问题占 AI 项目失败原因的 60%+。</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>监督员该做的</th>
+<th>该警惕的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>强制<strong>数据 schema 校验</strong> + 分布画像</td>
+<td>“数据应该差不多吧”</td>
+</tr>
+<tr>
+<td>要求<strong>标注一致性测试</strong>（Cohen’s Kappa ≥ 0.7）</td>
+<td>一个人标全部数据</td>
+</tr>
+<tr>
+<td><strong>PII &#x2F; 敏感数据脱敏审计</strong></td>
+<td>训练集里混着用户手机号</td>
+</tr>
+<tr>
+<td>数据版本化（DVC），可复现</td>
+<td>训练数据放在某人本地</td>
+</tr>
+<tr>
+<td><strong>测试集隔离锁定</strong>，永不参与训练</td>
+<td>数据泄露导致离线指标虚高</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="阶段-2-·-方案设计（关键决策窗口）"><a href="#阶段-2-·-方案设计（关键决策窗口）" class="headerlink" title="阶段 2 · 方案设计（关键决策窗口）"></a>阶段 2 · 方案设计（关键决策窗口）</h4><p><strong>核心动作</strong>：先建 baseline，<strong>再决定要不要花大钱做高级方案</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>成本</th>
+<th>效果天花板</th>
+<th>何时选</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Prompt + 通用 LLM</strong></td>
+<td>极低</td>
+<td>中</td>
+<td>快速验证、需求模糊</td>
+</tr>
+<tr>
+<td><strong>RAG（不微调）</strong></td>
+<td>低-中</td>
+<td>中-高</td>
+<td>知识为主、要求实时性</td>
+</tr>
+<tr>
+<td><strong>微调（QLoRA）</strong></td>
+<td>中</td>
+<td>高（任务）</td>
+<td>任务特定、风格定制、≥10k 高质量样本</td>
+</tr>
+<tr>
+<td><strong>全量微调</strong></td>
+<td>高</td>
+<td>最高</td>
+<td>≥100k 高质量样本、且 LoRA 不够用</td>
+</tr>
+<tr>
+<td><strong>从零训练</strong></td>
+<td>极高</td>
+<td>不可控</td>
+<td>99% 的项目<strong>不应该考虑</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>来源：Zylos Research “Open-Source LLM Fine-Tuning…” —— “Full fine-tuning only recommended with 100k+ high-quality examples; QLoRA is production-ready for task-specific adaptation”。</p>
+</blockquote>
+<blockquote>
+<p>🚩 监督员红旗：方案设计阶段<strong>只给一个方案</strong>（违反契约第 7 条），或选了”从零训练”但没有 100k+ 数据。</p>
+</blockquote>
+<hr>
+<h4 id="阶段-3-·-模型-RAG-实验"><a href="#阶段-3-·-模型-RAG-实验" class="headerlink" title="阶段 3 · 模型 &#x2F; RAG 实验"></a>阶段 3 · 模型 &#x2F; RAG 实验</h4><table>
+<thead>
+<tr>
+<th>监督员该做的</th>
+<th>该警惕的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>要求<strong>实验追踪</strong>（MLflow &#x2F; W&amp;B），每次实验有 hash + diff</td>
+<td>笔记本里到处是”final_v3_真的final”模型</td>
+</tr>
+<tr>
+<td>限定<strong>实验预算</strong>（不超过 X 次 &#x2F; X GPU 时）</td>
+<td>无限调参陷入 hyperparameter 黑洞</td>
+</tr>
+<tr>
+<td>要求 <strong>A&#x2F;B 对比</strong> 而非孤立指标</td>
+<td>“提升了 2%！”——和谁比？</td>
+</tr>
+<tr>
+<td>关注 <strong>失败 case 分析</strong></td>
+<td>只看平均分，不看长尾</td>
+</tr>
+<tr>
+<td>检查<strong>训练-推理偏差</strong></td>
+<td>tokenizer 不一致、特征处理不一致</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="阶段-4-·-质量保证（QA）"><a href="#阶段-4-·-质量保证（QA）" class="headerlink" title="阶段 4 · 质量保证（QA）"></a>阶段 4 · 质量保证（QA）</h4><blockquote>
+<p><strong>离线指标好 ≠ 上线效果好。</strong> 这一阶段是 CRISP-ML(Q) 强调的独立 QA 环节。</p>
+</blockquote>
+<p>必须建立的测试集：</p>
+<ul>
+<li><strong>回归测试集</strong>：以前会的能力，新模型不能退化</li>
+<li><strong>对抗集</strong>：prompt injection &#x2F; 越狱 &#x2F; 事实性挑战</li>
+<li><strong>公平性集</strong>：不同人群、不同风格、不同语言</li>
+<li><strong>业务边缘集</strong>：业务方手工挑选的”最难”用例</li>
+</ul>
+<blockquote>
+<p>🛡️ <strong>监督员铁律</strong>：<strong>质量门必须有人工最终签字</strong>，不是只看自动化分数。</p>
+</blockquote>
+<hr>
+<h4 id="阶段-5-·-部署"><a href="#阶段-5-·-部署" class="headerlink" title="阶段 5 · 部署"></a>阶段 5 · 部署</h4><p>2026 年生产标配栈（参考）：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编排</td>
+<td>Kubernetes + Kueue（GPU 调度）</td>
+</tr>
+<tr>
+<td>推理引擎</td>
+<td><strong>vLLM</strong>（默认）&#x2F; SGLang（agent &#x2F; 结构化输出）&#x2F; TensorRT-LLM（极致吞吐）</td>
+</tr>
+<tr>
+<td>服务化</td>
+<td>KServe &#x2F; OpenAI 兼容 API</td>
+</tr>
+<tr>
+<td>大模型分布式</td>
+<td>llm-d（disaggregated prefill &#x2F; decode）</td>
+</tr>
+<tr>
+<td>量化</td>
+<td>FP4（B200）&#x2F; FP8（H100）&#x2F; INT4（A100），<strong>已成标配</strong></td>
+</tr>
+</tbody></table>
+<p>发布策略：<strong>模型注册 → 影子流量 → 金丝雀（5%→25%→100%）</strong>，任一阶段触发告警立刻回滚。</p>
+<hr>
+<h4 id="阶段-6-·-监控与持续训练"><a href="#阶段-6-·-监控与持续训练" class="headerlink" title="阶段 6 · 监控与持续训练"></a>阶段 6 · 监控与持续训练</h4><p>监督员需建立的”再训练触发器”：</p>
+<ul>
+<li>性能下降超过 X%（连续 N 天）</li>
+<li>输入分布漂移（PSI &gt; 阈值）</li>
+<li>新数据累积达到 N 条</li>
+<li>业务方反馈达到 N 条</li>
+</ul>
+<blockquote>
+<p><strong>持续训练要做成自动化 pipeline，但每次模型替换仍需走 Go&#x2F;No-Go gate。</strong></p>
+</blockquote>
+<hr>
+<h2 id="四、示例-·-AI-Infra（LLM-推理服务）开发流程"><a href="#四、示例-·-AI-Infra（LLM-推理服务）开发流程" class="headerlink" title="四、示例 · AI Infra（LLM 推理服务）开发流程"></a>四、示例 · AI Infra（LLM 推理服务）开发流程</h2><blockquote>
+<p><strong>场景</strong>：为公司搭一个内部 LLM 推理平台，对外提供 OpenAI 兼容 API，支撑多个业务方。</p>
+</blockquote>
+<h3 id="4-1-简化流程图"><a href="#4-1-简化流程图" class="headerlink" title="4.1 简化流程图"></a>4.1 简化流程图</h3><p><img src="https://cdn.nlark.com/yuque/__mermaid_v3/32fdddfe5b37d25574c881d146d484dc.svg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-2-AI-Infra-监督员的特别注意点"><a href="#4-2-AI-Infra-监督员的特别注意点" class="headerlink" title="4.2 AI Infra 监督员的特别注意点"></a>4.2 AI Infra 监督员的特别注意点</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GPU 利用率</strong></td>
+<td>目标 ≥ 60%，低于此说明调度有问题；用 NVIDIA DCGM 监控</td>
+</tr>
+<tr>
+<td><strong>多代 GPU 混布</strong></td>
+<td>A100（legacy）+ H100（主力）+ B200（前沿训练），<strong>workload 匹配放置</strong></td>
+</tr>
+<tr>
+<td><strong>量化策略</strong></td>
+<td>不要不量化；先用 INT8&#x2F;FP8 测质量损失，能接受就用</td>
+</tr>
+<tr>
+<td><strong>disaggregated serving</strong></td>
+<td>长 prompt 场景把 prefill &#x2F; decode 分到不同节点池，吞吐 +30~50%</td>
+</tr>
+<tr>
+<td><strong>KV cache 管理</strong></td>
+<td>vLLM 的 PagedAttention 是默认；多租户要做 cache 隔离</td>
+</tr>
+<tr>
+<td><strong>冷启动</strong></td>
+<td>大模型加载慢，要做预热 + warm pool</td>
+</tr>
+<tr>
+<td><strong>成本归因</strong></td>
+<td>必须能算出<strong>每个业务方&#x2F;每个 API key 的 token 成本</strong>，否则无法治理</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>来源：KubernetesGuru “2026 AI&#x2F;ML on Kubernetes Stack”、TURION.AI “AI Infrastructure Stack 2026 Edition”。</p>
+</blockquote>
+<hr>
+<h2 id="五、监督员的关键决策点（Go-No-Go-Gates）"><a href="#五、监督员的关键决策点（Go-No-Go-Gates）" class="headerlink" title="五、监督员的关键决策点（Go &#x2F; No-Go Gates）"></a>五、监督员的关键决策点（Go &#x2F; No-Go Gates）</h2><p>把上面流程里的 Gate 拎出来，做成<strong>决策清单</strong>。每个 Gate 都要回答：</p>
+<blockquote>
+<p><strong>“如果今天就停在这里，损失多大？继续往下走，风险多大？”</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>决策依据</th>
+<th>No-Go 时的处置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>#1 商业价值</strong></td>
+<td>业务 KPI 与上线 ROI</td>
+<td>转方向 &#x2F; 结案</td>
+</tr>
+<tr>
+<td><strong>#2 数据可行性</strong></td>
+<td>数据量 + 质量 + 合规</td>
+<td>补数据 &#x2F; 降目标</td>
+</tr>
+<tr>
+<td><strong>#3 离线效果</strong></td>
+<td>评估指标达标 + 失败 case 可接受</td>
+<td>调方案 &#x2F; 调数据</td>
+</tr>
+<tr>
+<td><strong>#4 质量保证</strong></td>
+<td>回归 + 对抗 + 公平性 + 人工签字</td>
+<td>回到实验</td>
+</tr>
+<tr>
+<td><strong>#5 线上效果</strong></td>
+<td>SLO 达标 + 业务指标正向</td>
+<td>灰度回滚 + 复盘</td>
+</tr>
+<tr>
+<td><strong>#6 是否再训练</strong></td>
+<td>漂移 &#x2F; 降级 &#x2F; 新数据</td>
+<td>触发 pipeline 或继续监控</td>
+</tr>
+</tbody></table>
+<p><strong>实操建议</strong>：把每个 Gate 做成 PR &#x2F; Issue 模板，必须有签字才能合入下一阶段。</p>
+<hr>
+<h2 id="六、与-7-步工作流的映射"><a href="#六、与-7-步工作流的映射" class="headerlink" title="六、与 7 步工作流的映射"></a>六、与 7 步工作流的映射</h2><blockquote>
+<p>把本文的 AI 项目流程，对回我们之前定的”<a href="/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/">7 步工作流</a>“。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>7 步工作流</th>
+<th>LLM+RAG 项目对应阶段</th>
+<th>关键产物</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Step 1 需求澄清</td>
+<td>阶段 0</td>
+<td>业务 KPI、Out-of-Scope、数据范围</td>
+</tr>
+<tr>
+<td>Step 2 方案设计</td>
+<td>阶段 2</td>
+<td>RAG vs 微调对比、风险、里程碑</td>
+</tr>
+<tr>
+<td>Step 3 骨架 + 契约</td>
+<td>阶段 1+2 中段</td>
+<td>数据 Schema、API 契约、评估集</td>
+</tr>
+<tr>
+<td>Step 4 自动化护栏</td>
+<td>阶段 4</td>
+<td>回归 &#x2F; 对抗 &#x2F; 公平性测试集、CI</td>
+</tr>
+<tr>
+<td>Step 5 垂直切片</td>
+<td>阶段 3 第一轮</td>
+<td>端到端最薄路径（一个 query 跑通）</td>
+</tr>
+<tr>
+<td>Step 6 逐步推进</td>
+<td>阶段 3~5</td>
+<td>M1 baseline → M2 优化 → M3 上线</td>
+</tr>
+<tr>
+<td>Step 7 收尾沉淀</td>
+<td>阶段 6</td>
+<td>runbook、复盘、prompt 沉淀</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>要点</strong>：AI 项目的”测试”不是 unit test，而是<strong>评估集 + QA 流程</strong>。Step 4 的自动化护栏在 AI 项目里<strong>就是评估流水线</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="七、常见踩坑与红旗信号"><a href="#七、常见踩坑与红旗信号" class="headerlink" title="七、常见踩坑与红旗信号"></a>七、常见踩坑与红旗信号</h2><table>
+<thead>
+<tr>
+<th align="center">#</th>
+<th>踩坑</th>
+<th>红旗信号</th>
+<th>监督员动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td><strong>数据泄露</strong></td>
+<td>测试集分数远高于线上</td>
+<td>强制重新切分 + 审计数据来源</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td><strong>训练-推理偏差</strong></td>
+<td>离线 92%，线上 68%</td>
+<td>引入 Feature Store；统一预处理</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td><strong>指标作弊</strong></td>
+<td>单一指标飙升，其他全降</td>
+<td>看综合指标 + 失败 case</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td><strong>过拟合评估集</strong></td>
+<td>反复在同一个集上调，分数越来越高</td>
+<td>划分 dev &#x2F; test，test 锁住</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td><strong>方案过度复杂</strong></td>
+<td>没 baseline 就开始微调</td>
+<td>强制先做 prompt baseline</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td><strong>黑盒部署</strong></td>
+<td>上线后没监控、没日志</td>
+<td>灰度前必须挂监控</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td><strong>AI 自评虚高</strong></td>
+<td>让 LLM 自己评自己</td>
+<td>引入第三方 judge model 或人工</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td><strong>prompt injection 未防御</strong></td>
+<td>用户输入直接拼进 system prompt</td>
+<td>输入过滤 + 输出审查</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td><strong>成本失控</strong></td>
+<td>token 账单月增 10x</td>
+<td>全链路 token 监控 + 配额</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td><strong>数据漂移盲区</strong></td>
+<td>准确率慢慢降，没人发现</td>
+<td>PSI &#x2F; KS 监控 + 自动告警</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="八、监督员的工具箱"><a href="#八、监督员的工具箱" class="headerlink" title="八、监督员的工具箱"></a>八、监督员的工具箱</h2><blockquote>
+<p>不需要全部精通，但<strong>必须知道每一类用来解决什么问题</strong>。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>代表工具</th>
+<th>解决什么问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据版本</strong></td>
+<td>DVC, LakeFS</td>
+<td>数据可复现</td>
+</tr>
+<tr>
+<td><strong>特征仓库</strong></td>
+<td>Feast, Tecton, Hopsworks</td>
+<td>训练-推理一致</td>
+</tr>
+<tr>
+<td><strong>实验追踪</strong></td>
+<td>MLflow, Weights &amp; Biases</td>
+<td>实验可复现可对比</td>
+</tr>
+<tr>
+<td><strong>模型注册</strong></td>
+<td>MLflow, SageMaker, Vertex AI</td>
+<td>版本管理与别名</td>
+</tr>
+<tr>
+<td><strong>训练编排</strong></td>
+<td>Ray, Kubeflow, Kueue</td>
+<td>大规模训练调度</td>
+</tr>
+<tr>
+<td><strong>推理服务</strong></td>
+<td>vLLM, SGLang, TensorRT-LLM</td>
+<td>高吞吐推理</td>
+</tr>
+<tr>
+<td><strong>服务化</strong></td>
+<td>KServe, BentoML</td>
+<td>API 化 + 部署</td>
+</tr>
+<tr>
+<td><strong>评估</strong></td>
+<td>DeepEval, Ragas, Promptfoo</td>
+<td>LLM&#x2F;RAG 评估</td>
+</tr>
+<tr>
+<td><strong>可观测</strong></td>
+<td>Langfuse, Arize, Helicone</td>
+<td>调用追踪 &#x2F; 质量监控</td>
+</tr>
+<tr>
+<td><strong>AI 协作</strong></td>
+<td>Cursor, Claude Code, Codex</td>
+<td>AI agent 写代码</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="九、行动清单"><a href="#九、行动清单" class="headerlink" title="九、行动清单"></a>九、行动清单</h2><p>把以上内化成<strong>你每周 &#x2F; 每个项目都会做的动作</strong>：</p>
+<h3 id="🗓️-每个新项目开局"><a href="#🗓️-每个新项目开局" class="headerlink" title="🗓️ 每个新项目开局"></a>🗓️ 每个新项目开局</h3><ul>
+<li><input disabled="" type="checkbox"> 跟 AI 协作前，先自己回答清楚阶段 0 的”业务 KPI + Out-of-Scope”</li>
+<li><input disabled="" type="checkbox"> 让 AI 按 <a href="/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/">AI 协作工作方法</a> Step 1~2 反问澄清，<strong>自己拍板</strong>方案</li>
+<li><input disabled="" type="checkbox"> 选定 Go&#x2F;No-Go gate 节点，写进 <code>docs/01-design.md</code></li>
+</ul>
+<h3 id="🔬-每次方案讨论"><a href="#🔬-每次方案讨论" class="headerlink" title="🔬 每次方案讨论"></a>🔬 每次方案讨论</h3><ul>
+<li><input disabled="" type="checkbox"> 强制要求 <strong>2~3 个候选方案 + 风险矩阵</strong></li>
+<li><input disabled="" type="checkbox"> 评估集<strong>先于实验</strong>建立</li>
+<li><input disabled="" type="checkbox"> 先做 baseline，再决定是否上”重武器”</li>
+</ul>
+<h3 id="🛡️-每次代码-模型审查"><a href="#🛡️-每次代码-模型审查" class="headerlink" title="🛡️ 每次代码 &#x2F; 模型审查"></a>🛡️ 每次代码 &#x2F; 模型审查</h3><ul>
+<li><input disabled="" type="checkbox"> AI 产出加 <code>[AI-DRAFT]</code> 标记</li>
+<li><input disabled="" type="checkbox"> 审”契约一致性”（接口、Schema、错误码）</li>
+<li><input disabled="" type="checkbox"> 审”评估闭环”（这次改动怎么验证 &#x2F; 怎么回归）</li>
+<li><input disabled="" type="checkbox"> 审”可观测性”（日志、metrics、告警是否到位）</li>
+</ul>
+<h3 id="🚀-每次发布前"><a href="#🚀-每次发布前" class="headerlink" title="🚀 每次发布前"></a>🚀 每次发布前</h3><ul>
+<li><input disabled="" type="checkbox"> 走完 5 个 Go&#x2F;No-Go Gate</li>
+<li><input disabled="" type="checkbox"> 灰度方案 + 回滚预案明确</li>
+<li><input disabled="" type="checkbox"> 业务方 &#x2F; SRE 同步</li>
+</ul>
+<h3 id="📡-每周运营"><a href="#📡-每周运营" class="headerlink" title="📡 每周运营"></a>📡 每周运营</h3><ul>
+<li><input disabled="" type="checkbox"> 看 5 类指标（性能 &#x2F; 成本 &#x2F; 质量 &#x2F; 漂移 &#x2F; 用户）</li>
+<li><input disabled="" type="checkbox"> 抽样人工评估线上输出</li>
+<li><input disabled="" type="checkbox"> 沉淀新发现的失败模式回 <code>99-retrospective.md</code></li>
+</ul>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><blockquote>
+<p><strong>作为 AI 监督员，你交付的不是代码，而是判断。</strong></p>
+<p>AI 让”写代码”变得便宜，但让”判断对错、识别风险、设定护栏”变得<strong>前所未有的重要</strong>。</p>
+<p>你的核心价值，是<strong>让 AI 团队朝正确的方向高速奔跑，而不是错误地高速翻车</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="参考来源（2026-年）"><a href="#参考来源（2026-年）" class="headerlink" title="参考来源（2026 年）"></a>参考来源（2026 年）</h2><ul>
+<li><strong>MLOps 生命周期</strong> —— Zylos Research, CodeBridgeHQ, Hyscaler MLOps 2026 系列</li>
+<li><strong>AI Infra 栈</strong> —— KubernetesGuru “2026 AI&#x2F;ML on Kubernetes Stack”; TURION.AI “AI Infrastructure Stack 2026 Edition”</li>
+<li><strong>CRISP-ML(Q)</strong> —— ml-ops.org, MDPI “Towards CRISP-ML(Q)”</li>
+<li><strong>AI 工程师能力模型</strong> —— Scaler “AI Engineer Skills 2026”, jobstrack.io 2026 Career Guide</li>
+<li><strong>管理 AI agent</strong> —— Plain English “Why Half Your EMs Will Fail at Managing AI Agents”; Allstacks; techinterview “EM and AI 2026”</li>
+<li><strong>配套方法论</strong> —— <a href="/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/">AI 协作工作方法</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/" class="print-no-link">#工程思维</a>
+      
+        <a href="/tags/Cursor/" class="print-no-link">#Cursor</a>
+      
+        <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="print-no-link">#项目管理</a>
+      
+        <a href="/tags/MLOps/" class="print-no-link">#MLOps</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 监督员的工程思维</div>
+      <div>http://baikelwang.github.io/2026/06/14/AI监督员的工程思维/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/14/%E7%B2%89%E6%9C%ABXRD%E7%89%A9%E7%9B%B8%E5%8C%B9%E9%85%8D%E8%BD%AF%E4%BB%B6%E8%B0%83%E7%A0%94%E4%B8%8EPython%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E5%8F%82%E8%80%83/" title="粉末 XRD 物相匹配软件调研与 Python 实现设计参考">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">粉末 XRD 物相匹配软件调研与 Python 实现设计参考</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/" title="用 AI 高质量交付项目的工作方法">
+                        <span class="hidden-mobile">用 AI 高质量交付项目的工作方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

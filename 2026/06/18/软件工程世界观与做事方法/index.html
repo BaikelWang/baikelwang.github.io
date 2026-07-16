@@ -1,0 +1,1083 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="用途： 每个新项目启动前通读一遍。 目标： 快速建立同一套「世界观 + 做事方法」，避免一上来就写代码、越做越乱。 与仓库内其他文档的关系： Agent&#x2F;agent.md 定义人机协作契约；本文是通用工程思维，适用于任何项目。  一、一句话世界观软件工程不是「把功能写出来」，而是在约束下持续交付可验证的价值。 价值 &#x3D; 用户能完成真实任务；约束 &#x3D; 时间、人力、技术债、风险；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件工程世界观与做事方法">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/18/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E4%B8%96%E7%95%8C%E8%A7%82%E4%B8%8E%E5%81%9A%E4%BA%8B%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="用途： 每个新项目启动前通读一遍。 目标： 快速建立同一套「世界观 + 做事方法」，避免一上来就写代码、越做越乱。 与仓库内其他文档的关系： Agent&#x2F;agent.md 定义人机协作契约；本文是通用工程思维，适用于任何项目。  一、一句话世界观软件工程不是「把功能写出来」，而是在约束下持续交付可验证的价值。 价值 &#x3D; 用户能完成真实任务；约束 &#x3D; 时间、人力、技术债、风险；">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/code.jpg">
+<meta property="article:published_time" content="2026-06-18T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.965Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工程思维">
+<meta property="article:tag" content="项目管理">
+<meta property="article:tag" content="软件架构">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="方法论">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/code.jpg">
+  
+  
+  
+  <title>软件工程世界观与做事方法 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="软件工程世界观与做事方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-18 10:00" pubdate>
+          2026年6月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">软件工程世界观与做事方法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>用途：</strong> 每个新项目启动前通读一遍。</p>
+<p><strong>目标：</strong> 快速建立同一套「世界观 + 做事方法」，避免一上来就写代码、越做越乱。</p>
+<p><strong>与仓库内其他文档的关系：</strong> <code>Agent/agent.md</code> 定义人机协作契约；本文是通用工程思维，适用于任何项目。</p>
+</blockquote>
+<h2 id="一、一句话世界观"><a href="#一、一句话世界观" class="headerlink" title="一、一句话世界观"></a>一、一句话世界观</h2><p>软件工程不是「把功能写出来」，而是在约束下持续交付可验证的价值。</p>
+<p><strong>价值</strong> &#x3D; 用户能完成真实任务；<strong>约束</strong> &#x3D; 时间、人力、技术债、风险；<strong>可验证</strong> &#x3D; 能测、能观测、能复现、能演进。</p>
+<p>记住这条，其余都是展开。</p>
+<h2 id="二、核心信念（Worldview）"><a href="#二、核心信念（Worldview）" class="headerlink" title="二、核心信念（Worldview）"></a>二、核心信念（Worldview）</h2><h3 id="2-1-问题先于方案"><a href="#2-1-问题先于方案" class="headerlink" title="2.1 问题先于方案"></a>2.1 问题先于方案</h3><ul>
+<li>先弄清谁、在什么场景、要完成什么、怎样算成功，再谈框架和算法。</li>
+<li>没有清晰问题陈述时，任何「先进」技术都是在赌博。</li>
+<li><strong>反模式：</strong> 接到需求直接开 repo、先搭脚手架再回头想需求。</li>
+</ul>
+<h3 id="2-2-简单是战略，不是懒惰"><a href="#2-2-简单是战略，不是懒惰" class="headerlink" title="2.2 简单是战略，不是懒惰"></a>2.2 简单是战略，不是懒惰</h3><ul>
+<li><strong>KISS：</strong> 能用一个模块解决，不拆三个；能用成熟库，不造轮子。</li>
+<li><strong>YAGNI：</strong> 不为「以后可能需要」写大量代码；演进时再加。</li>
+<li><strong>DRY：</strong> 知识只应有一处权威来源（配置、类型、业务规则）；复制粘贴是技术债的利息。</li>
+<li>简单 ≠ 粗糙：边界清晰、命名准确、错误可读的简单，是高级工程。</li>
+</ul>
+<h3 id="2-3-变化是常态，设计要可演进"><a href="#2-3-变化是常态，设计要可演进" class="headerlink" title="2.3 变化是常态，设计要可演进"></a>2.3 变化是常态，设计要可演进</h3><ul>
+<li>需求会变、团队会变、技术栈会变——僵化的大设计和完全没有结构同样危险。</li>
+<li>好架构：高内聚、低耦合；模块边界稳定，内部实现可替换。</li>
+<li>偏好演进式架构：小步交付、用反馈修正设计，而非一次性「完美蓝图」（Big Design Up Front）。</li>
+</ul>
+<h3 id="2-4-质量内建，而非事后修补"><a href="#2-4-质量内建，而非事后修补" class="headerlink" title="2.4 质量内建，而非事后修补"></a>2.4 质量内建，而非事后修补</h3><ul>
+<li>测试、类型、lint、CI、代码评审不是「额外工作」，是开发的一部分。</li>
+<li><strong>Shift Left：</strong> 安全、性能、可访问性、可运维性越早考虑，返工越少。</li>
+<li>没有自动化验证的功能，等于「声称完成」，不是「已经交付」。</li>
+</ul>
+<h3 id="2-5-人是系统的一部分"><a href="#2-5-人是系统的一部分" class="headerlink" title="2.5 人是系统的一部分"></a>2.5 人是系统的一部分</h3><ul>
+<li>软件是社会技术系统：代码 + 流程 + 文档 + 工具 + 协作习惯。</li>
+<li>系统要围绕谁构建、谁维护、谁使用来设计（InfoQ 2025 架构趋势的核心观点）。</li>
+<li>心理安全、清晰文档、可读的 onboarding，和算法正确性一样重要。</li>
+</ul>
+<h3 id="2-6-AI-时代：编排者，而非打字员"><a href="#2-6-AI-时代：编排者，而非打字员" class="headerlink" title="2.6 AI 时代：编排者，而非打字员"></a>2.6 AI 时代：编排者，而非打字员</h3><ul>
+<li>AI 能加速实现，但不能替代判断：范围、架构、验收、风险仍由人负责。</li>
+<li>从「凭感觉写代码」（vibe coding）走向<strong>上下文工程</strong>（context engineering）：给 AI 明确的约束、接口、示例、边界，输出才可靠。</li>
+<li>工程师价值上移：问题分解、接口设计、质量护栏、系统集成、验收。</li>
+</ul>
+<h3 id="2-7-可持续交付胜过英雄主义"><a href="#2-7-可持续交付胜过英雄主义" class="headerlink" title="2.7 可持续交付胜过英雄主义"></a>2.7 可持续交付胜过英雄主义</h3><ul>
+<li>可预测的小步发布 &gt; 熬夜大包上线。</li>
+<li>流动（Flow）、反馈（Feedback）、持续学习（Continuous Learning）——Gene Kim「三步法」仍是现代 DevOps 的底色。</li>
+<li>平台与工具链是产品：开发者体验（DX）差，整体交付就会慢。</li>
+</ul>
+<h2 id="三、方法论框架（How）"><a href="#三、方法论框架（How）" class="headerlink" title="三、方法论框架（How）"></a>三、方法论框架（How）</h2><h3 id="3-1-项目启动：先澄清，再动手"><a href="#3-1-项目启动：先澄清，再动手" class="headerlink" title="3.1 项目启动：先澄清，再动手"></a>3.1 项目启动：先澄清，再动手</h3><p><strong>启动清单（5～10 个问题）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>要问什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标</td>
+<td>一句话业务目标？谁买单&#x2F;谁用？</td>
+</tr>
+<tr>
+<td>场景</td>
+<td>典型用户故事 1～3 条？失败场景？</td>
+</tr>
+<tr>
+<td>输入输出</td>
+<td>数据从哪来、到哪去、格式是什么？</td>
+</tr>
+<tr>
+<td>验收</td>
+<td>怎样算完成？怎样算做得好？</td>
+</tr>
+<tr>
+<td>边界</td>
+<td>明确不做什么（Out-of-Scope）</td>
+</tr>
+<tr>
+<td>约束</td>
+<td>技术栈、部署环境、时限、合规</td>
+</tr>
+<tr>
+<td>风险</td>
+<td>最大未知是什么？如何先验证？</td>
+</tr>
+</tbody></table>
+<p><strong>产出：</strong> 一页需求摘要（可扩展为 <code>docs/00-requirements.md</code>）。</p>
+<p><strong>原则：</strong> 关键判断留给决策者拍板；执行者提供候选 + 取舍说明。</p>
+<h3 id="3-2-方案设计：对比，不要单选"><a href="#3-2-方案设计：对比，不要单选" class="headerlink" title="3.2 方案设计：对比，不要单选"></a>3.2 方案设计：对比，不要单选</h3><ul>
+<li>至少 2～3 个候选方案，用表格比：收益、成本、风险、可逆性。</li>
+<li>画架构图（推荐 mermaid）+ 接口契约（类型、API、数据结构）先行。</li>
+<li>切里程碑 M1&#x2F;M2&#x2F;M3：每个里程碑都能独立演示价值。</li>
+<li>记录已知风险 + 缓解措施；没有风险分析要说明原因。</li>
+</ul>
+<h3 id="3-3-骨架先行，再填业务"><a href="#3-3-骨架先行，再填业务" class="headerlink" title="3.3 骨架先行，再填业务"></a>3.3 骨架先行，再填业务</h3><p><strong>顺序：</strong></p>
+<ol>
+<li>目录 + 模块职责</li>
+<li>接口 &#x2F; 类型 &#x2F; Schema（空实现 + docstring）</li>
+<li>自动化护栏（lint、测试框架、冒烟、<code>make test</code>）</li>
+<li>垂直切片：按用户故事打通最薄路径，不是按「先写满所有 model 再写 UI」</li>
+</ol>
+<p><strong>Walking Skeleton：</strong> 第一个可运行版本可以丑、可以功能少，但必须端到端可验证。</p>
+<h3 id="3-4-小步交付，频繁集成"><a href="#3-4-小步交付，频繁集成" class="headerlink" title="3.4 小步交付，频繁集成"></a>3.4 小步交付，频繁集成</h3><ul>
+<li>单次改动可控：约 ≤3 个文件、≤200 行（可按团队调整）；超出主动拆分。</li>
+<li>每个切片 &#x3D; 改动 + 验证 + 可审计记录（commit &#x2F; 日志 &#x2F; 文档）。</li>
+<li>集成频率越高，冲突和惊吓越少。</li>
+</ul>
+<h3 id="3-5-测试策略：金字塔"><a href="#3-5-测试策略：金字塔" class="headerlink" title="3.5 测试策略：金字塔"></a>3.5 测试策略：金字塔</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plain">      /\<br>     /E2E\        少量：关键用户路径<br>    /------\<br>   /集成测试 \     中等：模块协作、API<br>  /----------\<br> /  单元测试   \   大量：纯逻辑、边界条件<br>/--------------\<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>不写测试就交付业务逻辑——红线。</li>
+<li>测试应验证行为，不是实现细节；避免脆弱测试绑死重构。</li>
+<li>修 bug：先写失败测试，再修（能写时）。</li>
+</ul>
+<h3 id="3-6-可观测：运行时要能回答三个问题"><a href="#3-6-可观测：运行时要能回答三个问题" class="headerlink" title="3.6 可观测：运行时要能回答三个问题"></a>3.6 可观测：运行时要能回答三个问题</h3><ol>
+<li>系统在做什么？（日志 &#x2F; tracing）</li>
+<li>做得好不好？（metrics &#x2F; 质量指标）</li>
+<li>出问题时如何定位？（错误上下文、复现路径）</li>
+</ol>
+<p>关键路径要有结构化日志；用户可见的错误要人话 + 可操作建议。</p>
+<h3 id="3-7-文档：为未来的自己和协作者写"><a href="#3-7-文档：为未来的自己和协作者写" class="headerlink" title="3.7 文档：为未来的自己和协作者写"></a>3.7 文档：为未来的自己和协作者写</h3><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>何时写</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>README</td>
+<td>始终</td>
+<td>安装、运行、一分钟上手</td>
+</tr>
+<tr>
+<td>设计 doc</td>
+<td>方案确定后</td>
+<td>架构、接口、取舍</td>
+</tr>
+<tr>
+<td>Runbook</td>
+<td>可部署后</td>
+<td>调试、运维、常见故障</td>
+</tr>
+<tr>
+<td>回顾</td>
+<td>里程碑&#x2F;项目末</td>
+<td>踩坑、改进项</td>
+</tr>
+</tbody></table>
+<p>文档与代码同源更新；过期的文档比没有更糟。</p>
+<h3 id="3-8-排错协议（禁止无脑重试）"><a href="#3-8-排错协议（禁止无脑重试）" class="headerlink" title="3.8 排错协议（禁止无脑重试）"></a>3.8 排错协议（禁止无脑重试）</h3><ol>
+<li>复述错误现象（期望 vs 实际）</li>
+<li>列 2～3 个假设（按可能性排序）</li>
+<li>一次只验证一个假设</li>
+<li>修复后写清根因，必要时补测试或文档</li>
+</ol>
+<h2 id="四、设计原则速查（经典且仍有效）"><a href="#四、设计原则速查（经典且仍有效）" class="headerlink" title="四、设计原则速查（经典且仍有效）"></a>四、设计原则速查（经典且仍有效）</h2><h3 id="4-1-SOLID（面向对象-模块设计）"><a href="#4-1-SOLID（面向对象-模块设计）" class="headerlink" title="4.1 SOLID（面向对象 &#x2F; 模块设计）"></a>4.1 SOLID（面向对象 &#x2F; 模块设计）</h3><table>
+<thead>
+<tr>
+<th>原则</th>
+<th>含义</th>
+<th>实践提示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S 单一职责</td>
+<td>一个模块一个变化理由</td>
+<td>函数做一件事；巨型 handler 要拆</td>
+</tr>
+<tr>
+<td>O 开闭</td>
+<td>对扩展开放，对修改关闭</td>
+<td>用策略&#x2F;插件，而非到处 <code>if backend ==</code></td>
+</tr>
+<tr>
+<td>L 里氏替换</td>
+<td>子类型可替换父类型</td>
+<td>接口语义一致，不偷偷改前置条件</td>
+</tr>
+<tr>
+<td>I 接口隔离</td>
+<td>不强迫依赖用不到的方法</td>
+<td>小接口优于「上帝接口」</td>
+</tr>
+<tr>
+<td>D 依赖倒置</td>
+<td>依赖抽象，不依赖具体</td>
+<td>核心业务不 import 具体 UI&#x2F;DB 实现</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-架构与边界"><a href="#4-2-架构与边界" class="headerlink" title="4.2 架构与边界"></a>4.2 架构与边界</h3><ul>
+<li><strong>高内聚：</strong> 相关逻辑放一起（同一 Tab、同一包、同一聚合）。</li>
+<li><strong>低耦合：</strong> 模块通过稳定接口通信，不读对方内部状态。</li>
+<li><strong>单向依赖：</strong> 领域核心不依赖 UI &#x2F; 框架；适配层做翻译。</li>
+<li><strong>失败隔离：</strong> 子进程、超时、重试、降级——长任务不要拖死主界面。</li>
+</ul>
+<h3 id="4-3-API-接口设计"><a href="#4-3-API-接口设计" class="headerlink" title="4.3 API &#x2F; 接口设计"></a>4.3 API &#x2F; 接口设计</h3><ul>
+<li>契约明确：输入、输出、错误码、副作用。</li>
+<li>幂等与可重试对异步任务至关重要。</li>
+<li>版本化或扩展字段要事先想好；破坏性变更要有迁移路径。</li>
+</ul>
+<h3 id="4-4-前端-产品（凡有-UI-的项目）"><a href="#4-4-前端-产品（凡有-UI-的项目）" class="headerlink" title="4.4 前端 &#x2F; 产品（凡有 UI 的项目）"></a>4.4 前端 &#x2F; 产品（凡有 UI 的项目）</h3><ul>
+<li>用户任务优先，不是功能菜单优先。</li>
+<li>信息架构先于视觉：导航、分组、主&#x2F;次操作、状态（空&#x2F;加载&#x2F;成功&#x2F;失败）。</li>
+<li>渐进披露：默认简单，专家可展开。</li>
+<li>反馈回路要短：&gt;100ms 要有响应感，&gt;1s 要有进度。</li>
+<li>一致性：术语、布局、交互模式统一。</li>
+</ul>
+<h3 id="4-5-安全与可靠（默认要有意识）"><a href="#4-5-安全与可靠（默认要有意识）" class="headerlink" title="4.5 安全与可靠（默认要有意识）"></a>4.5 安全与可靠（默认要有意识）</h3><ul>
+<li>最小权限；密钥不进仓库；输入校验。</li>
+<li>外部进程 &#x2F; 网络调用：超时 + 资源清理。</li>
+<li>用户数据：覆盖&#x2F;删除前确认；长任务可取消。</li>
+</ul>
+<h2 id="五、决策与取舍"><a href="#五、决策与取舍" class="headerlink" title="五、决策与取舍"></a>五、决策与取舍</h2><h3 id="5-1-常用决策维度"><a href="#5-1-常用决策维度" class="headerlink" title="5.1 常用决策维度"></a>5.1 常用决策维度</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可逆性</td>
+<td>这个决定容易改吗？</td>
+</tr>
+<tr>
+<td>blast radius</td>
+<td>错了会影响多大范围？</td>
+</tr>
+<tr>
+<td>学习成本</td>
+<td>团队多久能熟练？</td>
+</tr>
+<tr>
+<td>运维成本</td>
+<td>谁半夜被叫醒？</td>
+</tr>
+<tr>
+<td>用户价值</td>
+<td>对用户路径是 P0 还是锦上添花？</td>
+</tr>
+</tbody></table>
+<p>优先做可逆、小范围、高价值的决定；不可逆的大决定要文档化并评审。</p>
+<h3 id="5-2-Build-vs-Buy-vs-Compose"><a href="#5-2-Build-vs-Buy-vs-Compose" class="headerlink" title="5.2 Build vs Buy vs Compose"></a>5.2 Build vs Buy vs Compose</h3><ul>
+<li><strong>Buy&#x2F;用库：</strong> 通用能力（UI 框架、ORM、图表）。</li>
+<li><strong>Build：</strong> 差异化核心、领域规则、性能关键路径。</li>
+<li><strong>Compose：</strong> 胶水层要薄，业务规则不要散落在脚本里。</li>
+</ul>
+<h3 id="5-3-技术债"><a href="#5-3-技术债" class="headerlink" title="5.3 技术债"></a>5.3 技术债</h3><ul>
+<li>有意识借债：知道还不起就别借。</li>
+<li>每次迭代留还债预算（重构、测试、删死代码）。</li>
+<li>债的利息 &#x3D; 改一处坏三处、新人看不懂、不敢动。</li>
+</ul>
+<h2 id="六、协作与流程（单人-小团队也适用）"><a href="#六、协作与流程（单人-小团队也适用）" class="headerlink" title="六、协作与流程（单人 &#x2F; 小团队也适用）"></a>六、协作与流程（单人 &#x2F; 小团队也适用）</h2><h3 id="6-1-角色清晰"><a href="#6-1-角色清晰" class="headerlink" title="6.1 角色清晰"></a>6.1 角色清晰</h3><ul>
+<li><strong>定方向、验收、关键取舍</strong> → 负责人 &#x2F; PM &#x2F; 架构师</li>
+<li><strong>方案、实现、验证、记录</strong> → 执行者（含 AI 搭档）</li>
+<li>执行者不替负责人做关键判断；负责人不微操每一行代码。</li>
+</ul>
+<h3 id="6-2-节奏"><a href="#6-2-节奏" class="headerlink" title="6.2 节奏"></a>6.2 节奏</h3><p>澄清 → 设计(对比) → 骨架 → 护栏 → 垂直切片 → 里程碑 → 沉淀</p>
+<p>与 <code>Agent/agent.md</code> 七步工作流对齐；小修可省略文档，但不可跳过验证。</p>
+<h3 id="6-3-评审什么"><a href="#6-3-评审什么" class="headerlink" title="6.3 评审什么"></a>6.3 评审什么</h3><ul>
+<li>是否解决正确的问题？</li>
+<li>边界与接口是否清晰？</li>
+<li>如何验证？测试在哪？</li>
+<li>有无过度设计？有无明显风险未处理？</li>
+</ul>
+<h3 id="6-4-有效沟通产物"><a href="#6-4-有效沟通产物" class="headerlink" title="6.4 有效沟通产物"></a>6.4 有效沟通产物</h3><ul>
+<li>每次有意义的工作结束：做了什么、结果如何、未做项、下一步。</li>
+<li>用图表、表格、可运行 demo 代替长篇空谈。</li>
+</ul>
+<h2 id="七、AI-辅助开发守则"><a href="#七、AI-辅助开发守则" class="headerlink" title="七、AI 辅助开发守则"></a>七、AI 辅助开发守则</h2><ol>
+<li><strong>先规划后执行：</strong> AI 动手前，人确认范围与步骤。</li>
+<li><strong>上下文要 curated：</strong> 需求、接口、约束、反例；不是堆满整个仓库。</li>
+<li><strong>不臆造：</strong> API、路径、版本先查证。</li>
+<li><strong>小 diff 审阅：</strong> 大段生成代码必须分段审查与测试。</li>
+<li><strong>规则沉淀：</strong> 有效的 prompt、检查清单写入 <code>.cursor/rules/</code> 或项目文档。</li>
+<li><strong>人验收：</strong> AI 说「完成」不等于完成；跑测试、点界面、对验收标准。</li>
+</ol>
+<h2 id="八、项目启动前-10-分钟自检"><a href="#八、项目启动前-10-分钟自检" class="headerlink" title="八、项目启动前 10 分钟自检"></a>八、项目启动前 10 分钟自检</h2><p>复制到每个新项目 <code>docs/</code> 或 issue 里勾选：</p>
+<ul>
+<li><input disabled="" type="checkbox"> 能用一句话说清业务目标与用户</li>
+<li><input disabled="" type="checkbox"> 有 1～3 条用户故事 + Out-of-Scope</li>
+<li><input disabled="" type="checkbox"> 有验收标准（功能 + 至少一条非功能）</li>
+<li><input disabled="" type="checkbox"> 至少对比过 2 种实现思路</li>
+<li><input disabled="" type="checkbox"> 架构草图 + 关键接口&#x2F;数据结构已写</li>
+<li><input disabled="" type="checkbox"> 目录&#x2F;模块职责清晰，依赖方向单一</li>
+<li><input disabled="" type="checkbox"> 有最小测试&#x2F;冒烟入口（<code>make test</code> 或等价物）</li>
+<li><input disabled="" type="checkbox"> 知道第一个垂直切片是什么</li>
+<li><input disabled="" type="checkbox"> 最大风险已识别，有 spike&#x2F;验证计划</li>
+<li><input disabled="" type="checkbox"> README 或运行说明能让陌生人跑起来</li>
+</ul>
+<p><strong>若勾选 &lt; 7 项：</strong> 先补澄清或 spike，再大规模写代码。</p>
+<h2 id="九、常见反模式（看见就警惕）"><a href="#九、常见反模式（看见就警惕）" class="headerlink" title="九、常见反模式（看见就警惕）"></a>九、常见反模式（看见就警惕）</h2><table>
+<thead>
+<tr>
+<th>反模式</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需求不清就开写</td>
+<td>返工、范围蔓延</td>
+</tr>
+<tr>
+<td>一次改几十个文件</td>
+<td>难审、难回滚</td>
+</tr>
+<tr>
+<td>没有测试的「能跑」</td>
+<td>回归噩梦</td>
+</tr>
+<tr>
+<td>复制粘贴业务规则</td>
+<td>改一处漏一处</td>
+</tr>
+<tr>
+<td>上帝类 &#x2F; 上帝文件</td>
+<td>没人敢动</td>
+</tr>
+<tr>
+<td>静默失败 &#x2F; 吞异常</td>
+<td>用户与调试都痛苦</td>
+</tr>
+<tr>
+<td>文档与代码两套故事</td>
+<td>信任崩塌</td>
+</tr>
+<tr>
+<td>追求新技术而非解决问题</td>
+<td>简历驱动开发</td>
+</tr>
+<tr>
+<td>AI 生成不审就用</td>
+<td>隐蔽 bug、安全洞</td>
+</tr>
+<tr>
+<td>无观测上线</td>
+<td>靠猜排 prod 问题</td>
+</tr>
+</tbody></table>
+<h2 id="十、推荐阅读脉络（按需深入）"><a href="#十、推荐阅读脉络（按需深入）" class="headerlink" title="十、推荐阅读脉络（按需深入）"></a>十、推荐阅读脉络（按需深入）</h2><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>软件工程知识域</td>
+<td>IEEE SWEBOK Guide（需求、设计、构造、测试、维护等）</td>
+</tr>
+<tr>
+<td>流动与反馈</td>
+<td>Gene Kim — The DevOps Handbook（三步法）</td>
+</tr>
+<tr>
+<td>演进式架构</td>
+<td>Neal Ford 等 — 演进式架构、适应度函数</td>
+</tr>
+<tr>
+<td>敏捷本质</td>
+<td>Manifesto + 极限编程实践（小发布、反馈）</td>
+</tr>
+<tr>
+<td>架构决策</td>
+<td>ADR（Architecture Decision Records）模板</td>
+</tr>
+<tr>
+<td>2025+ 趋势</td>
+<td>平台工程、AI-native SDLC、上下文工程、绿色软件（碳意识）</td>
+</tr>
+</tbody></table>
+<p>不必一次读完；遇到对应问题时再深挖。</p>
+<h2 id="十一、心智模型速记卡"><a href="#十一、心智模型速记卡" class="headerlink" title="十一、心智模型速记卡"></a>十一、心智模型速记卡</h2><ul>
+<li>价值 &gt; 炫技</li>
+<li>问题 &gt; 方案</li>
+<li>可验证 &gt; 声称完成</li>
+<li>演进 &gt; 一步到位</li>
+<li>简单 &gt; 复杂（在同样正确的前提下）</li>
+<li>人话错误 &gt; Error code</li>
+<li>小步 &gt; 大爆炸</li>
+<li>文档与代码同步 &gt; 靠记忆</li>
+<li>上下文给 AI &gt; 让 AI 猜</li>
+<li><strong>你负责判断，工具负责加速</strong></li>
+</ul>
+<h2 id="十二、与本文配套的项目内文档"><a href="#十二、与本文配套的项目内文档" class="headerlink" title="十二、与本文配套的项目内文档"></a>十二、与本文配套的项目内文档</h2><p>启动具体项目后，建议依次落地：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docs/00-requirements.md</code></td>
+<td>需求与验收</td>
+</tr>
+<tr>
+<td><code>docs/01-design.md</code></td>
+<td>方案对比与架构</td>
+</tr>
+<tr>
+<td><code>docs/02-skeleton.md</code></td>
+<td>骨架与模块职责</td>
+</tr>
+<tr>
+<td><code>docs/03-guardrails.md</code></td>
+<td>测试与 CI</td>
+</tr>
+<tr>
+<td><code>docs/04-progress.md</code></td>
+<td>进度与决策记录</td>
+</tr>
+<tr>
+<td><code>docs/05-runbook.md</code></td>
+<td>运行与排错</td>
+</tr>
+<tr>
+<td><code>docs/99-retrospective.md</code></td>
+<td>回顾</td>
+</tr>
+</tbody></table>
+<p>人机协作细则见 <code>Agent/agent.md</code> 与 <code>.cursor/rules/</code>。</p>
+<hr>
+<p><em>最后更新：2026-06-18</em></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4/" class="print-no-link">#工程思维</a>
+      
+        <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="print-no-link">#项目管理</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/" class="print-no-link">#软件架构</a>
+      
+        <a href="/tags/DevOps/" class="print-no-link">#DevOps</a>
+      
+        <a href="/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/" class="print-no-link">#方法论</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>软件工程世界观与做事方法</div>
+      <div>http://baikelwang.github.io/2026/06/18/软件工程世界观与做事方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/18/%E5%8C%BA%E9%97%B4%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%9A%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E5%BA%8F%E5%88%97%E4%B8%8E%E9%80%9A%E7%94%A8%E6%A8%A1%E6%9D%BF/" title="区间动态规划：最长回文子序列与通用模板">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">区间动态规划：最长回文子序列与通用模板</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/15/%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97%EF%BC%9A%E4%BB%8E%20DP%20%E5%88%B0%E8%B4%AA%E5%BF%83%E4%BA%8C%E5%88%86/" title="最长递增子序列：从 DP 到贪心二分">
+                        <span class="hidden-mobile">最长递增子序列：从 DP 到贪心二分</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

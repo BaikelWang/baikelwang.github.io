@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="上一篇写到了成功获取了晶体中每个原子的磁矩，并能够将其添加入原子特征的第 93 维度，今天接着写我是如何一步一步把它导入模型中训练的。 我们缕一缕数据处理的流程：  从 MP 中获取 data 的 doc 以及 structure； 使用 CIFwriter 把 structure 写入 cif 文件，并且设置 write_magmoms&#x3D;True； 把晶体的预测性质写入 id_prop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="训练带有磁矩的数据">
+<meta property="og:url" content="http://baikelwang.github.io/2025/07/06/%E8%AE%AD%E7%BB%83%E5%B8%A6%E6%9C%89%E7%A3%81%E7%9F%A9%E7%9A%84%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="上一篇写到了成功获取了晶体中每个原子的磁矩，并能够将其添加入原子特征的第 93 维度，今天接着写我是如何一步一步把它导入模型中训练的。 我们缕一缕数据处理的流程：  从 MP 中获取 data 的 doc 以及 structure； 使用 CIFwriter 把 structure 写入 cif 文件，并且设置 write_magmoms&#x3D;True； 把晶体的预测性质写入 id_prop">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/%E5%85%B3%E4%BA%8E%E7%A3%81%E7%9F%A9%E7%89%B9%E5%BE%81%E5%86%99%E5%85%A5/0.png">
+<meta property="article:published_time" content="2025-07-06T08:59:11.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.965Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="科研">
+<meta property="article:tag" content="凝聚态物理">
+<meta property="article:tag" content="MP">
+<meta property="article:tag" content="CSAT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/%E5%85%B3%E4%BA%8E%E7%A3%81%E7%9F%A9%E7%89%B9%E5%BE%81%E5%86%99%E5%85%A5/0.png">
+  
+  
+  
+  <title>训练带有磁矩的数据 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="训练带有磁矩的数据"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-06 16:59" pubdate>
+          2025年7月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">训练带有磁矩的数据</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>上一篇写到了成功获取了晶体中每个原子的磁矩，并能够将其添加入原子特征的第 93 维度，今天接着写我是如何一步一步把它导入模型中训练的。</p>
+<p>我们缕一缕数据处理的流程：</p>
+<ol>
+<li>从 MP 中获取 data 的 doc 以及 structure；</li>
+<li>使用 CIFwriter 把 structure 写入 cif 文件，并且设置 write_magmoms&#x3D;True；</li>
+<li>把晶体的预测性质写入 id_prop.csv;</li>
+<li>通过 CIFData 类读取 dataset；在生成 atom_fea 时将 magmon 写入第 93 维度；</li>
+<li>通过 crystal_graph_list 函数生成 graph 数据。</li>
+</ol>
+<h2 id="首先获取数据"><a href="#首先获取数据" class="headerlink" title="首先获取数据"></a>首先获取数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> mp_api.client <span class="hljs-keyword">import</span> MPRester<br><span class="hljs-keyword">import</span> csv<br><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> pymatgen.io.cif <span class="hljs-keyword">import</span> CifWriter<br>API_KEY = <span class="hljs-string">&quot;&quot;</span><br>mpr = MPRester(<br>API_KEY)<br>M_docs = mpr.materials.summary.search(<br>        total_magnetization=(<span class="hljs-number">0.2</span>, <span class="hljs-literal">None</span>),  <span class="hljs-comment"># 总磁化强度 &gt; 0.2 μB/unit cell</span><br>        num_elements=(<span class="hljs-number">3</span>, <span class="hljs-number">92</span>),              <span class="hljs-comment"># 限制元素数量</span><br>        fields=[<span class="hljs-string">&quot;material_id&quot;</span>, <span class="hljs-string">&quot;structure&quot;</span>, <span class="hljs-string">&quot;is_magnetic&quot;</span>],<br>        chunk_size=<span class="hljs-number">10</span>,<br>        num_chunks=<span class="hljs-number">100</span><br>        )<br>NM_docs = mpr.materials.summary.search(<br>        total_magnetization=(<span class="hljs-literal">None</span>, <span class="hljs-number">0.1</span>),  <span class="hljs-comment"># 总磁化强度 &lt; 0.1 μB/unit cell</span><br>        num_elements=(<span class="hljs-number">3</span>, <span class="hljs-number">92</span>),              <span class="hljs-comment"># 限制元素数量</span><br>        fields=[<span class="hljs-string">&quot;material_id&quot;</span>, <span class="hljs-string">&quot;structure&quot;</span>, <span class="hljs-string">&quot;is_magnetic&quot;</span>],<br>        chunk_size=<span class="hljs-number">10</span>,<br>        num_chunks=<span class="hljs-number">100</span><br>        )<br></code></pre></td></tr></table></figure>
+
+<p>这样严格区分开磁性晶体和非磁性，方便后续检查和确认数量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tqdm(M_docs):<br>        <span class="hljs-built_in">id</span> = entry.material_id<br>        file_path = os.path.join(<span class="hljs-string">&#x27;magmon_dataset_2000&#x27;</span>, <span class="hljs-built_in">str</span>(<span class="hljs-built_in">id</span>) + <span class="hljs-string">&quot;.cif&quot;</span>)<br>        structure = entry.structure<br>        <span class="hljs-comment"># 再写入时一定要注意，将写入磁矩设置为Ture</span><br>        cif_writer = CifWriter(structure, write_magmoms=<span class="hljs-literal">True</span>) <br>        cif_writer.write_file(file_path)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;磁性材料结构获取完成&#x27;</span>)<br><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tqdm(NM_docs):<br>        <span class="hljs-built_in">id</span> = entry.material_id<br>        file_path = os.path.join(<span class="hljs-string">&#x27;magmon_dataset_2000&#x27;</span>, <span class="hljs-built_in">str</span>(<span class="hljs-built_in">id</span>) + <span class="hljs-string">&quot;.cif&quot;</span>)<br>        structure = entry.structure<br>        cif_writer = CifWriter(structure, write_magmoms=<span class="hljs-literal">True</span>) <br>        cif_writer.write_file(file_path)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;非磁性材料结构获取完成&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>最后生成 csv：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;magmon_dataset_2000/id_prop.csv&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>, newline=<span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-keyword">as</span> csvfile:<br>    <span class="hljs-comment"># 创建一个csv写入器</span><br>    writer = csv.writer(csvfile)<br>    header = [<span class="hljs-string">&#x27;Material&#x27;</span>, <span class="hljs-string">&#x27;is_Magnetic&#x27;</span>]<br>    writer.writerow(header)<br>    <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tqdm(M_docs):<br>        <span class="hljs-comment"># 遍历列表，写入每一行数据</span><br>        <span class="hljs-keyword">if</span> entry.is_magnetic:<br>            magnetic = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>:<br>            magnetic = <span class="hljs-number">0</span><br>        <span class="hljs-built_in">id</span> = entry.material_id<br>        writer.writerow([<span class="hljs-built_in">id</span>, magnetic])<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;磁性材料写入完成！&#x27;</span>)<br><br>    <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tqdm(NM_docs):<br>        <span class="hljs-comment"># 遍历列表，写入每一行数据</span><br>        <span class="hljs-keyword">if</span> entry.is_magnetic:<br>            magnetic = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>:<br>            magnetic = <span class="hljs-number">0</span><br>        <span class="hljs-built_in">id</span> = entry.material_id<br>        writer.writerow([<span class="hljs-built_in">id</span>, magnetic])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;All done!&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>这样子生成的 cif 文件都是包含下面两个 loop 字段的，说明是写入了磁矩信息，在读取的时候就能读到每个原子的 magmon。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python">loop_<br> _atom_site_type_symbol<br> _atom_site_label<br> _atom_site_symmetry_multiplicity<br> _atom_site_fract_x<br> _atom_site_fract_y<br> _atom_site_fract_z<br> _atom_site_occupancy<br>  Ac  Ac0  <span class="hljs-number">1</span>  -<span class="hljs-number">0.00000000</span>  -<span class="hljs-number">0.00000000</span>  -<span class="hljs-number">0.00000000</span>  <span class="hljs-number">1</span><br>  Cr  Cr1  <span class="hljs-number">1</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">1</span><br>  O  O2  <span class="hljs-number">1</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">1</span><br>  O  O3  <span class="hljs-number">1</span>  <span class="hljs-number">0.50000000</span>  -<span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">1</span><br>  O  O4  <span class="hljs-number">1</span>  -<span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">0.50000000</span>  <span class="hljs-number">1</span><br>loop_<br> _atom_site_moment_label<br> _atom_site_moment_crystalaxis_x<br> _atom_site_moment_crystalaxis_y<br> _atom_site_moment_crystalaxis_z<br>  Ac0  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.01500000</span><br>  Cr1  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">2.71800000</span><br>  O2  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.03800000</span><br>  O3  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.03800000</span><br>  O4  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.00000000</span>  <span class="hljs-number">0.03800000</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="接着对数据进行读取"><a href="#接着对数据进行读取" class="headerlink" title="接着对数据进行读取"></a>接着对数据进行读取</h2><p>按照上述步骤，在这里需要依次进行 CIFData 的读取和 graph 数据生成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">dataset = <span class="hljs-string">&quot;magmon_dataset_2000&quot;</span><br>data = CIFData(dataset, target_name=<span class="hljs-string">&#x27;is_Magnetic&#x27;</span>)<br>graph = crystal_graph_list(data)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这是图数据&#x27;</span>)<br><span class="hljs-built_in">print</span>(data[<span class="hljs-number">0</span>])<br></code></pre></td></tr></table></figure>
+
+<p>但是这里出现了严重错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs plain">ZeroDivisionError                         Traceback (most recent call last)<br>Cell In[23], line 5<br>      3 #graph = crystal_graph_list(data)<br>      4 print(&#x27;这是图数据&#x27;)<br>----&gt; 5 print(data[0])<br><br>File e:\WYX_Project\CSAT_demo_2\test_view\csat\crystal_data.py:223, in CIFData.__getitem__(self, idx)<br>    220 if not target_value:<br>    221     raise ValueError(f&quot;Empty target value for &#123;self.target_name&#125; in &#123;cif_id&#125;&quot;)<br>--&gt; 223 crystal = Structure.from_file(os.path.join(self.root_dir,<br>    224                                            cif_id + &#x27;.cif&#x27;))<br>    226 if self.target_name == &#x27;is_Magnetic&#x27;:<br>    227     # 如果目标是磁矩，则将原子特征扩展为包含磁矩<br>    228     atom_fea_list = []<br><br>File e:\anaconda3\envs\pytorch\Lib\site-packages\pymatgen\core\structure.py:3202, in IStructure.from_file(cls, filename, primitive, sort, merge_tol, **kwargs)<br>   3200 contents: str = file.read()  # type:ignore[assignment]<br>   3201 if fnmatch(fname.lower(), &quot;*.cif*&quot;) or fnmatch(fname.lower(), &quot;*.mcif*&quot;):<br>-&gt; 3202     return cls.from_str(<br>   3203         contents,<br>   3204         fmt=&quot;cif&quot;,<br>   3205         primitive=primitive,<br>   3206         sort=sort,<br>   3207         merge_tol=merge_tol,<br>...<br>--&gt; 230 if len(items) % n != 0:<br>    231     raise ValueError(f&quot;&#123;len(items)=&#125; is not a multiple of &#123;n=&#125;&quot;)<br>    232 loops.append(columns)<br><br>ZeroDivisionError: integer modulo by zero<br></code></pre></td></tr></table></figure>
+
+<p>这个报错的意思是：</p>
+<ol>
+<li><code>&lt;font style=&quot;color:rgb(0, 0, 0);&quot;&gt;items&lt;/font&gt;</code><font style="color:rgb(0, 0, 0);"> </font><font style="color:rgb(0, 0, 0);">是 CIF 文件中的数据项列表</font></li>
+<li><code>&lt;font style=&quot;color:rgb(0, 0, 0);&quot;&gt;n&lt;/font&gt;</code><font style="color:rgb(0, 0, 0);"> </font><font style="color:rgb(0, 0, 0);">应该是数据列的数量</font></li>
+<li><font style="color:rgb(0, 0, 0);">当</font><font style="color:rgb(0, 0, 0);"> </font><code>&lt;font style=&quot;color:rgb(0, 0, 0);&quot;&gt;n&lt;/font&gt;</code><font style="color:rgb(0, 0, 0);"> </font><font style="color:rgb(0, 0, 0);">为 0 时，尝试计算</font><font style="color:rgb(0, 0, 0);"> </font><code>&lt;font style=&quot;color:rgb(0, 0, 0);&quot;&gt;len(items) % 0&lt;/font&gt;</code><font style="color:rgb(0, 0, 0);"> </font><font style="color:rgb(0, 0, 0);">导致除以零错误</font></li>
+</ol>
+<p><font style="color:rgb(0, 0, 0);">这通常是由于 CIF 文件格式问题导致的：</font></p>
+<ul>
+<li><font style="color:rgb(0, 0, 0);">文件可能缺少必要的列定义</font></li>
+<li><font style="color:rgb(0, 0, 0);">数据行数量与列定义不匹配</font></li>
+<li><font style="color:rgb(0, 0, 0);">特殊字符或格式问题导致解析失败</font></li>
+</ul>
+<p>错误出现在 <code>crystal = Structure.from_file(os.path.join(self.root_dir,......</code>就算说，在读 cif 文件是出错了，那就奇怪了，我们在上一篇中读取了好几次 cif 文件都没有任何问题，究竟是怎么回事呢？</p>
+<p>于是，我就打开了几个 cif 文件看看，发现在非磁性晶体中存在这种现象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plain">loop_<br> _atom_site_type_symbol<br> _atom_site_label<br> _atom_site_symmetry_multiplicity<br> _atom_site_fract_x<br> _atom_site_fract_y<br> _atom_site_fract_z<br> _atom_site_occupancy<br>  Ac  Ac0  1  0.50000000  0.50000000  0.50000000  1<br>  Ac  Ac1  1  -0.00000000  -0.00000000  -0.00000000  1<br>  Ag  Ag2  1  0.25000100  0.25000100  0.25000100  1<br>  Ir  Ir3  1  0.75000100  0.75000100  0.75000100  1<br>loop_<br> _atom_site_moment_label<br> _atom_site_moment_crystalaxis_x<br> _atom_site_moment_crystalaxis_y<br> _atom_site_moment_crystalaxis_z<br></code></pre></td></tr></table></figure>
+
+<p>他写入了磁矩的适量坐标系，但是没有磁矩信息，最终导致在读取 cif 文件时候，出现 item % 0，因为没有数据，为了验证这一点，我写了如下代码测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plain">from csat.crystal_data import CIFData, crystal_graph_list<br>from pymatgen.core.structure import Structure<br>data = CIFData(&quot;NM&quot;, target_name=&#x27;is_Magnetic&#x27;)<br>graph = crystal_graph_list(data)<br></code></pre></td></tr></table></figure>
+
+<p>我把一个非磁性晶体的 cif 文件单独拉出来读取，发现只有把</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">loop_<br> _atom_site_moment_label<br> _atom_site_moment_crystalaxis_x<br> _atom_site_moment_crystalaxis_y<br> _atom_site_moment_crystalaxis_z<br></code></pre></td></tr></table></figure>
+
+<p>这一段删除之后才能够读取成功，说明我的推断没有错，于是我需要重新调整数据的获取方式</p>
+<h2 id="重新获取数据"><a href="#重新获取数据" class="headerlink" title="重新获取数据"></a>重新获取数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">for entry in tqdm(M_docs):<br>        id = entry.material_id<br>        file_path = os.path.join(&#x27;magmon_dataset_2000&#x27;, str(id) + &quot;.cif&quot;)<br>        structure = entry.structure<br>        cif_writer = CifWriter(structure, write_magmoms=True) <br>        cif_writer.write_file(file_path)<br>print(&#x27;磁性材料结构获取完成&#x27;)<br><br>for entry in tqdm(NM_docs):<br>        id = entry.material_id<br>        file_path = os.path.join(&#x27;magmon_dataset_2000&#x27;, str(id) + &quot;.cif&quot;)<br>        structure = entry.structure<br>        cif_writer = CifWriter(structure)    # !!!!!非磁性材料不需要写入磁矩！！！！！！否则会出错<br>        cif_writer.write_file(file_path)<br>print(&#x27;非磁性材料结构获取完成&#x27;)<br></code></pre></td></tr></table></figure>
+
+<p>只要把非磁性晶体的磁矩矢量坐标系删掉就行了，重新测试后完全没有问题了。</p>
+<h2 id="再读数据"><a href="#再读数据" class="headerlink" title="再读数据"></a>再读数据</h2><p>经过以上重写数据之后，对磁性和非磁性的 cif 文件有了严格区分，于是我们在获取 crystal 的 structure 数据时也需要重新分类读取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.target_name == <span class="hljs-string">&#x27;is_Magnetic&#x27;</span>:<br>    <span class="hljs-comment"># 如果目标是磁矩，则将原子特征扩展为包含磁矩</span><br>    atom_fea_list = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(crystal)):<br>        base_fea = <span class="hljs-variable language_">self</span>.ari.get_atom_fea(crystal[i].specie.number)<br>        <span class="hljs-keyword">if</span> target_value==<span class="hljs-number">1</span>:<br>            magmom  = crystal.site_properties[<span class="hljs-string">&#x27;magmom&#x27;</span>][i] <span class="hljs-comment"># 添加磁矩</span><br>        <span class="hljs-keyword">else</span>:<br>            magmom = <span class="hljs-number">0.0</span><br>            magmom = <span class="hljs-built_in">float</span>(magmom)  <span class="hljs-comment"># 确保磁矩是浮点数类型</span><br>        <span class="hljs-comment"># print(f&quot;原子 &#123;crystal[i].specie.symbol&#125; 的磁矩: &#123;magmom&#125;&quot;)</span><br>        <span class="hljs-comment"># 将磁矩作为新特征追加</span><br>        extended_fea = np.append(base_fea, magmom)<br>        atom_fea_list.append(extended_fea)<br>        atom_fea = np.vstack(atom_fea_list)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-comment"># 如果目标不是磁矩，则只使用原子特征</span><br>    atom_fea = np.vstack([<span class="hljs-variable language_">self</span>.ari.get_atom_fea(crystal[i].specie.number)<br>                          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(crystal))])<br></code></pre></td></tr></table></figure>
+
+<p>在这里我用 target_value 来区分，因为我们的任务是分类任务，分类的标签就是是否是磁性，正好利用这个标签来区分磁性和非磁性，然后为了保持维度一致，只需要在非磁性原子的磁矩维度上写 0 就行了。</p>
+<p>接下来，测试一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> test_view.csat.crystal_data <span class="hljs-keyword">import</span> CIFData, crystal_graph_list<br>data = CIFData(<span class="hljs-string">&quot;magmon_dataset_2000&quot;</span>, target_name=<span class="hljs-string">&#x27;is_Magnetic&#x27;</span>)<br>graph = crystal_graph_list(data)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这是图数据&#x27;</span>)<br><span class="hljs-built_in">print</span>(graph[<span class="hljs-number">0</span>])<br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">这是图数据</span><br><span class="hljs-string">Data(x=[4, 93], edge_index=[2, 12], edge_attr=[12, 41], y=[1], id=&#x27;mp-861724&#x27;)</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>结果表明很成功，就可以加入训练了。</p>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><p>训练就很简单了，只要修改一点点超参数就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-variable language_">self</span>.task: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;classification&#x27;</span>  <span class="hljs-comment"># regression/classification</span><br><span class="hljs-variable language_">self</span>.num_classes: <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span><br><br><span class="hljs-comment"># 数据参数</span><br><span class="hljs-variable language_">self</span>.data_root: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;magmon_dataset_2000&#x27;</span>  <span class="hljs-comment"># 数据集根目录</span><br><span class="hljs-variable language_">self</span>.target: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;is_Magnetic&#x27;</span><br><br><span class="hljs-comment"># 模型参数</span><br><span class="hljs-variable language_">self</span>.input_dim: <span class="hljs-built_in">int</span> = <span class="hljs-number">93</span><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">凝聚态物理与人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A7%91%E7%A0%94/" class="print-no-link">#科研</a>
+      
+        <a href="/tags/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86/" class="print-no-link">#凝聚态物理</a>
+      
+        <a href="/tags/MP/" class="print-no-link">#MP</a>
+      
+        <a href="/tags/CSAT/" class="print-no-link">#CSAT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>训练带有磁矩的数据</div>
+      <div>http://baikelwang.github.io/2025/07/06/训练带有磁矩的数据/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BC%95%E5%85%A5/" title="数据结构第一章：概念与引入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构第一章：概念与引入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/05/%E5%9B%BD%E5%86%85%E7%BD%91%E7%BB%9C%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98/" title="国内网络无法访问的问题">
+                        <span class="hidden-mobile">国内网络无法访问的问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

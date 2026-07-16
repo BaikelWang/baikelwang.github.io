@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、什么是PXRD图谱？PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：  横坐标（x轴）：衍射角 2θ（单位：度） 纵坐标（y轴）：衍射强度（单位：计数cps或任意单位a.u.）  图谱呈现一系列衍射峰，每个峰对应晶体中某一组特定晶面（hkl）的衍射。  📊 直观理解：就像”指纹”一样，每种晶体材料都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PXRD图谱全面解析">
+<meta property="og:url" content="http://baikelwang.github.io/2026/06/14/PXRD%E5%9B%BE%E8%B0%B1%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="一、什么是PXRD图谱？PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：  横坐标（x轴）：衍射角 2θ（单位：度） 纵坐标（y轴）：衍射强度（单位：计数cps或任意单位a.u.）  图谱呈现一系列衍射峰，每个峰对应晶体中某一组特定晶面（hkl）的衍射。  📊 直观理解：就像”指纹”一样，每种晶体材料都">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/default.png">
+<meta property="article:published_time" content="2026-06-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.952Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="PXRD">
+<meta property="article:tag" content="科研">
+<meta property="article:tag" content="凝聚态物理">
+<meta property="article:tag" content="晶体结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/default.png">
+  
+  
+  
+  <title>PXRD图谱全面解析 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="PXRD图谱全面解析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-14 12:00" pubdate>
+          2026年6月14日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">PXRD图谱全面解析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、什么是PXRD图谱？"><a href="#一、什么是PXRD图谱？" class="headerlink" title="一、什么是PXRD图谱？"></a>一、什么是PXRD图谱？</h2><p><strong>PXRD（Powder X-ray Diffraction，粉末X射线衍射）图谱</strong>是粉末状晶体材料在X射线照射下产生的衍射信号图谱，通常表现为：</p>
+<ul>
+<li><strong>横坐标（x轴）</strong>：衍射角 <strong>2θ</strong>（单位：度）</li>
+<li><strong>纵坐标（y轴）</strong>：衍射<strong>强度</strong>（单位：计数cps或任意单位a.u.）</li>
+</ul>
+<p>图谱呈现一系列<strong>衍射峰</strong>，每个峰对应晶体中某一组特定晶面（hkl）的衍射。</p>
+<blockquote>
+<p>📊 <strong>直观理解</strong>：就像”指纹”一样，每种晶体材料都有自己独特的PXRD图谱。</p>
+</blockquote>
+<hr>
+<h2 id="二、PXRD图谱长什么样？"><a href="#二、PXRD图谱长什么样？" class="headerlink" title="二、PXRD图谱长什么样？"></a>二、PXRD图谱长什么样？</h2><p>典型的PXRD图谱示例：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs 1c">强度<span class="hljs-punctuation">(</span>I<span class="hljs-punctuation">)</span><br>  ↑<br>  <span class="hljs-string">|    ██</span><br>  <span class="hljs-string">|   ████      ██</span><br>  <span class="hljs-string">|  ██████    ████     ██</span><br>  <span class="hljs-string">| ████████  ██████   ████    ██</span><br>  <span class="hljs-string">|███████████████████████████████████→ 2θ(°)</span><br>  <span class="hljs-string">|  20°    30°    40°    50°    60°</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>峰的位置（2θ）</strong> → 反映晶面间距 d（晶胞大小和形状）</li>
+<li><strong>峰的高度（强度）</strong> → 反映原子种类和位置（结构信息）</li>
+<li><strong>峰的宽度（半高宽）</strong> → 反映晶粒尺寸和微观应变</li>
+</ul>
+<hr>
+<h2 id="三、PXRD有什么用？（核心应用）"><a href="#三、PXRD有什么用？（核心应用）" class="headerlink" title="三、PXRD有什么用？（核心应用）"></a>三、PXRD有什么用？（核心应用）</h2><h3 id="🔬-1-物相鉴定（最常用）"><a href="#🔬-1-物相鉴定（最常用）" class="headerlink" title="🔬 1. 物相鉴定（最常用）"></a>🔬 1. 物相鉴定（最常用）</h3><ul>
+<li>将样品的PXRD图谱与<strong>PDF卡片数据库</strong>（ICDD&#x2F;JCPDS）比对</li>
+<li>快速确定样品中含有哪些物相</li>
+<li>例：一种白色粉末，通过PXRD确认是TiO₂的锐钛矿相还是金红石相</li>
+</ul>
+<h3 id="🧪-2-晶体结构解析"><a href="#🧪-2-晶体结构解析" class="headerlink" title="🧪 2. 晶体结构解析"></a>🧪 2. 晶体结构解析</h3><ul>
+<li><strong>从头解析</strong>：从PXRD数据反推未知晶体结构</li>
+<li><strong>Rietveld精修</strong>：已知大致结构，通过拟合优化原子坐标</li>
+</ul>
+<h3 id="📏-3-晶格参数测定"><a href="#📏-3-晶格参数测定" class="headerlink" title="📏 3. 晶格参数测定"></a>📏 3. 晶格参数测定</h3><ul>
+<li>精确测量晶胞参数 a、b、c、α、β、γ</li>
+<li>监测固溶体、掺杂、相变引起的晶格变化</li>
+</ul>
+<h3 id="🔍-4-晶粒尺寸与微应变分析"><a href="#🔍-4-晶粒尺寸与微应变分析" class="headerlink" title="🔍 4. 晶粒尺寸与微应变分析"></a>🔍 4. 晶粒尺寸与微应变分析</h3><ul>
+<li>利用<strong>Scherrer公式</strong>估算纳米晶粒尺寸：D &#x3D; Kλ &#x2F; (βcosθ)</li>
+<li>通过峰形分析评估晶格应变</li>
+</ul>
+<h3 id="🌡️-5-原位研究"><a href="#🌡️-5-原位研究" class="headerlink" title="🌡️ 5. 原位研究"></a>🌡️ 5. 原位研究</h3><ul>
+<li>变温XRD：跟踪相变、热膨胀</li>
+<li>电化学原位XRD：观察电池充放电过程中电极材料的结构变化</li>
+</ul>
+<h3 id="✅-6-纯度与结晶度评估"><a href="#✅-6-纯度与结晶度评估" class="headerlink" title="✅ 6. 纯度与结晶度评估"></a>✅ 6. 纯度与结晶度评估</h3><ul>
+<li>非晶态物质产生弥散峰，结晶物质产生尖锐峰</li>
+<li>可定量结晶度比例</li>
+</ul>
+<hr>
+<h2 id="四、PXRD的工作原理（核心原理）"><a href="#四、PXRD的工作原理（核心原理）" class="headerlink" title="四、PXRD的工作原理（核心原理）"></a>四、PXRD的工作原理（核心原理）</h2><h3 id="⚛️-物理本质：X射线与晶体的相互作用"><a href="#⚛️-物理本质：X射线与晶体的相互作用" class="headerlink" title="⚛️ 物理本质：X射线与晶体的相互作用"></a>⚛️ 物理本质：X射线与晶体的相互作用</h3><h3 id="第一步：入射与散射"><a href="#第一步：入射与散射" class="headerlink" title="第一步：入射与散射"></a>第一步：入射与散射</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-attribute">X</span>射线源                   探测器<br>   │                        │<br>   │  λ (Cu Kα, <span class="hljs-number">1.54</span>Å)      │<br>   └─────────→ 样品 ←───────┘<br>               ⬇<br>       原子中的电子被激发<br>       重新发射<span class="hljs-attribute">X</span>射线（散射）<br></code></pre></td></tr></table></figure>
+
+<h3 id="第二步：布拉格定律（核心公式）"><a href="#第二步：布拉格定律（核心公式）" class="headerlink" title="第二步：布拉格定律（核心公式）"></a>第二步：布拉格定律（核心公式）</h3><p>当X射线照射到晶体上时，不同原子层（晶面）散射的X射线会发生<strong>干涉</strong>：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs livescript">入射X射线         反射X射线<br>    <span class="hljs-string">\</span>              /<br>     <span class="hljs-string">\</span>            /<br>      <span class="hljs-string">\θ</span>        θ/<br>       ────────  ← 晶面间距 d<br>        <span class="hljs-string">\</span>      /<br>         <span class="hljs-string">\</span>    /<br>          <span class="hljs-string">\</span>  /<br></code></pre></td></tr></table></figure>
+
+<p><strong>布拉格定律</strong>是PXRD的基石：</p>
+<blockquote>
+<p><strong>2d sinθ &#x3D; nλ</strong></p>
+</blockquote>
+<p>其中：</p>
+<ul>
+<li><strong>d</strong> &#x3D; 晶面间距（Å）</li>
+<li><strong>θ</strong> &#x3D; 入射角&#x2F;反射角（度）</li>
+<li><strong>λ</strong> &#x3D; X射线波长（Cu Kα ≈ 1.5406 Å）</li>
+<li><strong>n</strong> &#x3D; 衍射级数（正整数，通常取1）</li>
+</ul>
+<h3 id="第三步：为什么会得到峰？"><a href="#第三步：为什么会得到峰？" class="headerlink" title="第三步：为什么会得到峰？"></a>第三步：为什么会得到峰？</h3><ul>
+<li><strong>满足布拉格条件时</strong>：各原子层散射的X射线<strong>相位相同</strong> → <strong>相干加强</strong> → <strong>出现衍射峰</strong></li>
+<li><strong>不满足条件时</strong>：散射光相互抵消 → <strong>背景信号</strong></li>
+</ul>
+<h3 id="第四步：粉末为什么有这么多峰？"><a href="#第四步：粉末为什么有这么多峰？" class="headerlink" title="第四步：粉末为什么有这么多峰？"></a>第四步：粉末为什么有这么多峰？</h3><ul>
+<li>粉末样品中有无数<strong>随机取向</strong>的小晶粒</li>
+<li>总有一部分晶粒的某个晶面恰好满足布拉格条件</li>
+<li>旋转探测器即可记录所有方向的衍射信号</li>
+</ul>
+<hr>
+<h2 id="五、一个具体计算示例"><a href="#五、一个具体计算示例" class="headerlink" title="五、一个具体计算示例"></a>五、一个具体计算示例</h2><p>以<strong>NaCl</strong>为例，计算其第一个衍射峰（200面）：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>晶胞参数 a</td>
+<td>5.64 Å</td>
+<td>NaCl面心立方</td>
+</tr>
+<tr>
+<td>晶面 (200)</td>
+<td>d &#x3D; a&#x2F;√(h²+k²+l²)</td>
+<td>&#x3D; 5.64&#x2F;2 &#x3D; 2.82 Å</td>
+</tr>
+<tr>
+<td>λ (Cu Kα)</td>
+<td>1.5406 Å</td>
+<td>常用靶材</td>
+</tr>
+<tr>
+<td>布拉格方程</td>
+<td>2×2.82×sinθ &#x3D; 1×1.5406</td>
+<td>代入n&#x3D;1</td>
+</tr>
+<tr>
+<td><strong>2θ 结果</strong></td>
+<td><strong>2θ &#x3D; 2×arcsin(0.273) &#x3D; 31.7°</strong></td>
+<td><strong>实验峰位置</strong></td>
+</tr>
+</tbody></table>
+<p>实验中确实在约31.7°观察到NaCl的最强衍射峰！✅</p>
+<hr>
+<h2 id="六、PXRD流程总结"><a href="#六、PXRD流程总结" class="headerlink" title="六、PXRD流程总结"></a>六、PXRD流程总结</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs nix">┌─────────────┐<br>│   合成样品   │<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐<br>│ 研磨成粉末   │ ← 增加晶粒随机取向<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐<br>│   PXRD测量   │ ← <span class="hljs-number">2</span>θ范围通常<span class="hljs-number">5</span>°~<span class="hljs-number">80</span>°<br>└──────┬──────┘<br>       ↓<br>┌─────────────┐     ┌─────────────┐<br>│   图谱分析   │ ← → │  与CIF计算  │<br>│            │     │   图谱比较   │<br>└──────┬──────┘     └─────────────┘<br>       ↓<br>┌─────────────┐<br>│ 物相鉴定<span class="hljs-symbol">/</span>   │<br>│ 结构精修    │<br>└─────────────┘<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="简单记忆"><a href="#简单记忆" class="headerlink" title="简单记忆"></a>简单记忆</h2><blockquote>
+<p><strong>PXRD &#x3D; 用X射线给晶体”拍X光片”</strong></p>
+<ul>
+<li>每个晶体有独特的”DNA指纹”——PXRD图谱</li>
+<li>布拉格定律是核心：2d sinθ &#x3D; nλ</li>
+<li>峰位置→晶面间距→晶体结构</li>
+<li>峰强度→原子排布→物相确认</li>
+</ul>
+</blockquote>
+<p><strong>这就是为什么从CIF文件能算出PXRD——因为CIF中包含了所有计算所需的结构信息（晶胞参数、原子坐标、空间群），算法本质上就是在模拟这个物理过程！</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">凝聚态物理与人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/PXRD/" class="print-no-link">#PXRD</a>
+      
+        <a href="/tags/%E7%A7%91%E7%A0%94/" class="print-no-link">#科研</a>
+      
+        <a href="/tags/%E5%87%9D%E8%81%9A%E6%80%81%E7%89%A9%E7%90%86/" class="print-no-link">#凝聚态物理</a>
+      
+        <a href="/tags/%E6%99%B6%E4%BD%93%E7%BB%93%E6%9E%84/" class="print-no-link">#晶体结构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>PXRD图谱全面解析</div>
+      <div>http://baikelwang.github.io/2026/06/14/PXRD图谱全面解析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/14/AI-%E5%8D%8F%E4%BD%9C%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95/" title="用 AI 高质量交付项目的工作方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">用 AI 高质量交付项目的工作方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/14/Uni-3DAR%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B7%A8%E5%B0%BA%E5%BA%A63D%E7%94%9F%E6%88%90%E4%B8%8E%E7%90%86%E8%A7%A3%E7%9A%84%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A1%86%E6%9E%B6/" title="Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架">
+                        <span class="hidden-mobile">Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

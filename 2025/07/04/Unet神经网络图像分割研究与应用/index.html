@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unet神经网络图像分割研究与应用一、概述语义分割(Semantic Segmentation)是图像处理和机器视觉一个重要分支。与分类任务不同，语义分割需要判断图像每个像素点的类别，进行精确分割。语义分割目前在自动驾驶、自动抠图、医疗影像等领域有着比较广泛的应用。  上图是基本的语义分割任务。 Unet可以说是最常用、最简单的一种分割模型了，它简单、高效、易懂、容易构建、可以从小数据集中训练。U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unet神经网络图像分割研究与应用">
+<meta property="og:url" content="http://baikelwang.github.io/2025/07/04/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="Unet神经网络图像分割研究与应用一、概述语义分割(Semantic Segmentation)是图像处理和机器视觉一个重要分支。与分类任务不同，语义分割需要判断图像每个像素点的类别，进行精确分割。语义分割目前在自动驾驶、自动抠图、医疗影像等领域有着比较广泛的应用。  上图是基本的语义分割任务。 Unet可以说是最常用、最简单的一种分割模型了，它简单、高效、易懂、容易构建、可以从小数据集中训练。U">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/1.png">
+<meta property="article:published_time" content="2025-07-04T02:30:38.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.953Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="DeepLearning">
+<meta property="article:tag" content="Unet">
+<meta property="article:tag" content="CV">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="医学影像">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/1.png">
+  
+  
+  
+  <title>Unet神经网络图像分割研究与应用 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unet神经网络图像分割研究与应用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-04 10:30" pubdate>
+          2025年7月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Unet神经网络图像分割研究与应用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Unet神经网络图像分割研究与应用"><a href="#Unet神经网络图像分割研究与应用" class="headerlink" title="Unet神经网络图像分割研究与应用"></a>Unet神经网络图像分割研究与应用</h1><h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><p>语义分割(Semantic Segmentation)是图像处理和机器视觉一个重要分支。与分类任务不同，语义分割需要判断图像每个像素点的类别，进行精确分割。语义分割目前在自动驾驶、自动抠图、医疗影像等领域有着比较广泛的应用。</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/0.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图是基本的语义分割任务。</p>
+<p>Unet可以说是最常用、最简单的一种分割模型了，它简单、高效、易懂、容易构建、可以从小数据集中训练。Unet已经是非常老的分割模型了，是2015年《U-Net: Convolutional Networks for Biomedical Image Segmentation》提出的模型，附件中会给出文章文件。</p>
+<p>在Unet之前，则是更老的FCN网络，FCN是Fully Convolutional Netowkrs的碎屑，不过这个基本上是一个框架，到现在的分割网络，谁敢说用不到卷积层呢。 不过FCN网络的准确度较低，不比Unet好用。</p>
+<h1 id="二、Unet网络结构与优势"><a href="#二、Unet网络结构与优势" class="headerlink" title="二、Unet网络结构与优势"></a>二、Unet网络结构与优势</h1><h2 id="1、Encoder-Part"><a href="#1、Encoder-Part" class="headerlink" title="1、Encoder Part"></a>1、Encoder Part</h2><p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/1.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong><font style="color:rgb(18, 18, 18);">蓝&#x2F;白色框表示 feature map；蓝色箭头表示 3x3 卷积，用于特征提取；</font></strong></p>
+<p><strong><font style="color:rgb(18, 18, 18);">灰色箭头表示 skip-connection，用于特征融合；</font></strong></p>
+<p><strong><font style="color:rgb(18, 18, 18);">红色箭头表示池化 pooling，用于降低维度；</font></strong></p>
+<p><strong><font style="color:rgb(18, 18, 18);">绿色箭头表示上采样 upsample，用于恢复维度；</font></strong></p>
+<p><strong><font style="color:rgb(18, 18, 18);">青色箭头表示 1x1 卷积，用于输出结果。</font></strong></p>
+<p><font style="color:rgb(18, 18, 18);">Encoder 由卷积操作和下采样操作组成，文中所用的卷积结构统一为 </font><strong><font style="color:rgb(18, 18, 18);">3x3 的卷积核，padding 为 0 ，striding 为 1</font></strong><font style="color:rgb(18, 18, 18);">。没有 padding 所以每次卷积之后 feature map 的 H 和 W 变小了，在 skip-connection 时要注意 feature map 的维度(其实也可以将 padding 设置为 1 避免维度不对应问题)，pytorch 代码：</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">nn.Sequential(nn.Conv2d(in_channels, out_channels, <span class="hljs-number">3</span>),<br>              nn.BatchNorm2d(out_channels),<br>              nn.ReLU(inplace=<span class="hljs-literal">True</span>))<br></code></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(18, 18, 18);">上述的两次卷积之后是一个 </font><strong><font style="color:rgb(18, 18, 18);">stride 为 2 的 max pooling</font></strong><font style="color:rgb(18, 18, 18);">，输出大小变为 1&#x2F;2 *(H, W)：</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/2.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">nn.MaxPool2d(kernel_size=<span class="hljs-number">2</span>, stride=<span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="2、Decoder-Part"><a href="#2、Decoder-Part" class="headerlink" title="2、Decoder Part"></a>2、Decoder Part</h2><p><font style="color:rgb(18, 18, 18);">feature map 经过 Decoder 恢复原始分辨率，该过程除了卷积比较关键的步骤就是 upsampling 与 skip-connection。</font></p>
+<p><font style="color:rgb(18, 18, 18);">Upsampling 上采样常用的方式有两种：1.</font><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77201674">FCN</a><font style="color:rgb(18, 18, 18);"> </font><strong><font style="color:rgb(18, 18, 18);">中介绍的反卷积</font></strong><font style="color:rgb(18, 18, 18);">；2. </font><strong><font style="color:rgb(18, 18, 18);">插值</font></strong><font style="color:rgb(18, 18, 18);">。在插值实现方式中，bilinear 双线性插值的综合表现较好也较为常见 。</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/3.png" srcset="/img/loading.gif" lazyload></p>
+<p><font style="color:rgb(18, 18, 18);">例子中是将一个 2x2 的矩阵通过插值的方式得到 4x4 的矩阵，那么将 2x2 的矩阵称为源矩阵，4x4 的矩阵称为目标矩阵。双线性插值中，目标点的值是由离他最近的 4 个点的值计算得到的，我们首先介绍如何找到目标点周围的 4 个点，以 P2 为例。</font></p>
+<p><font style="color:rgb(18, 18, 18);"></font></p>
+<p><font style="color:rgb(18, 18, 18);">第一个公式，目标矩阵到源矩阵的坐标映射：</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/4.png" srcset="/img/loading.gif" lazyload></p>
+<p><font style="color:rgb(18, 18, 18);">为了找到那 4 个点，首先要找到目标点在源矩阵中的</font><strong><font style="color:rgb(18, 18, 18);">相对位置</font></strong><font style="color:rgb(18, 18, 18);">，上面的公式就是用来算这个的。P2 在目标矩阵中的坐标是 (0, 1)，对应到源矩阵中的坐标就是 (-0.25, 0.25)。坐标里面居然有小数跟负数，不急我们一个一个来处理。我们知道双线性插值是从坐标周围的 4 个点来计算该坐标的值，(-0.25, 0.25) 这个点周围的 4 个点是(-1, 0), (-1, 1), (0, 0), (0, 1)。为了找到负数坐标点，我们将源矩阵扩展为下面的形式，中间红色的部分为源矩阵。</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/5.png" srcset="/img/loading.gif" lazyload></p>
+<p><font style="color:rgb(18, 18, 18);">我们规定 f(i, j) 表示 (i, j)坐标点处的像素值，对于计算出来的对应的坐标，我们统一写成 (i+u, j+v) 的形式。那么这时 i&#x3D;-1, u&#x3D;0.75, j&#x3D;0, v&#x3D;0.25。把这 4 个点单独画出来，可以看到目标点 P2 对应到源矩阵中的</font><strong><font style="color:rgb(18, 18, 18);">相对位置</font></strong><font style="color:rgb(18, 18, 18);">。</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/6.png" srcset="/img/loading.gif" lazyload><br><font style="color:rgb(18, 18, 18);">第二个公式，也是最后一个。</font></p>
+<p>$ f(i + u, j + v) &#x3D; (1 - u) (1 - v) f(i, j) + (1 - u) v f(i, j + 1) + u (1 - v) f(i + 1, j) + u v f(i + 1, j + 1) $</p>
+<p><font style="color:rgb(18, 18, 18);">目标点的像素值就是周围 4 个点像素值的加权和，明显可以看出离得近的权值比较大例如 (0, 0) 点的权值就是 0.75<em>0.75，离得远的如 (-1, 1) 权值就比较小，为 0.25</em>0.25，这也比较符合常理吧。把值带入计算就可以得到 P2 点的值了，结果是 12.5 与代码吻合上了，nice。</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">nn.Upsample(scale_factor=<span class="hljs-number">2</span>, mode=<span class="hljs-string">&#x27;bilinear&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(18, 18, 18);">CNN 网络要想获得好效果，skip-connection 基本必不可少。Unet 中这一关键步骤融合了底层信息的位置信息与深层特征的语义信息，</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">torch.cat([low_layer_features, deep_layer_features], dim=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(18, 18, 18);">这里需要注意的是</font><strong><font style="color:rgb(18, 18, 18);">，FCN 中深层信息与浅层信息融合是通过对应像素相加的方式，而 Unet 是通过拼接的方式。</font></strong></p>
+<p><font style="color:rgb(18, 18, 18);">那么这两者有什么区别呢，其实 在 ResNet 与 DenseNet 中也有一样的区别，Resnet 使用了对应值相加，DenseNet 使用了拼接。</font><strong><font style="color:rgb(18, 18, 18);">个人理解在相加的方式下，feature map 的维度没有变化，但每个维度都包含了更多特征，对于普通的分类任务这种不需要从 feature map 复原到原始分辨率的任务来说，这是一个高效的选择；而拼接则保留了更多的维度&#x2F;位置 信息，这使得后面的 layer 可以在浅层特征与深层特征自由选择，这对语义分割任务来说更有优势。</font></strong></p>
+<h2 id="3、上述模型结构在医疗影像中的优势"><a href="#3、上述模型结构在医疗影像中的优势" class="headerlink" title="3、上述模型结构在医疗影像中的优势"></a><font style="color:rgb(18, 18, 18);">3、上述模型结构在医疗影像中的优势</font></h2><p><font style="color:rgb(18, 18, 18);">深度学习用于医学影像处理的一个挑战在于，提供的样本往往比较少，而 U-Net 则在这个限制下依然有很好的表现：</font></p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/7.png" srcset="/img/loading.gif" lazyload></p>
+<p>根据网友对Unet医疗领域应用的讨论，得到的结果：</p>
+<blockquote>
+<p><font style="color:rgb(18, 18, 18);">1、医疗影像语义较为简单、结构固定。因此语义信息相比自动驾驶等较为单一，因此并不需要去筛选过滤无用的信息。</font><strong><font style="color:rgb(18, 18, 18);">医疗影像的所有特征都很重要，因此低级特征和高级语义特征都很重要，所以U型结构的skip connection结构（特征拼接）更好派上用场</font></strong></p>
+<p>2、医学影像的数据较少，获取难度大，数据量可能只有几百甚至不到100，因此如果使用大型的网络例如DeepLabv3+等模型，很容易过拟合。大型网络的优点是更强的图像表述能力，而较为简单、数量少的医学影像并没有那么多的内容需要表述，因此也有人发现在小数量级中，分割的SOTA模型与轻量的Unet并没有神恶魔优势</p>
+<p>3、医学影像往往是多模态的。比方说ISLES脑梗竞赛中，官方提供了CBF，MTT，CBV等多中模态的数据（这一点听不懂也无妨）。因此医学影像任务中，往往需要自己设计网络去提取不同的模态特征，因此轻量结构简单的Unet可以有更大的操作空间。</p>
+</blockquote>
+<h1 id="三、网络模型搭建与案例探索"><a href="#三、网络模型搭建与案例探索" class="headerlink" title="三、网络模型搭建与案例探索"></a>三、网络模型搭建与案例探索</h1><h2 id="1、net搭建"><a href="#1、net搭建" class="headerlink" title="1、net搭建"></a>1、net搭建</h2><p>根据上一节我们所讲的unet网络结构，我们可以把net归结为4个功能类模块：卷积、上沉采样、下沉池化以及前向传播，以下逐一分析。</p>
+<h3 id="1-1卷积模块"><a href="#1-1卷积模块" class="headerlink" title="1.1卷积模块"></a>1.1卷积模块</h3><p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/8.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Conv_Block</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,in_channel,out_channel</span>):<br>        <span class="hljs-built_in">super</span>(Conv_Block, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.layer=nn.Sequential(<br>            nn.Conv2d(in_channel,out_channel,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,padding_mode=<span class="hljs-string">&#x27;reflect&#x27;</span>,bias=<span class="hljs-literal">False</span>),<br>            nn.BatchNorm2d(out_channel),<br>            nn.Dropout2d(<span class="hljs-number">0.3</span>),<br>            nn.LeakyReLU(),<br>            nn.Conv2d(out_channel, out_channel, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, padding_mode=<span class="hljs-string">&#x27;reflect&#x27;</span>, bias=<span class="hljs-literal">False</span>),<br>            nn.BatchNorm2d(out_channel),<br>            nn.Dropout2d(<span class="hljs-number">0.3</span>),<br>            nn.LeakyReLU()<br>        )<br></code></pre></td></tr></table></figure>
+
+<p>在一次卷积中，上层数据通过inchannel输入，outchannel输出。卷积核是3x3，stride、padding值为1的矩阵，而reflect则是对称加强特征提取。在卷积层之后将对数据进行归一化处理，将彩色图像数据的一个通道里的每一个通道维度C按概率赋值为0.</p>
+<h3 id="1-2上沉采样"><a href="#1-2上沉采样" class="headerlink" title="1.2上沉采样"></a>1.2上沉采样</h3><p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/9.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UpSample</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,channel</span>):<br>        <span class="hljs-built_in">super</span>(UpSample, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.layer=nn.Conv2d(channel,channel//<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>以1x1，步长为1的卷积将数据进行降通道传输。</p>
+<h3 id="1-3下沉池化"><a href="#1-3下沉池化" class="headerlink" title="1.3下沉池化"></a>1.3下沉池化</h3><p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/10.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DownSample</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,channel</span>):<br>        <span class="hljs-built_in">super</span>(DownSample, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.layer=nn.Sequential(<br>            nn.Conv2d(channel,channel,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,padding_mode=<span class="hljs-string">&#x27;reflect&#x27;</span>,bias=<span class="hljs-literal">False</span>),<br>            nn.BatchNorm2d(channel),<br>            nn.LeakyReLU()<br>        )<br></code></pre></td></tr></table></figure>
+
+<p>将自身数据卷积处理后在进行传输。</p>
+<h3 id="1-4前向传播"><a href="#1-4前向传播" class="headerlink" title="1.4前向传播"></a>1.4前向传播</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,x</span>):<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.layer(x)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>值得注意的是，在上沉采样用前向传播中需要将图片进行重构拼接,在NCHW通道中运行.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,x,feature_map</span>):<br>    up=F.interpolate(x,scale_factor=<span class="hljs-number">2</span>,mode=<span class="hljs-string">&#x27;nearest&#x27;</span>)<br>    out=<span class="hljs-variable language_">self</span>.layer(up)<br>    <span class="hljs-keyword">return</span> torch.cat((out,feature_map),dim=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、实例测试"><a href="#2、实例测试" class="headerlink" title="2、实例测试"></a>2、实例测试</h2><p>数据集:</p>
+<p>原图个例:</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/11.png" srcset="/img/loading.gif" lazyload></p>
+<p>标签个例:</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/12.png" srcset="/img/loading.gif" lazyload></p>
+<p>整体是对原图进行了暗化来保留高亮部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># 导入数据集</span><br>    data_loader = DataLoader(MyDataset(data_path), batch_size=<span class="hljs-number">1</span>, shuffle=<span class="hljs-literal">False</span>)<br>    net = Unet().to(device)<br><br>    <span class="hljs-comment"># 导入权重参数</span><br>    <span class="hljs-keyword">if</span> os.path.exists(weight_path):<br>        net.load_state_dict(torch.load(weight_path))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;成功加载！&#x27;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;加载失败！&#x27;</span>)<br><br>    <span class="hljs-comment"># 优化器</span><br>    opt = optim.Adam(net.parameters())<br>    loss_fun = nn.BCELoss()<br><br>    epoch = <span class="hljs-number">1</span><br>    <span class="hljs-comment"># Train图片有689张</span><br>    <span class="hljs-keyword">while</span> epoch &lt;= <span class="hljs-number">689</span>:<br>        <span class="hljs-keyword">for</span> i, (image, label) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(data_loader):<br>            image, label = image.to(device), label.to(device)<br><br>            out_image = net(image)<br>            train_loss = loss_fun(out_image, label)<br><br>            opt.zero_grad()<br>            train_loss.backward()<br>            opt.step()<br><br>            <span class="hljs-comment"># 每间隔5次更新一下梯度</span><br>            <span class="hljs-keyword">if</span> i % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;epoch&#125;</span>--<span class="hljs-subst">&#123;i&#125;</span>-train_loss===&gt;&gt;<span class="hljs-subst">&#123;train_loss.item()&#125;</span>&#x27;</span>)<br><br>            <span class="hljs-comment"># 每间隔50次保存一次权重</span><br>            <span class="hljs-keyword">if</span> i % <span class="hljs-number">10</span> == <span class="hljs-number">0</span>:<br>                torch.save(net.state_dict(), weight_path)<br><br>            _image = image[<span class="hljs-number">0</span>]<br>            _label = label[<span class="hljs-number">0</span>]<br>            _out_image = out_image[<span class="hljs-number">0</span>]<br><br>            <span class="hljs-comment"># 将三个图片进行拼接</span><br>            img = torch.stack([_image, _label, _out_image], dim=<span class="hljs-number">0</span>)<br>            save_image(img, <span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;save_path&#125;</span>/<span class="hljs-subst">&#123;i&#125;</span>.png&#x27;</span>)<br><br>        epoch = epoch+<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>在经过7h的训练之后得到model权重参数，我们对其进行test，最终输出结果：</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/13.png" srcset="/img/loading.gif" lazyload></p>
+<p>从左到右依次是：原图，暗化图片，预测结果。</p>
+<p>说明模型效果良好。</p>
+<h1 id="四、医疗影像分割的项目运用"><a href="#四、医疗影像分割的项目运用" class="headerlink" title="四、医疗影像分割的项目运用"></a>四、医疗影像分割的项目运用</h1><p>在进行了上述实例测试后，我们对其进行X光医疗图像的分割应用。</p>
+<p>首先导入数据集来训练：</p>
+<p>训练集：</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/14.png" srcset="/img/loading.gif" lazyload></p>
+<p>标签：</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/15.png" srcset="/img/loading.gif" lazyload><br>在模型训练结束之后，我们可以用一些指标来测试模型性能，语义分割常用的指标是MIOU</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/16.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(pred_dir):<br>    os.makedirs(pred_dir)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Load model.&quot;</span>)<br>device = torch.device(<span class="hljs-string">&#x27;cuda&#x27;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;cpu&#x27;</span>)<br><span class="hljs-comment"># 加载网络，图片单通道，分类为1。</span><br>net = UNet(n_channels=<span class="hljs-number">1</span>, n_classes=<span class="hljs-number">1</span>)<br><span class="hljs-comment"># 将网络拷贝到deivce中</span><br>net.to(device=device)<br><span class="hljs-comment"># 加载模型参数</span><br>net.load_state_dict(torch.load(<span class="hljs-string">&#x27;best_model.pth&#x27;</span>, map_location=device)) <span class="hljs-comment"># todo</span><br><span class="hljs-comment"># 测试模式</span><br>net.<span class="hljs-built_in">eval</span>()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Load model done.&quot;</span>)<br><br>img_names = os.listdir(test_dir)<br>image_ids = [image_name.split(<span class="hljs-string">&quot;.&quot;</span>)[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> image_name <span class="hljs-keyword">in</span> img_names]<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Get predict result.&quot;</span>)<br><span class="hljs-keyword">for</span> image_id <span class="hljs-keyword">in</span> tqdm(image_ids):<br>    image_path = os.path.join(test_dir, image_id + <span class="hljs-string">&quot;.jpg&quot;</span>)<br>    img = cv2.imread(image_path)<br>    origin_shape = img.shape<br>    <span class="hljs-comment"># print(origin_shape)</span><br>    <span class="hljs-comment"># 转为灰度图</span><br>    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)<br>    img = cv2.resize(img, (<span class="hljs-number">512</span>, <span class="hljs-number">512</span>))<br>    <span class="hljs-comment"># 转为batch为1，通道为1，大小为512*512的数组</span><br>    img = img.reshape(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, img.shape[<span class="hljs-number">0</span>], img.shape[<span class="hljs-number">1</span>])<br>    <span class="hljs-comment"># 转为tensor</span><br>    img_tensor = torch.from_numpy(img)<br>    <span class="hljs-comment"># 将tensor拷贝到device中，只用cpu就是拷贝到cpu中，用cuda就是拷贝到cuda中。</span><br>    img_tensor = img_tensor.to(device=device, dtype=torch.float32)<br>    <span class="hljs-comment"># 预测</span><br>    pred = net(img_tensor)<br>    <span class="hljs-comment"># 提取结果</span><br>    pred = np.array(pred.data.cpu()[<span class="hljs-number">0</span>])[<span class="hljs-number">0</span>]<br>    pred[pred &gt;= <span class="hljs-number">0.5</span>] = <span class="hljs-number">255</span><br>    pred[pred &lt; <span class="hljs-number">0.5</span>] = <span class="hljs-number">0</span><br>    pred = cv2.resize(pred, (origin_shape[<span class="hljs-number">1</span>], origin_shape[<span class="hljs-number">0</span>]), interpolation=cv2.INTER_NEAREST)<br>    cv2.imwrite(os.path.join(pred_dir, image_id + <span class="hljs-string">&quot;.png&quot;</span>), pred)<br></code></pre></td></tr></table></figure>
+
+<p>最后得出测试结果，以下展示其一：</p>
+<p><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/17.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="五、总结体会"><a href="#五、总结体会" class="headerlink" title="五、总结体会"></a>五、总结体会</h1><ol>
+<li>神经网络的搭建是核心步骤，要对应着论文中不能有偏差，尤其是前向传播不能掉以轻心。</li>
+<li>在数据准备好了之后，数据的预处里很关键，也很困难，特别是对于大量的图片文件，在转化为张量之前要对其进行大量数学处理，来减小训练时特征提取以及模型的计算压力。<br><img src="/img/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/18.png" srcset="/img/loading.gif" lazyload></li>
+<li>一块高性能的显卡很重要，我的笔记本是GTX1050的老显卡，在跑7h数据集的时候差点烧了，以后这种还是尽量租服务器跑。</li>
+<li>测试集也很重要，最后结果要对训练数据进行反向传播，来提高模型准确度，测试集的数据尽量不要与训练集交叉过多。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/DeepLearning/" class="print-no-link">#DeepLearning</a>
+      
+        <a href="/tags/Unet/" class="print-no-link">#Unet</a>
+      
+        <a href="/tags/CV/" class="print-no-link">#CV</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+        <a href="/tags/%E5%8C%BB%E5%AD%A6%E5%BD%B1%E5%83%8F/" class="print-no-link">#医学影像</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unet神经网络图像分割研究与应用</div>
+      <div>http://baikelwang.github.io/2025/07/04/Unet神经网络图像分割研究与应用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/04/%E5%85%B3%E4%BA%8E%E7%A3%81%E7%9F%A9%E7%89%B9%E5%BE%81%E7%9A%84%E5%86%99%E5%85%A5/" title="关于磁矩特征的写入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关于磁矩特征的写入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/03/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/" title="单摆锤强化学习实例">
+                        <span class="hidden-mobile">单摆锤强化学习实例</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

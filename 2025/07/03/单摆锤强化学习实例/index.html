@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="环境准备1234gym                 0.26.2gym-notices         0.0.8pygame              2.1.0torch               1.9.0+cu111  游戏搭建与测试测试游戏使用的是 gym 库的CartPole-v1 游戏模型。  首先要对游戏环境进行初始化和启动： 1234# 初始化pygamepygame.in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单摆锤强化学习实例">
+<meta property="og:url" content="http://baikelwang.github.io/2025/07/03/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="环境准备1234gym                 0.26.2gym-notices         0.0.8pygame              2.1.0torch               1.9.0+cu111  游戏搭建与测试测试游戏使用的是 gym 库的CartPole-v1 游戏模型。  首先要对游戏环境进行初始化和启动： 1234# 初始化pygamepygame.in">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/0.png">
+<meta property="article:published_time" content="2025-07-03T13:31:52.000Z">
+<meta property="article:modified_time" content="2026-07-13T14:45:28.957Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="ReinforceLearning">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/0.png">
+  
+  
+  
+  <title>单摆锤强化学习实例 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="单摆锤强化学习实例"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-03 21:31" pubdate>
+          2025年7月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">单摆锤强化学习实例</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">gym                 <span class="hljs-number">0.26</span><span class="hljs-number">.2</span><br>gym-notices         <span class="hljs-number">0.0</span><span class="hljs-number">.8</span><br>pygame              <span class="hljs-number">2.1</span><span class="hljs-number">.0</span><br>torch               <span class="hljs-number">1.9</span><span class="hljs-number">.0</span>+cu111<br></code></pre></td></tr></table></figure>
+
+<h1 id="游戏搭建与测试"><a href="#游戏搭建与测试" class="headerlink" title="游戏搭建与测试"></a>游戏搭建与测试</h1><p>测试游戏使用的是 gym 库的<font style="color:#080808;">CartPole-v1 游戏模型。</font></p>
+<p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/0.png" srcset="/img/loading.gif" lazyload></p>
+<p>首先要对游戏环境进行初始化和启动：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 初始化pygame</span><br>pygame.init()<br><span class="hljs-comment"># 生成环境</span><br>env = gym.make(<span class="hljs-string">&#x27;CartPole-v1&#x27;</span>, render_mode=<span class="hljs-string">&#x27;human&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>然后，是人类玩家通过键盘来玩游戏，测试和了解游戏的规则以及难度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 人类</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">human_play</span>(<span class="hljs-params">action_max</span>):<br>    <span class="hljs-comment"># 游戏初始化</span><br>    time.sleep(<span class="hljs-number">1</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;游戏开始！&quot;</span>)<br>    state, _ = env.reset()<br>    start_time = time.time()  <span class="hljs-comment"># 设定游戏开始时间</span><br>    step = <span class="hljs-number">0</span><br>    fail = <span class="hljs-literal">False</span><br><br>    <span class="hljs-comment"># 小车的信息参数</span><br>    car_position = state[<span class="hljs-number">0</span>] <span class="hljs-comment"># 小车位置</span><br>    car_speed = state[<span class="hljs-number">1</span>]    <span class="hljs-comment"># 小车速度</span><br>    pole_angle = state[<span class="hljs-number">2</span>]   <span class="hljs-comment"># 杆子的角度</span><br>    pole_speed = state[<span class="hljs-number">3</span>]   <span class="hljs-comment"># 杆子的尖端速度</span><br><br>    <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, action_max + <span class="hljs-number">1</span>):<br>        <span class="hljs-comment"># 渲染画面</span><br>        env.render()<br><br>        time.sleep(<span class="hljs-number">0.2</span>)<br>        <span class="hljs-comment"># 以非阻塞方式获取键盘的输入值</span><br>        key = pygame.key.get_pressed()<br>        action = <span class="hljs-number">0</span><br><br>        <span class="hljs-comment"># 如果键盘没有输入，那么游戏也继续执行下去，输入值将随机选择</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> key[pygame.K_LEFT] <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> key[pygame.K_RIGHT]:<br>            action = env.action_space.sample()<br><br>        <span class="hljs-comment"># 键盘左箭头为0，右箭头为1</span><br>        <span class="hljs-keyword">if</span> key[pygame.K_LEFT]:<br>            action = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">elif</span> key[pygame.K_RIGHT]:<br>            action = <span class="hljs-number">1</span><br><br>        <span class="hljs-comment"># agent与环境进行一步交互</span><br>        state, _, terminated, _, _ = env.step(action)<br>        <span class="hljs-comment"># print(&#x27;state = &#123;0&#125;:.2f; reward = &#123;1&#125;&#x27;.format(state, reward))</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;步骤=<span class="hljs-subst">&#123;step&#125;</span> 行为=<span class="hljs-subst">&#123;action&#125;</span>&quot;</span><br>              <span class="hljs-string">f&quot; 车速=<span class="hljs-subst">&#123;car_speed:<span class="hljs-number">.2</span>f&#125;</span> 位置=<span class="hljs-subst">&#123;car_position:<span class="hljs-number">.2</span>f&#125;</span>&quot;</span><br>              <span class="hljs-string">f&quot; 角度=<span class="hljs-subst">&#123;pole_angle:<span class="hljs-number">.2</span>f&#125;</span> 尖端速度=<span class="hljs-subst">&#123;pole_speed:<span class="hljs-number">.2</span>f&#125;</span>&quot;</span>)<br><br>        <span class="hljs-comment"># 判断当前episode 是否完成</span><br>        <span class="hljs-keyword">if</span> terminated:<br>            fail = <span class="hljs-literal">True</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Done!&#x27;</span>)<br>            <span class="hljs-keyword">break</span><br><br>    <span class="hljs-comment"># 游戏结束后，计算游戏时间和步骤总数</span><br>    end_time = time.time()<br>    game_time = end_time - start_time<br>    <span class="hljs-keyword">if</span> fail:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;游戏失败！你坚持了 <span class="hljs-subst">&#123;game_time:<span class="hljs-number">.2</span>f&#125;</span> 秒 <span class="hljs-subst">&#123;step&#125;</span> 步。&quot;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;游戏通关！你坚持了 <span class="hljs-subst">&#123;game_time:<span class="hljs-number">.2</span>f&#125;</span> 秒 <span class="hljs-subst">&#123;step&#125;</span> 步。&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>游戏结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python">步骤=<span class="hljs-number">1</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">2</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">3</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">4</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">5</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">6</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">7</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">8</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">9</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">10</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">11</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">12</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">13</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">14</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">15</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">16</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.03</span> 位置=-<span class="hljs-number">0.04</span> 角度=-<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>Done!<br>游戏失败！你坚持了 <span class="hljs-number">3.63</span> 秒 <span class="hljs-number">16</span> 步。<br></code></pre></td></tr></table></figure>
+
+<p>于是，定义一个简易的神经网络来玩游戏。</p>
+<h1 id="强化学习模型"><a href="#强化学习模型" class="headerlink" title="强化学习模型"></a>强化学习模型</h1><h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/1.png" srcset="/img/loading.gif" lazyload></p>
+<p>定义的神经网络如上图，输入小车的<strong>四个实时特征</strong>，输入一个 128 神经元的隐藏层神经网络，最后再输出为<strong>向左、向右的概率大小</strong>，让神经网络决定小车的向左&#x2F;向右。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 神经网络</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CartPolePolicy</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>(CartPolePolicy, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-comment"># 定义两个线性层，大小分别是4*128与128*2</span><br>        <span class="hljs-variable language_">self</span>.fc1 = nn.Linear(in_features=<span class="hljs-number">4</span>, out_features=<span class="hljs-number">128</span>)<br>        <span class="hljs-variable language_">self</span>.fc2 = nn.Linear(in_features=<span class="hljs-number">128</span>, out_features=<span class="hljs-number">2</span>)<br>        <span class="hljs-comment"># 定义一个dropout层，丢弃比率是60%</span><br>        <span class="hljs-variable language_">self</span>.drop = nn.Dropout(p=<span class="hljs-number">0.6</span>)<br><br>    <span class="hljs-comment"># 前向传播函数，输入X</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        x = <span class="hljs-variable language_">self</span>.fc1(x)<br>        x = <span class="hljs-variable language_">self</span>.drop(x)<br>        <span class="hljs-comment"># 隐藏层的激活函数；在输入数据通过线性层后，ReLU激活函数将其转换为非线性形式，供下一层使用。</span><br>        x = F.relu(x)<br>        x = <span class="hljs-variable language_">self</span>.fc2(x)<br><br>        <span class="hljs-comment"># 使用softmax决策最终的行动，决定是向左还是向右</span><br>        <span class="hljs-keyword">return</span> F.softmax(x, dim=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="强化学习算法"><a href="#强化学习算法" class="headerlink" title="强化学习算法"></a>强化学习算法</h2><p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/2.png" srcset="/img/loading.gif" lazyload></p>
+<p>基于策略的强化学习模型其算法而结构如下：</p>
+<p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/3.png" srcset="/img/loading.gif" lazyload></p>
+<p>在此处，我们假设 Cartpole 游戏执行了 n 步：</p>
+<p>神经网络的行动：$ a1,a2,…….an\in0、1 $</p>
+<p>选择动作的概率：$ p1,p2,……pn<br> $</p>
+<p>动作对应的奖励：$ r1,r2,……rn $ </p>
+<p>总奖励为：$ R&#x3D;p1<em>r1+p2</em>r2+……+pn*rn $</p>
+<p>于是，我们神经网络的参数优化目标为：<strong>总奖励 R 最大</strong>。</p>
+<p>也就是说，增加神经网络输出高奖励动作的概率，减少输出低奖励动作的概率。</p>
+<p>问题就在于：<strong>如何分配奖励？</strong></p>
+<h3 id="奖励策略"><a href="#奖励策略" class="headerlink" title="奖励策略"></a>奖励策略</h3><p>对于 Cartpole 游戏而言：</p>
+<p>如果游戏没有结束 ——&gt;正奖励</p>
+<p>如果游戏结束	     ——&gt;不再奖励</p>
+<p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/4.png" srcset="/img/loading.gif" lazyload></p>
+<p>由于第 1 步做出了正确的决定，才有了第 2 步，所以应该给第一步更多的奖励。</p>
+<p>所设定奖励策略如下：</p>
+<p><img src="/img/%E5%8D%95%E6%91%86%E9%94%A4%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E4%BE%8B/5.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>定义损失函数为：$ loss&#x3D;-\sum_{i&#x3D;1}^{n} log(p_i)\cdot r_i $</p>
+<p>第 i 步的行动为：$ p_i &#x3D; \pi(a_i|s_i) $</p>
+<p>第 i 步的奖励为：$ r_i&#x3D;n-i+1 $</p>
+<p>神经网络的训练目标即为：使 loss 函数最小的参数模型，即使总奖励 R 最大，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 实现损失函数的计算方法，函数传入步数n和这n步对应的概率log_p</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_policy_loss</span>(<span class="hljs-params">n, log_p</span>):<br>    r = <span class="hljs-built_in">list</span>()<br>    <span class="hljs-comment"># 构造奖励列表r</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):<br>        r.append(i * <span class="hljs-number">1.0</span>)<br>    r = torch.tensor(r)<br>    r = (r - r.mean()) / r.std()  <span class="hljs-comment"># 进行标准化处理</span><br>    loss = <span class="hljs-number">0</span><br>    <span class="hljs-comment"># 计算损失函数</span><br>    <span class="hljs-keyword">for</span> pi, ri <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(log_p, r):<br>        loss += -pi * ri<br>    <span class="hljs-keyword">return</span> loss<br></code></pre></td></tr></table></figure>
+
+<h2 id="进行训练"><a href="#进行训练" class="headerlink" title="进行训练"></a>进行训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 训练的函数</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>():<br>    env.reset(seed=<span class="hljs-number">543</span>)<br>    torch.manual_seed(<span class="hljs-number">543</span>)<br><br>    <span class="hljs-comment"># 定义模型</span><br>    policy = CartPolePolicy()<br>    optimizer = optim.Adam(policy.parameters(), lr = <span class="hljs-number">0.01</span>)<br>    <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">    一共训练最多1000回合</span><br><span class="hljs-string">    每回合罪多行动10000次</span><br><span class="hljs-string">    当某一回合的游戏步数超过5000，就认为训练完成</span><br><span class="hljs-string">    &#x27;&#x27;&#x27;</span><br>    max_episode = <span class="hljs-number">1000</span><br>    max_actions = <span class="hljs-number">10000</span><br>    max_steps = <span class="hljs-number">5000</span><br><br>    <span class="hljs-keyword">for</span> episode <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, max_episode + <span class="hljs-number">1</span>):<br>        <span class="hljs-comment"># 对于每一轮循环，都要重新启动一次游戏</span><br>        state, _ = env.reset()<br>        step = <span class="hljs-number">0</span><br>        log_p = <span class="hljs-built_in">list</span>()<br>        <br>        <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, max_actions + <span class="hljs-number">1</span>):<br>            state = torch.from_numpy(state).<span class="hljs-built_in">float</span>().unsqueeze(<span class="hljs-number">0</span>)<br>            <span class="hljs-comment"># print(state)</span><br>            probs = policy(state) <span class="hljs-comment"># 计算神经网络给出的行动概率</span><br><br>            <span class="hljs-comment"># 基于网络给出的概率分布，随机选择行动</span><br>            m = Categorical(probs)<br>            action = m.sample()<br>            <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">            这里不是直接使用概率较大的行动，而是通过概率分布生成action，</span><br><span class="hljs-string">            这样可以进一步探索低概率的行动。</span><br><span class="hljs-string">            &#x27;&#x27;&#x27;</span><br>            <span class="hljs-comment"># agent与环境进行一步交互</span><br>            state, _, done, _, _ = env.step(action.item())<br>            <span class="hljs-keyword">if</span> done:<br>                <span class="hljs-keyword">break</span><br>            log_p.append(m.log_prob(action)) <span class="hljs-comment"># 保存每次行动对应的概率分布</span><br><br>        <span class="hljs-keyword">if</span> step &gt; max_steps:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;完成！上一轮训练为<span class="hljs-subst">&#123;episode&#125;</span>，步数为<span class="hljs-subst">&#123;step&#125;</span>&quot;</span>)<br>            <span class="hljs-keyword">break</span><br><br>        <span class="hljs-comment"># 每一回合游戏，都会做一次梯度下降算法</span><br>        optimizer.zero_grad()<br>        loss = compute_policy_loss(step, log_p)<br>        loss.backward()<br>        optimizer.step()<br>        <span class="hljs-keyword">if</span> episode %<span class="hljs-number">10</span> == <span class="hljs-number">0</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Episode<span class="hljs-subst">&#123;episode&#125;</span> Run steps<span class="hljs-subst">&#123;step&#125;</span>&#x27;</span>)<br><br>    <span class="hljs-comment"># 保存模型</span><br>    torch.save(policy.state_dict(), <span class="hljs-string">f&#x27;catpole_policy.pth&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h1 id="AI-测试"><a href="#AI-测试" class="headerlink" title="AI 测试"></a>AI 测试</h1><p>接下来让训练生成的模型去玩游戏</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">ai_play</span>(<span class="hljs-params">action_max</span>):<br>    <span class="hljs-comment"># 游戏初始化</span><br>    time.sleep(<span class="hljs-number">1</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;游戏开始！&quot;</span>)<br><br>    state, _ = env.reset()<br>    start_time = time.time()  <span class="hljs-comment"># 设定游戏开始时间</span><br>    step = <span class="hljs-number">0</span><br>    fail = <span class="hljs-literal">False</span><br><br>    <span class="hljs-comment"># 小车的信息参数</span><br>    car_position = state[<span class="hljs-number">0</span>]  <span class="hljs-comment"># 小车位置</span><br>    car_speed = state[<span class="hljs-number">1</span>]  <span class="hljs-comment"># 小车速度</span><br>    pole_angle = state[<span class="hljs-number">2</span>]  <span class="hljs-comment"># 杆子的角度</span><br>    pole_speed = state[<span class="hljs-number">3</span>]  <span class="hljs-comment"># 杆子的尖端速度</span><br><br>    <span class="hljs-comment"># 在环境中，创建神经网络</span><br>    policy = CartPolePolicy()<br>    <span class="hljs-comment"># 由于网络还有训练，将读取模型的代码load_state_dict注释</span><br>    policy.load_state_dict(torch.load(<span class="hljs-string">&#x27;catpole_policy.pth&#x27;</span>))<br>    policy.<span class="hljs-built_in">eval</span>() <span class="hljs-comment"># 将模型设置为评估模式</span><br><br>    <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, action_max + <span class="hljs-number">1</span>):<br>        <span class="hljs-comment"># 渲染画面</span><br>        env.render()<br><br>        time.sleep(<span class="hljs-number">0.1</span>)<br><br>        <span class="hljs-string">&#x27;&#x27;&#x27;小车控制的方式&#x27;&#x27;&#x27;</span><br>        <span class="hljs-comment"># 将环境参数state转化为张量</span><br>        state = torch.from_numpy(state).<span class="hljs-built_in">float</span>().unsqueeze(<span class="hljs-number">0</span>)<br>        <span class="hljs-comment"># 输入至模型policy，计算行动概率probs</span><br>        probs = policy(state)<br><br>        action = torch.argmax(probs, dim=<span class="hljs-number">1</span>).item()<br><br>        <span class="hljs-comment"># agent与环境进行一步交互</span><br>        state, _, done, _, _ = env.step(action)<br>        <span class="hljs-comment"># print(&#x27;state = &#123;0&#125;:.2f; reward = &#123;1&#125;&#x27;.format(state, reward))</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;步骤=<span class="hljs-subst">&#123;step&#125;</span> 行为=<span class="hljs-subst">&#123;action&#125;</span>&quot;</span><br>              <span class="hljs-string">f&quot; 车速=<span class="hljs-subst">&#123;car_speed:<span class="hljs-number">.2</span>f&#125;</span> 位置=<span class="hljs-subst">&#123;car_position:<span class="hljs-number">.2</span>f&#125;</span>&quot;</span><br>              <span class="hljs-string">f&quot; 角度=<span class="hljs-subst">&#123;pole_angle:<span class="hljs-number">.2</span>f&#125;</span> 尖端速度=<span class="hljs-subst">&#123;pole_speed:<span class="hljs-number">.2</span>f&#125;</span>&quot;</span>)<br><br>        <span class="hljs-comment"># 判断当前episode 是否完成</span><br>        <span class="hljs-keyword">if</span> done:<br>            fail = <span class="hljs-literal">True</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Done!&#x27;</span>)<br>            <span class="hljs-keyword">break</span><br><br>        <span class="hljs-comment"># 游戏结束后，计算游戏时间和步骤总数</span><br>    end_time = time.time()<br>    game_time = end_time - start_time<br>    <span class="hljs-keyword">if</span> fail:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;游戏失败！你坚持了 <span class="hljs-subst">&#123;game_time:<span class="hljs-number">.2</span>f&#125;</span> 秒 <span class="hljs-subst">&#123;step&#125;</span> 步。&quot;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;游戏通关！你坚持了 <span class="hljs-subst">&#123;game_time:<span class="hljs-number">.2</span>f&#125;</span> 秒 <span class="hljs-subst">&#123;step&#125;</span> 步。&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">步骤=<span class="hljs-number">995</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">996</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">997</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">998</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">999</span> 行为=<span class="hljs-number">0</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>步骤=<span class="hljs-number">1000</span> 行为=<span class="hljs-number">1</span> 车速=<span class="hljs-number">0.02</span> 位置=-<span class="hljs-number">0.03</span> 角度=<span class="hljs-number">0.01</span> 尖端速度=-<span class="hljs-number">0.03</span><br>游戏通关！你坚持了 <span class="hljs-number">42.00</span> 秒 <span class="hljs-number">1000</span> 步。<br></code></pre></td></tr></table></figure>
+
+<p>截取部分结果，可见 AI 成功的完成了 1000 步，说明模型很成功。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/ReinforceLearning/" class="print-no-link">#ReinforceLearning</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>单摆锤强化学习实例</div>
+      <div>http://baikelwang.github.io/2025/07/03/单摆锤强化学习实例/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/04/Unet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%BA%94%E7%94%A8/" title="Unet神经网络图像分割研究与应用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Unet神经网络图像分割研究与应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

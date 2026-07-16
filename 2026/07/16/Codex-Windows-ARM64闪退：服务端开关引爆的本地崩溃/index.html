@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="北海">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="环境： Windows 11 ARM64 虚拟机 · Microsoft Store 版 Codex 26.707.9981.0 · Release 26.707.72221 结论： 闪退不是虚拟显示器或沙箱配置导致的。根因是 ARM64 ChatGPT.exe 缺少 Node-API 导出；服务端功能开关启用 Codex Micro 后加载了 serialport 原生模块，主进程随即崩溃。本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃">
+<meta property="og:url" content="http://baikelwang.github.io/2026/07/16/Codex-Windows-ARM64%E9%97%AA%E9%80%80%EF%BC%9A%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BC%80%E5%85%B3%E5%BC%95%E7%88%86%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%B4%A9%E6%BA%83/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="环境： Windows 11 ARM64 虚拟机 · Microsoft Store 版 Codex 26.707.9981.0 · Release 26.707.72221 结论： 闪退不是虚拟显示器或沙箱配置导致的。根因是 ARM64 ChatGPT.exe 缺少 Node-API 导出；服务端功能开关启用 Codex Micro 后加载了 serialport 原生模块，主进程随即崩溃。本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/code.jpg">
+<meta property="article:published_time" content="2026-07-16T03:30:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T03:18:51.595Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="Codex">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="ARM64">
+<meta property="article:tag" content="Electron">
+<meta property="article:tag" content="Node-API">
+<meta property="article:tag" content="排查">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/code.jpg">
+  
+  
+  
+  <title>Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-16 11:30" pubdate>
+          2026年7月16日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>环境：</strong> Windows 11 ARM64 虚拟机 · Microsoft Store 版 Codex <code>26.707.9981.0</code> · Release <code>26.707.72221</code></p>
+<p><strong>结论：</strong> 闪退不是虚拟显示器或沙箱配置导致的。根因是 ARM64 <code>ChatGPT.exe</code> 缺少 Node-API 导出；服务端功能开关启用 Codex Micro 后加载了 <code>serialport</code> 原生模块，主进程随即崩溃。本地用模块拦截绕过后，Browser Use 与 Computer Use 均已恢复。</p>
+</blockquote>
+<h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>Codex 此前在这台 ARM64 虚拟机上可以稳定运行很久。故障出现在一次「虚拟显示器」相关任务中：窗口还能短暂打开，聊天区有时已经渲染出来，但大约 3～15 秒后，主进程连同 renderer、GPU、utility 一起退出。没有友好报错，日志也停在普通初始化附近。</p>
+<p>清空配置、重装、重启 Windows，都改变不了结果：一启动就闪退。</p>
+<p>时间上的巧合很强——正在处理虚拟显示器、驱动权限和 Computer Use，Codex 就开始崩。直觉很容易把两件事绑在一起。后来证明，它们只是发生在同一时间段。</p>
+<h2 id="排查中踩过的假线索"><a href="#排查中踩过的假线索" class="headerlink" title="排查中踩过的假线索"></a>排查中踩过的假线索</h2><h3 id="1-虚拟显示器与驱动残留"><a href="#1-虚拟显示器与驱动残留" class="headerlink" title="1. 虚拟显示器与驱动残留"></a>1. 虚拟显示器与驱动残留</h3><p>清理了相关文件、注册表和设备状态，没有找到足以让 Codex <strong>冷启动</strong>就崩的驱动残留。更合理的解释是：虚拟显示器任务只是让 Codex 一直跑到了故障触发时刻，而不是制造故障的原因。</p>
+<h3 id="2-沙箱与权限"><a href="#2-沙箱与权限" class="headerlink" title="2. 沙箱与权限"></a>2. 沙箱与权限</h3><p>不同沙箱配置会改变初始化顺序：</p>
+<ul>
+<li><code>elevated</code> 可能让更多组件先完成初始化，从而更快走到致命路径</li>
+<li><code>unelevated</code> 是合法配置，但原生插件加载时依旧崩溃</li>
+<li><code>disabled</code> 甚至不是有效枚举值——它只是打断部分初始化，让应用「活得更久」或卡在设置页</li>
+</ul>
+<p>非法配置带来的延迟退出，不是修复，只是假性好转。</p>
+<h3 id="3-Browser-Use-IAB-Computer-Use"><a href="#3-Browser-Use-IAB-Computer-Use" class="headerlink" title="3. Browser Use &#x2F; IAB &#x2F; Computer Use"></a>3. Browser Use &#x2F; IAB &#x2F; Computer Use</h3><p>日志里满是浏览器面板、IAB 生命周期、Computer Use 插件和 Remote Control 消息，看起来很像元凶。一度关掉：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[features]</span><br><span class="hljs-attr">in_app_browser</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">browser_use</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">browser_use_external</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">computer_use</span> = <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<p>应用仍以同样方式退出。这些组件只是启动阶段的伴随噪声。</p>
+<h3 id="4-Primary-Runtime-404"><a href="#4-Primary-Runtime-404" class="headerlink" title="4. Primary Runtime 404"></a>4. Primary Runtime 404</h3><p><code>primary_runtime_update_poll_failed</code> 和 <code>404 Not Found</code> 也很显眼，但代码路径会捕获该错误并按 warning 处理，不会结束主进程。</p>
+<p>原生异常发生时，<strong>日志最后一行经常是无辜的</strong>。</p>
+<h2 id="真正的突破口：退出码"><a href="#真正的突破口：退出码" class="headerlink" title="真正的突破口：退出码"></a>真正的突破口：退出码</h2><p>直接等待 <code>ChatGPT.exe</code> 退出并读取状态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">有符号：-1066598273<br>十六进制：0xC06D007F<br></code></pre></td></tr></table></figure>
+
+<p>这与 VC++ delay-load 的「找不到过程」一致。结合 Crashpad dump 与公开复现，失败信息被定位为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">缺失符号：napi_create_function<br>延迟加载目标：node.exe<br>实际宿主：ChatGPT.exe<br>失败模块：@serialport/bindings-cpp/.../win32-arm64/node.napi.node<br></code></pre></td></tr></table></figure>
+
+<p>依赖链很清楚：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">@worklouder/device-kit-oai<br>  → @worklouder/wl-device-kit<br>  → serialport<br>  → @serialport/bindings-cpp<br>  → win32-arm64/node.napi.node<br></code></pre></td></tr></table></figure>
+
+<p>ARM64 版 <code>ChatGPT.exe</code> 的导出表缺少完整的 <code>napi_*</code> &#x2F; <code>node_api_*</code> 符号。原生插件解析 <code>napi_create_function</code> 失败时，delay-load helper 抛异常，Electron 主进程当场崩溃。</p>
+<p>公开 Issue 里也能看到相同版本、相同退出码、相同缺失符号和相同依赖链：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33381">openai&#x2F;codex #33381</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33384">openai&#x2F;codex #33384</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33385">openai&#x2F;codex #33385</a></li>
+</ul>
+<h2 id="为什么同一个版本以前能用，后来必崩？"><a href="#为什么同一个版本以前能用，后来必崩？" class="headerlink" title="为什么同一个版本以前能用，后来必崩？"></a>为什么同一个版本以前能用，后来必崩？</h2><p>这是整件事里最值得讲清楚的一点。</p>
+<p>ARM64 兼容性缺陷在安装这个版本时就已经存在，但它不是所有功能都会经过的公共路径。普通聊天、文件编辑、终端、Git 并不需要加载 Work Louder 的串口原生插件。</p>
+<p>真正的触发更像一颗被远程开关控制的地雷：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs text">有缺陷的 ARM64 二进制已经安装<br>        ↓<br>Codex Micro 功能开关尚未启用<br>        ↓<br>Work Louder / serialport 从未加载<br>        ↓<br>Codex 可以正常工作数小时<br>        ↓<br>Statsig 定时刷新服务端配置<br>        ↓<br>Codex Micro 路径被启用<br>        ↓<br>主进程 require(&#x27;@worklouder/device-kit-oai&#x27;)<br>        ↓<br>serialport ARM64 原生模块开始加载<br>        ↓<br>ChatGPT.exe 缺少 napi_create_function<br>        ↓<br>主进程当场崩溃<br></code></pre></td></tr></table></figure>
+
+<p>公开复现里，同一安装版本曾正常运行约 9～24 小时；第一次崩溃与一次成功的 Statsig interval refresh 精确重合。刷新后的值被缓存或再次从服务端取得，于是故障从「一次中途退出」迅速变成「每次启动都退出」。</p>
+<p>因此可以更准确地说：</p>
+<table>
+<thead>
+<tr>
+<th>层面</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>根因</strong></td>
+<td>ARM64 <code>ChatGPT.exe</code> 缺少原生插件所需的 Node-API 导出</td>
+</tr>
+<tr>
+<td><strong>直接触发</strong></td>
+<td>加载 <code>@worklouder/device-kit-oai</code> 及其 <code>serialport</code> 依赖</td>
+</tr>
+<tr>
+<td><strong>时序解释</strong></td>
+<td>服务端 Statsig 开关在运行中启用了 Codex Micro</td>
+</tr>
+<tr>
+<td><strong>与虚拟显示器</strong></td>
+<td>时间重合，但没有因果证据</td>
+</tr>
+</tbody></table>
+<p><strong>应用二进制没有变化，不代表运行路径没有变化。</strong> 服务端开关、灰度实验和缓存值，都能让同一版本从「连续正常」瞬间变成「每次必崩」。</p>
+<h2 id="本地临时修复：只切断致命依赖"><a href="#本地临时修复：只切断致命依赖" class="headerlink" title="本地临时修复：只切断致命依赖"></a>本地临时修复：只切断致命依赖</h2><p>上游修复需要 OpenAI 重新构建并签名 ARM64 安装包。本机无法可靠修改 Microsoft Store 签名的 <code>ChatGPT.exe</code>，所以选择了影响最小的进程级绕过。</p>
+<p>启动时临时注入：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">NODE_OPTIONS=--require=&lt;disable-codex-micro.cjs&gt;<br></code></pre></td></tr></table></figure>
+
+<p>预加载脚本只拦截精确模块名 <code>@worklouder/device-kit-oai</code>，返回一个「未发现设备」的桩实现：设备发现为空，连接&#x2F;断开为空操作，HID、摇杆、灯效不再触达原生模块。</p>
+<p>这样一来，Codex Micro &#x2F; Work Louder 硬件集成被禁用，<code>serialport</code> 不会被加载，致命异常也就不会发生。</p>
+<p>边界也很重要：</p>
+<ol>
+<li><code>NODE_OPTIONS</code> 只注入本次 Codex 子进程，不写入全局环境</li>
+<li>普通聊天、工程、终端、Git、插件和 MCP 不受影响</li>
+<li>必须通过加固后的桌面快捷方式启动</li>
+<li>启动器只接受已验证版本 <code>26.707.9981.0</code>；升级后必须重新评估</li>
+</ol>
+<h2 id="卸载重装之后，先谈备份"><a href="#卸载重装之后，先谈备份" class="headerlink" title="卸载重装之后，先谈备份"></a>卸载重装之后，先谈备份</h2><p>排查期间做过干净重装。卸载前分层备份了 sessions、SQLite 状态、<code>Documents\Codex</code> 工作区，以及可选的缓存和日志。恢复时没有用旧配置整体覆盖，而是只恢复会话、索引、数据库状态和工作区，并保留已经验证过的沙箱与 ARM64 稳定配置。最终恢复了 12 条历史会话。</p>
+<p>经验很简单：<strong>重装不等于问题消失</strong>。服务端开关与安装包缺陷还在，而 <code>.codex</code> 又承载大量用户数据——动手前先做分层备份。</p>
+<h2 id="恢复被牺牲的能力"><a href="#恢复被牺牲的能力" class="headerlink" title="恢复被牺牲的能力"></a>恢复被牺牲的能力</h2><p>核心闪退解决后，不必继续牺牲浏览器和桌面交互。最终恢复：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[features]</span><br><span class="hljs-attr">in_app_browser</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">browser_use</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">browser_use_external</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">computer_use</span> = <span class="hljs-literal">true</span><br><br><span class="hljs-section">[windows]</span><br><span class="hljs-attr">sandbox</span> = <span class="hljs-string">&quot;unelevated&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>但只改 <code>config.toml</code> 还不够。排查阶段在桌面全局状态里留下了两个禁用标志：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">computer-use-bundled-plugin-auto-install-disabled<br>browser-use-bundled-plugin-auto-install-disabled<br></code></pre></td></tr></table></figure>
+
+<p>需要把它们恢复为 <code>false</code>，bundled 插件才会重新安装。</p>
+<h2 id="最后一个坑：关窗口-≠-完全退出"><a href="#最后一个坑：关窗口-≠-完全退出" class="headerlink" title="最后一个坑：关窗口 ≠ 完全退出"></a>最后一个坑：关窗口 ≠ 完全退出</h2><p>第一次恢复配置后，表面上已经「重启」了 Codex，但 09:01 启动的旧 <code>ChatGPT.exe</code> 仍在后台。旧实例保留着内存中的禁用状态，并把两个自动安装开关重新写回 <code>true</code>。</p>
+<p>结果就是：TOML 里四项功能都是 <code>true</code>，Browser &#x2F; Computer Use 插件却装不回来。</p>
+<p>于是启动器又加了一层：</p>
+<ol>
+<li>启动前检查是否仍有 <code>ChatGPT.exe</code></li>
+<li>有残留进程时拒绝继续，并显示 PID</li>
+<li>确认完全退出后，再恢复两项 bundled 插件安装状态</li>
+<li>最后注入 Work Louder 拦截并启动 Codex</li>
+</ol>
+<p>涉及内存状态和自动安装逻辑时，<strong>必须确认相关进程真正消失</strong>，再开新实例。</p>
+<h2 id="最终验证"><a href="#最终验证" class="headerlink" title="最终验证"></a>最终验证</h2><p>2026-07-16 通过加固快捷方式重新启动后：</p>
+<ul>
+<li>进程均为新启动实例，且 <code>Responding=True</code></li>
+<li>四项浏览器与 Computer Use 功能保持为 <code>true</code></li>
+<li>两个 bundled 插件自动安装禁用标志均为 <code>false</code></li>
+<li>已安装 <code>browser</code>、<code>chrome</code>、<code>computer-use</code> 插件</li>
+<li>日志出现 <code>computer-use native pipe startup ready</code>、<code>browser-use native pipe listening</code></li>
+<li>未再出现 <code>worklouder</code>、<code>serialport</code>、<code>napi_create_function</code> 或 <code>0xC06D007F</code></li>
+<li>Crashpad <code>.dmp</code> 数量为 0</li>
+</ul>
+<p>最终状态：</p>
+<blockquote>
+<p>Codex 保持稳定运行；Work Louder &#x2F; Codex Micro 硬件集成被禁用；Browser Use、内置浏览器、Chrome 交互和 Computer Use 均已恢复。</p>
+</blockquote>
+<p>对本机这台不连接外部 Work Louder 设备的虚拟机，实际损失很小；对话、文件、终端、Git、插件、MCP、Browser Use 和 Computer Use 都可以继续用。</p>
+<h2 id="什么才算官方修复"><a href="#什么才算官方修复" class="headerlink" title="什么才算官方修复"></a>什么才算官方修复</h2><p>本地方案是精准绕过，不是上游根治。官方至少需要完成一项：</p>
+<ol>
+<li>为 ARM64 <code>ChatGPT.exe</code> 正确链接完整 Node-API 导出表</li>
+<li>针对 Electron ARM64 重新构建 Work Louder &#x2F; serialport 原生插件</li>
+<li>在缺少 N-API 导出的宿主上跳过该模块并优雅降级</li>
+<li>正式修复发布前，对 <code>win32/arm64</code> 关闭相关服务端功能开关</li>
+</ol>
+<p>不建议本机直接改 PE 导出表、重打 MSIX 或长期替换包内文件——会破坏签名与更新链，也难以证明运行时安全。</p>
+<h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ol>
+<li><strong>时间相关 ≠ 因果相关。</strong> 故障发生在某个任务中，不代表该任务导致故障；退出码、dump 和依赖链才能把「同一时间」推进到「存在因果」。</li>
+<li><strong>原生崩溃时，日志最后一行经常是无辜的。</strong> 进程被 native exception 直接终止时，不会优雅收尾。</li>
+<li><strong>动态功能开关可以引爆潜伏的客户端缺陷。</strong> 二进制没变，运行路径却可能变。</li>
+<li><strong>配置层的假性好转要用进程证据验证。</strong> 非法配置可能让应用晚一点退出，不等于根因消失。</li>
+<li><strong>定位根因后，把排查时关掉的能力逐项恢复。</strong> 否则「不崩了」只是换来一个长期残缺的工作环境。</li>
+<li><strong>桌面应用的「重启」必须确认进程级退出。</strong> 关窗口可能只是藏到后台。</li>
+</ol>
+<p>这次排查从虚拟显示器、权限、沙箱一路走到 Electron、Node-API、delay-load 和服务端开关，最后说明的是一个很典型的问题：<strong>根因可能很底层，触发却来自云端；现象发生在一个任务中，原因却与任务本身无关。</strong></p>
+<p>有效做法不是关掉所有可疑功能，而是找到唯一致命的加载路径，精准切断它，再把日常需要的能力逐一恢复并验证。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33381">openai&#x2F;codex #33381</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33384">openai&#x2F;codex #33384</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/codex/issues/33385">openai&#x2F;codex #33385</a></li>
+</ul>
+<p>关键本地路径（备份中的 <code>auth.json</code> 可能含令牌，勿公开上传）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">用户配置：     %USERPROFILE%\.codex\config.toml<br>桌面全局状态： %USERPROFILE%\.codex\.codex-global-state.json<br>绕过脚本：     %LOCALAPPDATA%\OpenAI-Codex-Workarounds\disable-codex-micro.cjs<br>ARM64 启动器：  %LOCALAPPDATA%\OpenAI-Codex-Workarounds\Start-Codex-ARM64.ps1<br>应用日志：     %LOCALAPPDATA%\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\Codex\Logs\<br></code></pre></td></tr></table></figure>
+
+<p>官方更新到新版本后，应先测试原始入口；确认 ARM64 原生崩溃已修复，再移除本地绕过。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%B0%88/" class="category-chain-item">杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Codex/" class="print-no-link">#Codex</a>
+      
+        <a href="/tags/Windows/" class="print-no-link">#Windows</a>
+      
+        <a href="/tags/ARM64/" class="print-no-link">#ARM64</a>
+      
+        <a href="/tags/Electron/" class="print-no-link">#Electron</a>
+      
+        <a href="/tags/Node-API/" class="print-no-link">#Node-API</a>
+      
+        <a href="/tags/%E6%8E%92%E6%9F%A5/" class="print-no-link">#排查</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃</div>
+      <div>http://baikelwang.github.io/2026/07/16/Codex-Windows-ARM64闪退：服务端开关引爆的本地崩溃/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>北海</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/05/karpathy-llm-wiki/" title="Karpathy 的 LLM Wiki 思想：让知识在文件系统中复利">
+                        <span class="hidden-mobile">Karpathy 的 LLM Wiki 思想：让知识在文件系统中复利</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
