@@ -3,7 +3,7 @@ title: 最长递增子序列：从 DP 到贪心二分
 tags: [动态规划, LeetCode, 数据结构与算法, Python, 算法面试, 贪心]
 date: 2026-06-15 10:00:00
 categories: 数据结构与算法
-index_img: /img/code.jpg
+index_img: /img/covers/algorithms.jpg
 ---
 
 ## 1. 课程导引与核心价值分析

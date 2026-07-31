@@ -3,7 +3,7 @@ title: Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃
 tags: [Codex, Windows, ARM64, Electron, Node-API, 排查]
 date: 2026-07-16 11:30:00
 categories: 杂谈
-index_img: /img/code.jpg
+index_img: /img/covers/ai-debugging.jpg
 ---
 
 > **环境：** Windows 11 ARM64 虚拟机 · Microsoft Store 版 Codex `26.707.9981.0` · Release `26.707.72221`

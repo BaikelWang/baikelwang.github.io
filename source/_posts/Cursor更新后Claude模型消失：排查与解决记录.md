@@ -3,7 +3,7 @@ title: Cursor 更新后 Claude 模型消失：排查与解决记录
 tags: [Cursor, Claude, 代理, macOS, 网络排查, Clash]
 date: 2026-06-30 11:00:00
 categories: 杂谈
-index_img: /img/code.jpg
+index_img: /img/covers/ai-debugging.jpg
 ---
 
 > **环境：** macOS · Cursor 3.9.16 · Ultra 订阅 · Clash Verge Rev 2.4.7

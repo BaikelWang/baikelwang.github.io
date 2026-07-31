@@ -3,7 +3,7 @@ title: Uni-3DAR：统一跨尺度 3D 生成与理解的自回归框架
 tags: [科研, 凝聚态物理, DeepLearning, Uni-3DAR, MP, PXRD, CSP]
 date: 2026-06-14 11:00:00
 categories: 凝聚态物理与人工智能
-index_img: /img/default.png
+index_img: /img/covers/crystal-ai.jpg
 ---
 
 > **论文标题**: Uni-3DAR: Unified 3D Generation and Understanding via Autoregression on Compressed Spatial Tokens  

@@ -3,7 +3,7 @@ title: 用 AI 高质量交付项目的工作方法
 tags: [AI, 工程思维, Cursor, 项目管理]
 date: 2026-06-14 13:00:00
 categories: 杂谈
-index_img: /img/default.png
+index_img: /img/covers/ai-engineering.jpg
 ---
 
 > **一份给「人 + AI」共同协作的工程方法论。**
@@ -67,7 +67,7 @@ index_img: /img/default.png
 
 整套方法围绕「**先规划 → 后执行；先骨架 → 后填肉；先验证 → 后推进**」三条主线展开，共 7 步：
 
-![](https://cdn.nlark.com/yuque/__mermaid_v3/1686f14b2a6b5f4f2bb0d0125f32a3f9.svg)
+![AI 协作工作流](/img/ai-engineering/collaboration-workflow.svg)
 
 每一步都有**明确产物**（`docs/NN-xxx.md`）和**完成标准**（DoD），形成可审计、可交接的工作链。
 

@@ -3,7 +3,7 @@ title: 粉末 XRD 物相匹配软件调研与 Python 实现设计参考
 tags: [PXRD, 科研, 凝聚态物理, Python, 晶体结构, GSAS-II]
 date: 2026-06-14 15:00:00
 categories: 凝聚态物理与人工智能
-index_img: /img/default.png
+index_img: /img/covers/xrd-materials.jpg
 ---
 
 **报告日期：2026-05-27**  

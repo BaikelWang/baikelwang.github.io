@@ -3,7 +3,7 @@ title: AI 监督员的工程思维
 tags: [AI, 工程思维, MLOps, 项目管理, Cursor]
 date: 2026-06-14 14:00:00
 categories: 杂谈
-index_img: /img/default.png
+index_img: /img/covers/ai-engineering.jpg
 ---
 
 > **一份给"AI 项目决策设计者 + AI 监督员"的工程思维指南。**
@@ -199,7 +199,7 @@ RAG 层（retriever、reranker、chunking）
 
 ### 3.1 完整开发流程图
 
-![](https://cdn.nlark.com/yuque/__mermaid_v3/6ac02e84d5198b96a1a20a8975fb2c02.svg)
+![AI 监督员工作流](/img/ai-engineering/supervisor-workflow.svg)
 
 ### 3.2 各阶段监督员的注意点
 
@@ -308,7 +308,7 @@ RAG 层（retriever、reranker、chunking）
 
 ### 4.1 简化流程图
 
-![](https://cdn.nlark.com/yuque/__mermaid_v3/32fdddfe5b37d25574c881d146d484dc.svg)
+![AI 工程闭环](/img/ai-engineering/engineering-loop.svg)
 
 ### 4.2 AI Infra 监督员的特别注意点
 
