@@ -3,7 +3,7 @@ title: AI 全栈工程师成长手册
 tags: [AI, 全栈, MLOps, Python, 工程思维, DeepLearning]
 date: 2026-06-14 10:00:00
 categories: 杂谈
-index_img: /img/covers/ai-engineering.jpg
+index_img: /img/covers/ai-engineering-academic.jpg
 ---
 
 > 从入门到精通：算法 × 架构 × 工程 × 管理的完整知识体系与实战方法论。

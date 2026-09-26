@@ -3,7 +3,7 @@ title: PXRD图谱全面解析
 tags: [PXRD, 科研, 凝聚态物理, 晶体结构]
 date: 2026-06-14 12:00:00
 categories: 凝聚态物理与人工智能
-index_img: /img/covers/xrd-materials.jpg
+index_img: /img/covers/xrd-materials-academic.jpg
 ---
 
 ## 一、什么是PXRD图谱？

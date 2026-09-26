@@ -2,7 +2,7 @@
 title: Unet神经网络图像分割研究与应用
 date: 2025-07-04 10:30:38
 tags:  [Unet, DeepLearning, CV, 深度学习, 医学影像]
-index_img: /img/covers/computer-vision.jpg
+index_img: /img/covers/computer-vision-academic.jpg
 categories: 机器学习
 ---
 # Unet神经网络图像分割研究与应用

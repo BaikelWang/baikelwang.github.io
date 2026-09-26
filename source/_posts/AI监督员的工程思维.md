@@ -3,7 +3,7 @@ title: AI 监督员的工程思维
 tags: [AI, 工程思维, MLOps, 项目管理, Cursor]
 date: 2026-06-14 14:00:00
 categories: 杂谈
-index_img: /img/covers/ai-engineering.jpg
+index_img: /img/covers/ai-engineering-academic.jpg
 ---
 
 > **一份给"AI 项目决策设计者 + AI 监督员"的工程思维指南。**

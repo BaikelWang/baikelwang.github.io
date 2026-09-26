@@ -3,7 +3,7 @@ title: 用 AI 高质量交付项目的工作方法
 tags: [AI, 工程思维, Cursor, 项目管理]
 date: 2026-06-14 13:00:00
 categories: 杂谈
-index_img: /img/covers/ai-engineering.jpg
+index_img: /img/covers/ai-engineering-academic.jpg
 ---
 
 > **一份给「人 + AI」共同协作的工程方法论。**
