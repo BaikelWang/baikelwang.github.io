@@ -1,0 +1,6 @@
+/* Keep scientific cover compositions intact at every responsive breakpoint. */
+.index-img img[src$="-academic.jpg"] {
+  height: auto;
+  aspect-ratio: 1672 / 941;
+  object-fit: contain;
+}
