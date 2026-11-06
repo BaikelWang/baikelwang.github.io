@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">从文献到证据：筛选与核对</title><desc id="desc">米白底、石墨线条与低饱和蓝色的原创概念插画，不表示实验数据。</desc>
+<rect width="1200" height="675" fill="#f8f5ee"/>
+<rect x="35" y="35" width="1130" height="605" fill="none" stroke="#ded8cc"/>
+<g fill="none" stroke="#314a57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M235 236H410V454H235Z" fill="#eeebe3" stroke="#b7b5ac"/>
+<path d="M250 222H425V440H250Z" fill="#f8f5ee" stroke="#899496"/>
+<path d="M265 208H440V426H265Z" fill="#fffdf8"/>
+<path d="M290 245H405M290 274H405M290 303H405M290 332H405M290 361H375" stroke="#c2bfb5"/>
+<rect x="285" y="287" width="125" height="28" fill="#dce5e7" stroke="none"/>
+<path d="M285 303H405" stroke="#426a7e"/>
+<path d="M465 317H510M500 309L510 317L500 325"/>
+<circle cx="600" cy="317" r="71" fill="#fffdf8"/><circle cx="600" cy="317" r="57" stroke="#a8b8bc"/>
+<path d="M579 297L603 317L625 285M575 343H625" stroke="#426a7e" stroke-width="3"/>
+<path d="M690 317H735M725 309L735 317L725 325"/>
+<rect x="760" y="208" width="175" height="218" fill="#fffdf8"/>
+<path d="M787 252H907M787 280H907M787 330H880M787 358H907M787 386H870" stroke="#b7b5ac"/>
+<path d="M787 303H907" stroke="#426a7e" stroke-width="3"/>
+<circle cx="908" cy="418" r="29" fill="#f8f5ee" stroke="#854942"/>
+<path d="M896 418L905 427L920 408" stroke="#854942" stroke-width="3"/>
+<path d="M350 466V494H850V466" stroke="#cbc5b9"/>
+</g>
+<path d="M528 578h144" stroke="#cbc5b9"/><circle cx="600" cy="578" r="4" fill="#854942"/>
+</svg>

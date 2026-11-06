@@ -4,3 +4,16 @@
   aspect-ratio: 1672 / 941;
   object-fit: contain;
 }
+
+/* Local vector covers share the same full-composition treatment. */
+.index-img img[src^="/img/engineering-notes/"][src$="-cover.svg"] {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+/* These articles include an explicit, accessible caption in Markdown. */
+.markdown-body img[src^="/img/engineering-notes/"] + figcaption.image-caption,
+.markdown-body a.fancybox[href^="/img/engineering-notes/"] + figcaption.image-caption {
+  display: none;
+}

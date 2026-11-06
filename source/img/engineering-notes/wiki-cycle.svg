@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="798" viewBox="0 0 640 798" role="img" aria-labelledby="title desc">
+<title id="title">让理解进入下一轮</title><desc id="desc">保留原始资料：文章、论文与附件，保留出处；整理已有理解：先更新已有页面，再考虑新增；用于真实问题：阅读、研究、决策与写作；审阅后写回：只保留可以再次使用的结论。人决定方向与结论。AI 整理、连接、核验与维护</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="#314a57" stroke-width="1.4"/></marker></defs>
+<rect width="640" height="798" fill="#f8f5ee"/>
+<g font-family="'Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif" fill="#314a57">
+<text x="40" y="48" font-family="Georgia,serif" font-size="17" letter-spacing="2">ENGINEERING NOTES</text>
+<line x1="40" y1="66" x2="600" y2="66" stroke="#cbc5b9"/>
+<text x="40" y="116" font-size="32" font-weight="600">让理解进入下一轮</text>
+<text x="40" y="194" font-family="Georgia,serif" fill="#854942" font-size="25">01</text>
+<rect x="88" y="150" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="187" font-size="28" font-weight="600">保留原始资料</text>
+<text x="112" y="224" font-size="24" fill="#677279">文章、论文与附件，保留出处</text><path d="M344 248v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="320" font-family="Georgia,serif" fill="#854942" font-size="25">02</text>
+<rect x="88" y="276" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="313" font-size="28" font-weight="600">整理已有理解</text>
+<text x="112" y="350" font-size="24" fill="#677279">先更新已有页面，再考虑新增</text><path d="M344 374v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="446" font-family="Georgia,serif" fill="#854942" font-size="25">03</text>
+<rect x="88" y="402" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="439" font-size="28" font-weight="600">用于真实问题</text>
+<text x="112" y="476" font-size="24" fill="#677279">阅读、研究、决策与写作</text><path d="M344 500v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="572" font-family="Georgia,serif" fill="#854942" font-size="25">04</text>
+<rect x="88" y="528" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="565" font-size="28" font-weight="600">审阅后写回</text>
+<text x="112" y="602" font-size="24" fill="#677279">只保留可以再次使用的结论</text><line x1="40" y1="659" x2="600" y2="659" stroke="#cbc5b9"/><text x="40" y="699" font-size="24" fill="#854942">人决定方向与结论</text><text x="40" y="733" font-size="24" fill="#677279">AI 整理、连接、核验与维护</text></g></svg>
