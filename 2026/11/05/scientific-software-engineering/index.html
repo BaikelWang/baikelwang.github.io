@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Baikel Wang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从一次模型推理到完整科研任务，讨论输入契约、外部进程、超时取消、缓存与结果追溯。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把科研模型做成可用的软件：从一次推理到完整任务">
+<meta property="og:url" content="http://baikelwang.github.io/2026/11/05/scientific-software-engineering/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="从一次模型推理到完整科研任务，讨论输入契约、外部进程、超时取消、缓存与结果追溯。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/engineering-notes/science-cover.svg">
+<meta property="article:published_time" content="2026-11-05T00:12:00.000Z">
+<meta property="article:modified_time" content="2026-11-06T07:04:57.912Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="软件工程">
+<meta property="article:tag" content="AI4Science">
+<meta property="article:tag" content="科研软件">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/engineering-notes/science-cover.svg">
+  
+  
+  
+  <title>把科研模型做成可用的软件：从一次推理到完整任务 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/academic-covers.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="把科研模型做成可用的软件：从一次推理到完整任务"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-05 00:12" pubdate>
+          2026年11月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">把科研模型做成可用的软件：从一次推理到完整任务</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在 Notebook 中完成一次推理，与让另一个人稳定地使用这个模型，中间隔着一整套工程问题。</p>
+<p>开发者通常知道输入应该长什么样，了解当前模型版本，也知道哪些报错可以忽略。真正的用户却未必知道文件单位是否正确，任务为什么没有进展，页面上的候选结果是否经过验证，以及关闭网页之后计算还会不会继续。</p>
+<p>在参与衍射分析相关软件的过程中，我逐渐把注意力从“模型能不能跑”移向“一个任务能不能被完整地交付”。下面讨论的是从这些工作中提炼出的通用设计原则，不涉及内部数据和性能指标，也不代表每一项机制都已在所有系统中实现。</p>
+<h2 id="用户提交的是一个问题，不只是一个文件"><a href="#用户提交的是一个问题，不只是一个文件" class="headerlink" title="用户提交的是一个问题，不只是一个文件"></a>用户提交的是一个问题，不只是一个文件</h2><p>以粉末衍射分析为例，用户上传一条谱线，希望得到的通常不是一个孤立的预测标签，而是对候选结构的判断，以及能够继续核查和分析的结果。</p>
+<p>这意味着，输入契约不能止于“接受 CSV”。系统还需要知道各列含义、横轴单位、必要的实验条件，以及缺失信息将如何影响后续计算。能被程序读入的文件，不一定适合交给模型；能够完成推理的输入，也未必处于模型有证据支持的适用范围内。</p>
+<p>这些检查最好尽量前置。空文件、非法数值、缺少关键字段，可以在排队前就说明。涉及专业判断的情况，则应保留警告与用户确认，不能用自动补默认值掩盖不确定性。</p>
+<p>输出同样需要契约。候选排序、拟合曲线、诊断日志与可下载文件分别回答不同问题。候选排名靠前，只能表示它在当前模型和筛选条件下更值得检查，不应直接写成已经确认的真实结构。计算完成与科学结论成立，必须分开表达。</p>
+<h2 id="围绕任务组织系统，而不是围绕按钮拼接脚本"><a href="#围绕任务组织系统，而不是围绕按钮拼接脚本" class="headerlink" title="围绕任务组织系统，而不是围绕按钮拼接脚本"></a>围绕任务组织系统，而不是围绕按钮拼接脚本</h2><p>界面很容易自然地长成“预处理按钮”“预测按钮”“精修按钮”。如果每个按钮都单独调用一套流程，很快就会出现参数不一致、重复计算，以及同一个结果在不同入口表现不同的问题。</p>
+<p>我更倾向于让界面描述用户意图，让领域流程组织实际步骤，再由独立的执行层调用模型和外部程序。交互入口可以不同，底层的输入检查、参数解释与结果结构应尽量一致。</p>
+<p><img src="/img/engineering-notes/science-task.svg" srcset="/img/loading.gif" lazyload alt="科研计算的任务生命周期：校验、排队、执行、结果检查，以及失败和取消的处理边界"></p>
+<p><em>图 1：任务生命周期的设计示意。失败、取消与结果不确定都应有明确状态，不能仅以页面是否显示报错区分。</em></p>
+<p>一个任务应有稳定标识，并记录输入、参数和执行状态。用户看到“运行中”时，应能知道它是在等待资源、执行模型，还是等待外部精修程序。系统失败之后，也应该保留足够的信息，帮助判断是输入问题、依赖问题、超时，还是输出本身不满足要求。</p>
+<p>这种设计不必一开始就引入复杂的分布式队列。单机服务同样可以先把任务目录、状态转换和结构化结果做好。基础边界清楚之后，再根据真实并发量决定是否增加独立工作进程和调度组件。</p>
+<h2 id="最难处理的，往往是模型之外的程序"><a href="#最难处理的，往往是模型之外的程序" class="headerlink" title="最难处理的，往往是模型之外的程序"></a>最难处理的，往往是模型之外的程序</h2><p>科研工作流经常依赖既有科学软件。它们可能要求特定解释器、复杂依赖或独立运行环境。以需要隔离运行的精修引擎为例，把外部程序放到独立进程中，常常比让它与 Web 服务共享全部依赖更容易管理。但这是一种针对环境和风险的选择，并不是所有科学软件都必须采用相同方式。</p>
+<p>隔离之后，新的问题是生命周期：谁启动它，最长运行多久，失败如何报告，取消时谁负责停止，退出之后哪些文件应当保留。</p>
+<p>Python 的不同调用方式也有重要差别：<code>subprocess.run(..., timeout=...)</code> 超时后会终止并等待其直接子进程；直接调用 <code>Popen.communicate(timeout=...)</code> 则不会在超时后自动终止进程，需要调用者处理。官方文档还提醒，使用管道时不能只等待退出而不消费输出，否则可能因缓冲区填满而阻塞。<a target="_blank" rel="noopener" href="https://docs.python.org/3.13/library/subprocess.html">Python subprocess 文档</a></p>
+<p>这说明“加了一个 timeout”还不够。超时必须到达实际执行层，并且触发正确的终止和回收。如果程序继续创建子进程，还要针对操作系统处理进程组或作业对象；停止直接子进程，不一定能清理整棵进程树。</p>
+<p>取消也是如此。页面上停止等待，不代表计算已经停止。合理的取消过程，应把取消请求传递给任务执行层，在确认计算退出和资源回收后，再进入终止状态。做不到立即取消时，就应当明确显示“正在取消”或“当前阶段不可中断”，而不是先告诉用户已经完成取消。</p>
+<h2 id="缓存不是偷偷跳过计算"><a href="#缓存不是偷偷跳过计算" class="headerlink" title="缓存不是偷偷跳过计算"></a>缓存不是偷偷跳过计算</h2><p>科研任务往往很耗时。缓存能够减少重复工作，但如果缓存键只使用文件名，同名文件内容改变后仍可能返回旧结果；如果模型或预处理方式已经更新，旧缓存也未必继续适用。</p>
+<p>因此，复用条件应当覆盖真正影响结果的因素，例如输入内容、关键实验条件、预处理与模型版本、运行参数。哪些因素进入键，需要根据实际流程决定，不能照抄一份通用字段表。</p>
+<p>缓存命中还应对用户可见：这次结果来自哪次计算，沿用了哪些配置，是否可以强制重新运行。否则，用户以为自己正在验证新参数，系统却在返回旧产物，会比单纯的运行失败更难发现。</p>
+<p>类似地，快速模式和完整模式应描述清楚计算预算与流程差异。减少候选数、跳过精修和使用近似方法，是不同的工程选择，不能都笼统地归为“加速”。如果一种模式改变了结果可解释的范围，就应当随结果一起说明。</p>
+<h2 id="完成一次计算，还要能够解释这次计算"><a href="#完成一次计算，还要能够解释这次计算" class="headerlink" title="完成一次计算，还要能够解释这次计算"></a>完成一次计算，还要能够解释这次计算</h2><p>一个可交付的结果，除了图和数值，还需要能够回答几个朴素问题：使用了哪份输入，采用了什么版本，哪些步骤成功了，哪些步骤跳过了，有没有警告，如何复现。</p>
+<p>这不意味着把所有日志直接展示给用户。界面可以先给出简洁的结论和限制，再提供参数、诊断与原始产物的入口。后台细节可以复杂，前台表达应该清楚。</p>
+<p>验收时也不能只点击一遍正常流程。错误格式、空结果、外部进程超时、重复提交、服务重启和取消请求，都可能改变任务状态。哪些情况已验证，哪些仍未覆盖，应当如实记录。一次演示成功，可以证明某条路径可运行，却不能证明长期稳定，更不能替代科学有效性的独立评估。</p>
+<p>我现在理解的科研软件工程，是把模型能力放进一个有边界、可追溯、可以恢复的过程里。模型回答的是“能算出什么”，软件还要回答“这一次究竟算了什么，为什么值得相信，出问题后怎么办”。</p>
+<p>这些工作未必最显眼，却决定了一个研究原型能否真正被别人使用。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/" class="category-chain-item">科研实践</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="print-no-link">#软件工程</a>
+      
+        <a href="/tags/AI4Science/" class="print-no-link">#AI4Science</a>
+      
+        <a href="/tags/%E7%A7%91%E7%A0%94%E8%BD%AF%E4%BB%B6/" class="print-no-link">#科研软件</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>把科研模型做成可用的软件：从一次推理到完整任务</div>
+      <div>http://baikelwang.github.io/2026/11/05/scientific-software-engineering/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Baikel Wang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/11/05/research-rag-evidence/" title="文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘">
+                        <span class="hidden-mobile">文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

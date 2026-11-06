@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="924" viewBox="0 0 640 924" role="img" aria-labelledby="title desc">
+<title id="title">从检索命中到证据支持</title><desc id="desc">检索与证据整理：保留对象、条件、结论和出处；生成前：够不够答：证据不足 → 补充资料或拒答；模型生成：围绕本次提供的证据组织答案；生成后：是否有据：核对引用、数值和适用限制；交付回答或回退：回答不受支持 → 展示原始证据。规则检查 ≠ 语义证明。忠实于来源 ≠ 科学结论已成立</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="#314a57" stroke-width="1.4"/></marker></defs>
+<rect width="640" height="924" fill="#f8f5ee"/>
+<g font-family="'Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif" fill="#314a57">
+<text x="40" y="48" font-family="Georgia,serif" font-size="17" letter-spacing="2">ENGINEERING NOTES</text>
+<line x1="40" y1="66" x2="600" y2="66" stroke="#cbc5b9"/>
+<text x="40" y="116" font-size="32" font-weight="600">从检索命中到证据支持</text>
+<text x="40" y="194" font-family="Georgia,serif" fill="#854942" font-size="25">01</text>
+<rect x="88" y="150" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="187" font-size="28" font-weight="600">检索与证据整理</text>
+<text x="112" y="224" font-size="24" fill="#677279">保留对象、条件、结论和出处</text><path d="M344 248v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="320" font-family="Georgia,serif" fill="#854942" font-size="25">02</text>
+<rect x="88" y="276" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="313" font-size="28" font-weight="600">生成前：够不够答</text>
+<text x="112" y="350" font-size="24" fill="#677279">证据不足 → 补充资料或拒答</text><path d="M344 374v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="446" font-family="Georgia,serif" fill="#854942" font-size="25">03</text>
+<rect x="88" y="402" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="439" font-size="28" font-weight="600">模型生成</text>
+<text x="112" y="476" font-size="24" fill="#677279">围绕本次提供的证据组织答案</text><path d="M344 500v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="572" font-family="Georgia,serif" fill="#854942" font-size="25">04</text>
+<rect x="88" y="528" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="565" font-size="28" font-weight="600">生成后：是否有据</text>
+<text x="112" y="602" font-size="24" fill="#677279">核对引用、数值和适用限制</text><path d="M344 626v24" stroke="#314a57" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+<text x="40" y="698" font-family="Georgia,serif" fill="#854942" font-size="25">05</text>
+<rect x="88" y="654" width="512" height="96" rx="4" fill="#fffdf8" stroke="#cbc5b9" stroke-width="1.3"/>
+<text x="112" y="691" font-size="28" font-weight="600">交付回答或回退</text>
+<text x="112" y="728" font-size="24" fill="#677279">回答不受支持 → 展示原始证据</text><line x1="40" y1="785" x2="600" y2="785" stroke="#cbc5b9"/><text x="40" y="825" font-size="24" fill="#854942">规则检查 ≠ 语义证明</text><text x="40" y="859" font-size="24" fill="#677279">忠实于来源 ≠ 科学结论已成立</text></g></svg>

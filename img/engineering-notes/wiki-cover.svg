@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">从资料到理解：书页与知识连接</title><desc id="desc">米白底、石墨线条与低饱和蓝色的原创概念插画，不表示实验数据。</desc>
+<rect width="1200" height="675" fill="#f8f5ee"/>
+<rect x="35" y="35" width="1130" height="605" fill="none" stroke="#ded8cc"/>
+<g fill="none" stroke="#314a57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="600" cy="310" r="200" stroke="#ded8cc"/><circle cx="600" cy="310" r="228" stroke="#e8e2d8"/>
+<path d="M276 252Q438 198 600 258Q762 198 924 252V460Q762 410 600 470Q438 410 276 460Z" fill="#fffdf8"/>
+<path d="M600 258V470M290 470Q443 428 600 484Q757 428 910 470"/>
+<path d="M310 284Q438 250 558 284M310 312Q438 278 558 312M310 340Q412 312 500 331M310 382Q438 350 558 382M310 408Q402 382 478 394" stroke="#b7b5ac"/>
+<path d="M661 300L750 272L840 318L795 390L692 397Z M661 300L795 390M750 272L692 397M840 318L692 397" stroke="#738e99"/>
+<g fill="#f8f5ee"><circle cx="661" cy="300" r="9"/><circle cx="840" cy="318" r="9"/><circle cx="692" cy="397" r="9"/></g>
+<circle cx="750" cy="272" r="10" fill="#426a7e"/><circle cx="795" cy="390" r="10" fill="#854942"/>
+<path d="M465 193Q598 110 731 193M721 180L731 193L713 194" stroke="#738e99"/>
+</g>
+<path d="M528 578h144" stroke="#cbc5b9"/><circle cx="600" cy="578" r="4" fill="#854942"/>
+</svg>

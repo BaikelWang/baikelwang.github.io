@@ -1,0 +1,691 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Baikel Wang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="科研 RAG 的问题不止在检索：从证据整理、可回答性到忠实度检查，复盘为什么文档找到了，答案仍然会错。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘">
+<meta property="og:url" content="http://baikelwang.github.io/2026/11/05/research-rag-evidence/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="科研 RAG 的问题不止在检索：从证据整理、可回答性到忠实度检查，复盘为什么文档找到了，答案仍然会错。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/engineering-notes/rag-cover.svg">
+<meta property="article:published_time" content="2026-11-05T00:11:00.000Z">
+<meta property="article:modified_time" content="2026-11-06T07:04:57.912Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="AI4Science">
+<meta property="article:tag" content="工程实践">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/engineering-notes/rag-cover.svg">
+  
+  
+  
+  <title>文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/academic-covers.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-05 00:11" pubdate>
+          2026年11月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>做论文问答时，一个很容易让人困惑的现象是：正确的文档已经出现在检索结果中，模型却仍然漏掉关键条件，或者给出一个听起来合理、实际并没有被原文支持的答案。</p>
+<p>遇到这种情况，直觉上的做法往往是换更强的模型、继续微调，或者检索更多内容。但在我参与的科研问答原型中，把链路拆开检查之后，问题并不总是出在模型参数上。有时，答案需要的事实已经找到了，只是没有被妥当地交给模型；有时，系统其实还没有足够证据，却已经开始组织答案。</p>
+<p>这篇文章复盘的是当时的工程判断，而不是当前产品的能力声明。为避免混淆不同版本的实验口径，下面不引用内部性能数字，重点讨论可以迁移到其他 RAG 系统的方法。</p>
+<h2 id="“检索命中”不是一个完整的成功条件"><a href="#“检索命中”不是一个完整的成功条件" class="headerlink" title="“检索命中”不是一个完整的成功条件"></a>“检索命中”不是一个完整的成功条件</h2><p>RAG 将检索到的外部信息与生成模型结合起来，为知识密集型任务提供依据。这是一个有用的基本框架，但它不会自动保证最终回答忠实于证据。<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.11401">Lewis 等，Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></p>
+<p>从工程上看，“找到了”至少有三种含义：找到了正确文档，找到了与问题相关的片段，以及最终送入模型的上下文确实包含回答所需的事实。这三件事并不等价。</p>
+<p>一篇论文可能同时讨论多个样品、不同温度和不同实验条件。搜索结果命中论文标题，不能说明所选片段包含目标样品的结论；片段中出现目标数值，也不能说明数值对应的单位、对象和条件都被保留下来了。</p>
+<p>因此，我在排查时把两个问题分开看：期望事实是否进入最终证据，以及这些事实是否被答案正确表达。前者失败，优先检查文档解析、检索和裁剪；前者成功、后者失败，再检查生成、提示组织和答案校验。这个分层不能单独证明根因，却能显著缩小排查范围。</p>
+<p><img src="/img/engineering-notes/rag-evidence.svg" srcset="/img/loading.gif" lazyload alt="科研 RAG 的证据链：检索与整理、生成前检查、生成、生成后检查，以及失败时的回退"></p>
+<p><em>图 1：工程设计示意。生成前检查关注证据是否足够，生成后检查关注回答是否受到支持；两者都不是科学正确性的证明。</em></p>
+<h2 id="证据更短，未必意味着证据更好"><a href="#证据更短，未必意味着证据更好" class="headerlink" title="证据更短，未必意味着证据更好"></a>证据更短，未必意味着证据更好</h2><p>早期方案直接把较长的文档片段交给模型。这样容易保留较多事实，也会同时带入背景介绍、重复叙述和无关内容。后来尝试先检索片段，再选取相关句子，并保留来源信息，让模型面对更集中的证据。</p>
+<p>这一步确实改变了回答的组织方式，但很快遇到另一种问题：裁剪过于积极，必要条件也被一起删除了。</p>
+<p>假设一份材料写道：“样品 A 在条件 X 下得到结果 Y。该结果不适用于条件 Z。”这只是一个说明机制的假设例子。如果只选出第一句，答案可能看起来更简洁，却丢失了适用边界；如果只提取数值 Y，甚至连它属于哪个样品都无法确定。</p>
+<p>所以，句子级证据整理不能简单理解成“选最相似的几句话”。它应当保留足够的邻接上下文，尽量把实体、条件、数值和限制放在同一个可核对的单元里。预算不够时，也需要知道自己删去了什么，而不是只看提示词缩短了多少。</p>
+<p>《Lost in the Middle》在其研究任务与模型中观察到，相关信息在上下文中的位置会影响模型表现。这提醒我们：能接收长上下文，不等于能稳定使用其中的全部信息。但这不是“短上下文永远更好”的证据，更不能直接套用到所有新模型。<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.03172">Liu 等，Lost in the Middle</a></p>
+<p>实际选择仍然要回到自己的任务：保留了哪些事实，丢失了哪些条件，模型能否正确使用。最短的上下文与最可靠的上下文，往往不是同一个。</p>
+<h2 id="先判断有没有资格回答，再判断回答是否可信"><a href="#先判断有没有资格回答，再判断回答是否可信" class="headerlink" title="先判断有没有资格回答，再判断回答是否可信"></a>先判断有没有资格回答，再判断回答是否可信</h2><p>科研问题对条件十分敏感。用户问的是某种压力下的性质，证据只说明常压情况；用户问实验测量值，文档给出的却是模拟结果。这些内容可能高度相似，却不能互相替代。</p>
+<p>因此，需要在生成之前检查证据是否覆盖问题要求的对象和条件。证据不足时，可以明确说明缺少哪一部分，或者询问用户是否接受缩小问题范围。单一的向量相似度并不能承担这个判断：它衡量的是一种表示空间中的接近程度，不是“足以支持答案”的通用概率。</p>
+<p>生成之后，则要检查另一件事：模型是否使用了本次提供的来源，回答中的数值是否有对应依据，有没有把原文的限定结论扩展成普遍结论。引用编号存在，只能说明引用形式可能有效，不能证明引用真的支持这句话。</p>
+<p>我们当时采用了引用、数字、重复内容等轻量检查。这类规则便宜、可解释，也方便加入回归测试，但局限同样明确：相同数字可能属于另一个样品，词语重合也可能表达相反意思。更严格的系统还需要逐项核对“对象—条件—结论”，并对高风险内容安排人工复核。</p>
+<p>对于无法确认的回答，回退到带来源的原始证据，通常比继续润色一个不可靠的结论更合适。不过，回退不是另一种“正确答案保证”：它只是降低了额外生成造成的风险，原文质量与解释责任仍然存在。</p>
+<h2 id="评测器也会犯错"><a href="#评测器也会犯错" class="headerlink" title="评测器也会犯错"></a>评测器也会犯错</h2><p>这轮工作中，还有一个比调模型更有提醒意义的小问题：自动评测曾把“不必为每个任务从头训练”判成了“每个任务从头训练”。原因是规则只检查某个子串是否出现，没有处理否定关系。</p>
+<p>如果只看最终分数，这会被理解成模型犯了明显的知识错误；回到样例，才发现错误发生在评测器。</p>
+<p>因此，指标也需要自己的测试。否定表达、单位换算、同义说法、部分回答和错误归因，都是值得单独检查的边界。给规则补几个否定词，可以修复一个已知错误，却不能由此声称已经具备完整语义理解。</p>
+<p>我更愿意把评测结果理解为通往失败样例的索引。聚合分数用来观察趋势，具体样例帮助解释变化。样例应该进一步分成证据没有找到、证据在裁剪中丢失、模型漏答、模型错答，以及门控误判等类型。不同错误需要不同修复，而不是统一归入“模型不够强”。</p>
+<h2 id="不是每一次训练，都应该成为一次上线"><a href="#不是每一次训练，都应该成为一次上线" class="headerlink" title="不是每一次训练，都应该成为一次上线"></a>不是每一次训练，都应该成为一次上线</h2><p>后续尝试过新的模型版本。训练损失和开发集上的部分表现有所改善，但在预先固定的留出评测中，并没有形成足够稳定的优势。最后保留了原来的模型版本，采用经过验证的证据整理和检查模块。</p>
+<p>这不是说微调没有价值，而是说需要证明：新增训练解决了哪个已定位的问题，改善是否超出样本波动，代价是否值得。一次版本号更新，不应替代一次选型判断。</p>
+<p>固定评测集也有边界。反复查看它并据此调参，最终会让它逐渐变成开发集。随着系统迭代，应当补充新的独立测试、真实失败案例和人工抽查，不能把某一次通过长期当作有效证明。</p>
+<p>对我来说，这次复盘最重要的收获，是把“让模型回答得更好”改写成了一组可以检查的问题：资料解析是否可靠，关键证据是否保留，问题是否可回答，答案是否越过证据边界，失败时是否能够安全退回。</p>
+<p>一个可信的科研问答系统，不仅要知道如何回答，也要能说明依据在哪里、限制是什么，以及什么时候还不能回答。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/RAG/" class="print-no-link">#RAG</a>
+      
+        <a href="/tags/AI4Science/" class="print-no-link">#AI4Science</a>
+      
+        <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" class="print-no-link">#工程实践</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘</div>
+      <div>http://baikelwang.github.io/2026/11/05/research-rag-evidence/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Baikel Wang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/11/05/scientific-software-engineering/" title="把科研模型做成可用的软件：从一次推理到完整任务">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">把科研模型做成可用的软件：从一次推理到完整任务</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/11/05/llm-wiki-practice/" title="从收藏资料到维护理解：我的 LLM Wiki 实践">
+                        <span class="hidden-mobile">从收藏资料到维护理解：我的 LLM Wiki 实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

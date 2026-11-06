@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">从科研计算到软件交付：谱线、结构与任务</title><desc id="desc">米白底、石墨线条与低饱和蓝色的原创概念插画，不表示实验数据。</desc>
+<rect width="1200" height="675" fill="#f8f5ee"/>
+<rect x="35" y="35" width="1130" height="605" fill="none" stroke="#ded8cc"/>
+<g fill="none" stroke="#314a57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="600" cy="320" r="194" stroke="#ded8cc"/>
+<rect x="242" y="232" width="220" height="184" fill="#fffdf8"/>
+<path d="M267 390V259M267 390H438" stroke="#a3aba8"/>
+<path d="M275 380L298 380L308 343L317 380L338 380L349 284L360 380L390 380L401 324L410 380L435 380" stroke="#426a7e" stroke-width="2.5"/>
+<path d="M482 324H512M503 316L512 324L503 332"/>
+<path d="M537 279L600 245L663 279V363L600 399L537 363Z M537 279L600 315L663 279M600 315V399M537 363L600 327L663 363" fill="#fffdf8"/>
+<path d="M537 279L600 315L663 279M600 315V399" stroke="#426a7e"/>
+<g fill="#426a7e" stroke="none"><circle cx="537" cy="279" r="6"/><circle cx="600" cy="245" r="6"/><circle cx="663" cy="279" r="6"/><circle cx="537" cy="363" r="6"/><circle cx="663" cy="363" r="6"/><circle cx="600" cy="399" r="6"/></g>
+<circle cx="600" cy="315" r="8" fill="#854942" stroke="none"/>
+<path d="M687 324H717M708 316L717 324L708 332"/>
+<rect x="738" y="232" width="220" height="184" fill="#fffdf8"/>
+<path d="M767 272H926M767 306H877M767 340H926M767 374H897" stroke="#a3aba8"/>
+<path d="M352 454V485H848V454" stroke="#738e99"/><path d="M342 464L352 454L362 464" stroke="#738e99"/>
+</g>
+<path d="M528 578h144" stroke="#cbc5b9"/><circle cx="600" cy="578" r="4" fill="#854942"/>
+</svg>

@@ -1,0 +1,691 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/baikel.jpg">
+  <link rel="icon" href="/img/baikel.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Baikel Wang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从资料收藏到维护理解：用 Obsidian 与 AI 保留可复用的结论，区分当前状态、历史证据与公开文章。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从收藏资料到维护理解：我的 LLM Wiki 实践">
+<meta property="og:url" content="http://baikelwang.github.io/2026/11/05/llm-wiki-practice/index.html">
+<meta property="og:site_name" content="Baikel">
+<meta property="og:description" content="从资料收藏到维护理解：用 Obsidian 与 AI 保留可复用的结论，区分当前状态、历史证据与公开文章。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://baikelwang.github.io/img/engineering-notes/wiki-cover.svg">
+<meta property="article:published_time" content="2026-11-05T00:10:00.000Z">
+<meta property="article:modified_time" content="2026-11-06T07:04:57.912Z">
+<meta property="article:author" content="北海">
+<meta property="article:tag" content="AI协作">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Obsidian">
+<meta property="article:tag" content="知识管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://baikelwang.github.io/img/engineering-notes/wiki-cover.svg">
+  
+  
+  
+  <title>从收藏资料到维护理解：我的 LLM Wiki 实践 - Baikel</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/academic-covers.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baikelwang.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Baikel</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/BG.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从收藏资料到维护理解：我的 LLM Wiki 实践"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-05 00:10" pubdate>
+          2026年11月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从收藏资料到维护理解：我的 LLM Wiki 实践</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>真正让我开始整理知识库的，不是资料不够多，而是资料已经很多，却仍然经常需要从头找起。</p>
+<p>一篇文章收藏过，一段代码研究过，一个问题也曾与 AI 反复讨论。过了一段时间，只记得自己“应该知道”，却说不清结论来自哪里、适用什么条件，更无法判断当时的理解是否已经过时。资料仍在，理解却没有可靠地留下来。</p>
+<p>我之前写过 Karpathy 的 LLM Wiki 思想。这一次，更想谈谈把它放进自己的日常工作之后，究竟应当保留什么，又应当删去哪些不必要的复杂度。</p>
+<h2 id="知识库的对象，不是文件，而是可以继续使用的理解"><a href="#知识库的对象，不是文件，而是可以继续使用的理解" class="headerlink" title="知识库的对象，不是文件，而是可以继续使用的理解"></a>知识库的对象，不是文件，而是可以继续使用的理解</h2><p>Karpathy 提出的关键变化，是在原始资料与临时回答之间，维护一层持续更新、相互链接的 Wiki。新材料进入后，不只是等待下一次检索，而是参与修订已有认识。这是一种知识工作方式，并不意味着必须采用某个固定产品。<a target="_blank" rel="noopener" href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">原始说明：LLM Wiki</a></p>
+<p>这给我的启发是：不要再以“整理了多少篇”衡量进展。</p>
+<p>例如，读完一篇关于 RAG 的文章，保存全文很容易，生成一份摘要也不难。但下一次项目出现“文档搜到了，答案还是不对”的问题时，我真正需要的是：有哪些可能原因，如何把问题定位到检索、证据组织或生成阶段，哪些判断已经有实验支持。能够参与下一次判断的内容，才值得进入长期知识页。</p>
+<p>原文、摘要和知识页可以同时存在，但职责不同。原文供追溯，摘要帮助快速了解内容，知识页负责把多次阅读和实际工作连接起来。如果三者只是换个格式重复同一段话，文件数量增加了，使用成本也一起增加了。</p>
+<h2 id="让日常入口变少，让后台工作更可靠"><a href="#让日常入口变少，让后台工作更可靠" class="headerlink" title="让日常入口变少，让后台工作更可靠"></a>让日常入口变少，让后台工作更可靠</h2><p>我的这套系统用 Markdown 保存内容，用 Obsidian 阅读和浏览，再让 AI 参与整理与维护。最需要约束的不是模型能力，而是系统不断长出新目录、新表格和新流程的冲动。</p>
+<p>因此，日常只保留一个首页。零散资料可以先放入 Inbox，不要求自己在输入时就完成精确分类。原始来源、图片附件和系统模板留在后台，阅读时主要接触知识页与正在推进的项目。已经存在的主题，优先补充已有页面，而不是每问一次就生成一篇新笔记。</p>
+<p><img src="/img/engineering-notes/wiki-cycle.svg" srcset="/img/loading.gif" lazyload alt="LLM Wiki 的使用闭环：资料进入、整理理解、实际使用与有选择地写回"></p>
+<p><em>图 1：这套知识库的工作示意。AI 负责维护过程，人负责重要判断；只有可复用的结果才进入下一轮。</em></p>
+<p>这并不要求目录越少越好，而是要求每一个结构都有明确用途。原始论文与自己的结论应当分开，阶段实验与当前决策也应当分开；但没有必要为同一份内容同时维护目录页、阅读清单、进度表和操作日志。如果一项字段既不影响检索，也不影响判断和发布，就不值得让人反复填写。</p>
+<p>Obsidian 在这里首先是阅读和写作界面。链接、搜索和目录已经能承担相当一部分工作。插件是否加入，取决于它解决了哪个反复出现的问题，而不是它能否让知识库看起来更像一个复杂系统。</p>
+<h2 id="把“现在是什么”与“为什么走到这里”分开"><a href="#把“现在是什么”与“为什么走到这里”分开" class="headerlink" title="把“现在是什么”与“为什么走到这里”分开"></a>把“现在是什么”与“为什么走到这里”分开</h2><p>项目内容积累之后，最容易出现的混乱不是没有记录，而是多个时期的记录都像最新结论。</p>
+<p>一个模型早期效果不错，后来换了评测口径；一个功能曾经只是演示，后来才接入真实后端；某次实验虽然没有采用，却解释了为什么最终选择另一条路线。如果把这些内容摊在同一个层次，AI 很容易引用到旧数字，人也容易把计划当成事实。</p>
+<p>我现在更倾向于区分三种材料：当前状态说明“现在采用什么、哪些尚未完成”；阶段记录解释“当时尝试了什么、为什么接受或放弃”；原始报告和日志则回答“凭什么这样说”。</p>
+<p>这不是要求每个项目新建三个文件。简单项目可能一页就够，内容较多时才需要拆开。重要的是阅读顺序：先看当前状态，再按需回溯决策，最后核对证据。旧材料不必删除，但必须让读者知道它属于哪个阶段。</p>
+<p>对 AI 也是一样。把全部历史塞进上下文，并不等于提供了更好的帮助。一段明确的当前状态，加上必要的证据入口，往往比混合了多个版本的长篇记录更容易使用。</p>
+<h2 id="AI-可以写回知识，不能替我决定相信什么"><a href="#AI-可以写回知识，不能替我决定相信什么" class="headerlink" title="AI 可以写回知识，不能替我决定相信什么"></a>AI 可以写回知识，不能替我决定相信什么</h2><p>AI 最适合承担那些重要却容易被拖延的工作：清理导出格式、保存附件、补充来源、寻找相关页面、提示新旧内容之间的冲突。它可以提出综合判断，但不能把推测悄悄改写成事实。</p>
+<p>比如，我说“这个方向值得尝试”，它不应写成“已经验证有效”；一次脚本成功运行，也不能自动升级成“系统已经具备生产可用性”。同样，一篇论文提出的结论，进入知识库之后仍然是论文的结论，不会因为被整理成了漂亮的页面就变成已确认的共识。</p>
+<p>我希望一个后来接手项目的 AI，能够分辨用户的判断、文献的主张、实际运行的证据，以及仍然需要验证的推断。这也是为什么仓库需要一份简洁的工作契约：保护原件，先搜索再新增，保留不确定性，重要结论能够回到来源。</p>
+<p>对话结束后也不必全部归档。真正值得写回的，通常是一个经过澄清的概念、一项有依据的决策、一种可以再次使用的排查方法。临时表达、重复解释和没有证据的猜测，可以留在对话里。知识库不是聊天记录的另一种存储格式。</p>
+<h2 id="同步与发表，是两件不同的事"><a href="#同步与发表，是两件不同的事" class="headerlink" title="同步与发表，是两件不同的事"></a>同步与发表，是两件不同的事</h2><p>Git 很适合保存文本修改历史，但“已经提交”“已经推送”和“已经公开发表”不是同一个状态。</p>
+<p>知识页是否允许进入网站，应当由独立的发布条件控制。我在 Wiki 中保留文章类型、审阅状态和发布开关，只有满足条件的内容才导出到网站，并转换内部链接、附件路径和网站所需的元信息。发布前，还要实际检查封面、正文图片与移动端排版。</p>
+<p>这里有一条容易忽视的边界：<code>publish: false</code> 只能阻止文章进入网站，不能保护已经上传到公开 Git 仓库的文件。真正的隐私取决于仓库权限、提交内容和提交历史。文件从最新版本中删除，也不代表历史中已经不存在。备份策略与公开策略，应当分别设计。</p>
+<p>因此，知识库可以包含尚在整理的想法，而博客应该是一份面向读者重新组织过的表达。前者保留工作现场，后者交代背景、问题、判断与限制。公开文章不需要把内部目录、实验草稿和个人信息一起搬出去。</p>
+<h2 id="最后，系统应该让人更轻松"><a href="#最后，系统应该让人更轻松" class="headerlink" title="最后，系统应该让人更轻松"></a>最后，系统应该让人更轻松</h2><p>我希望长期得到的，不是一个越来越壮观的文件仓库，而是一种更稳定的工作习惯：遇到问题时先查看已有理解，发现变化时修订它，做出判断时留下依据，写文章时从这些积累出发。</p>
+<p>这套方式也不会让模型真的“学会”我的全部知识。Markdown 是可读取的外部记忆，不是模型权重；AI 仍然可能遗漏、误解或引用过时内容。它的价值，在于让这些错误更容易被发现，让下一次协作不必从零开始。</p>
+<p>如果过了一段时间，找资料更快了，重复解释变少了，旧结论也更容易被修正，这个知识库就已经发挥了作用。至于它有多少插件、多少节点、多少篇笔记，反而不是最重要的事。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI%E5%8D%8F%E4%BD%9C/" class="print-no-link">#AI协作</a>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Obsidian/" class="print-no-link">#Obsidian</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" class="print-no-link">#知识管理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从收藏资料到维护理解：我的 LLM Wiki 实践</div>
+      <div>http://baikelwang.github.io/2026/11/05/llm-wiki-practice/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Baikel Wang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/11/05/research-rag-evidence/" title="文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文档找到了，答案为什么仍然会错？一次科研 RAG 的工程复盘</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/16/Codex-Windows-ARM64%E9%97%AA%E9%80%80%EF%BC%9A%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BC%80%E5%85%B3%E5%BC%95%E7%88%86%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%B4%A9%E6%BA%83/" title="Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃">
+                        <span class="hidden-mobile">Codex Windows ARM64 闪退：服务端开关引爆的本地崩溃</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://www.yuque.com/baikel-408" target="_blank" rel="nofollow noopener"><span>Yuque</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/BaikelWang" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
